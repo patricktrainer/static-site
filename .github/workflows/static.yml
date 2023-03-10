@@ -42,7 +42,8 @@ jobs:
 
       - name: Build html
         run: |-
-          python ./html.py
+          cd ..
+          python html.py
     
     
       - name: Checkout
