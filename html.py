@@ -118,7 +118,7 @@ for post in posts:
 post_links = [
     html_link(f"{post.replace('.md', '.html')}", get_post_title(post)) for post in posts
 ]
-blog_path = [b.replace("static-site/posts", "blog") for b in post_links]
+blog_path = [b.replace("posts", "blog") for b in post_links]
 content = html_list(blog_path)
 html = html_page("Blog", content)
 with open("./index.html", "w") as f:
