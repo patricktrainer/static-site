@@ -63,9 +63,16 @@ def html_table(cols, data):
 def html_page(title, content):
     """Return a string containing the full HTML page."""
     template = get_tempalate()
-    html = template.render(title=title, stylesheet=stylesheet(), content=content)
+    html = render(template, title=title, content=content, stylesheet=stylesheet())
 
     return html
+
+def render(template, **kwargs):
+    template = get_tempalate()
+    html = template.render(**kwargs)
+    return html
+
+
 
 
 def html_list(items):
