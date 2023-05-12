@@ -1,0 +1,123 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Quick Start Guide - Leaflet - a JavaScript library 34abae4121e74559802c946664107c5f</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-quick-start-guide---leaflet---a-javascript-library-for-interactive-maps" class="anchor" aria-hidden="true" href="#quick-start-guide---leaflet---a-javascript-library-for-interactive-maps"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start Guide - Leaflet - a JavaScript library for interactive maps</h1>
+<p>Created: Feb 15, 2020 8:22 AM
+URL: <a href="https://leafletjs.com/examples/quick-start/" rel="nofollow">https://leafletjs.com/examples/quick-start/</a></p>
+<p>This step-by-step guide will quickly get you started on Leaflet basics, including setting up a Leaflet map, working with markers, polylines and popups, and dealing with events.</p>
+<p><a href="Quick%20Start%20Guide%20-%20Leaflet%20-%20a%20JavaScript%20library%2034abae4121e74559802c946664107c5f/Untitled%20Database%20fa332699d13d4c6cb09f68b5e8a9e01b.csv">Untitled</a></p>
+<h3><a id="user-content-preparing-your-page" class="anchor" aria-hidden="true" href="#preparing-your-page"><span aria-hidden="true" class="octicon octicon-link"></span></a>Preparing your page</h3>
+<p>Before writing any code for the map, you need to do the following preparation steps on your page:</p>
+<ul>
+<li>
+</li></ul>
+<pre><code>Include Leaflet CSS file in the head section of your document:
+
+```
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/&gt;
+```
+</code></pre>
+<ul>
+<li>
+</li></ul>
+<pre><code>Include Leaflet JavaScript file **after** Leaflet’s CSS:
+
+```
+&lt;!-- Make sure you put this AFTER Leaflet's CSS --&gt;
+ &lt;script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""&gt;&lt;/script&gt;
+```
+</code></pre>
+<ul>
+<li>
+</li></ul>
+<pre><code>Put a `div` element with a certain `id` where you want your map to be:
+
+```
+&lt;div id="mapid"&gt;&lt;/div&gt;
+```
+</code></pre>
+<ul>
+<li>
+</li></ul>
+<pre><code>Make sure the map container has a defined height, for example by setting it in CSS:
+
+```
+#mapid { height: 180px; }
+```
+</code></pre>
+<p>Now you’re ready to initialize the map and do some stuff with it.</p>
+<h3><a id="user-content-setting-up-the-map" class="anchor" aria-hidden="true" href="#setting-up-the-map"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up the map</h3>
+<p>Let’s create a map of the center of London with pretty Mapbox Streets tiles. First we’ll initialize the map and set its view to our chosen geographical coordinates and a zoom level:</p>
+<pre><code>var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+</code></pre>
+<p>By default (as we didn’t pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.</p>
+<p>Note that <code>setView</code> call also returns the map object — most Leaflet methods act like this when they don’t return an explicit value, which allows convenient jQuery-like method chaining.</p>
+<p>Next we’ll add a tile layer to add to our map, in this case it’s a Mapbox Streets tile layer. Creating a tile layer usually involves setting the <a href="https://leafletjs.com/reference.html" rel="nofollow">URL template</a> for the tile images, the attribution text and the maximum zoom level of the layer. In this example we’ll use the <code>mapbox/streets-v11</code> tiles from <a href="https://docs.mapbox.com/api/maps/#static-tiles" rel="nofollow">Mapbox’s Static Tiles API</a> (in order to use tiles from Mapbox, you must also <a href="https://www.mapbox.com/studio/account/tokens/" rel="nofollow">request an access token</a>). Because this API returns 512x512 tiles by default (instead of 256x256), we will also have to explicitly specify this and offset our zoom by a value of -1.</p>
+<pre><code>L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &amp;copy; &lt;a href="https://www.openstreetmap.org/"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="https://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery © &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'your.mapbox.access.token'
+}).addTo(mymap);
+</code></pre>
+<p>Make sure all the code is called after the <code>div</code> and <code>leaflet.js</code> inclusion. That’s it! You have a working Leaflet map now.</p>
+<p>It’s worth noting that Leaflet is provider-agnostic, meaning that it doesn’t enforce a particular choice of providers for tiles. You can try replacing <code>mapbox/streets-v11</code> with <code>mapbox/satellite-v9</code>, and see what happens. Also, Leaflet doesn’t even contain a single provider-specific line of code, so you’re free to use other providers if you need to (we’d suggest Mapbox though, it looks beautiful).</p>
+<p>Whenever using anything based on OpenStreetMap, an <em>attribution</em> is obligatory as per the <a href="https://www.openstreetmap.org/copyright" rel="nofollow">copyright notice</a>. Most other tile providers (such as <a href="https://docs.mapbox.com/help/how-mapbox-works/attribution/" rel="nofollow">Mapbox</a>, <a href="http://maps.stamen.com/" rel="nofollow">Stamen</a> or <a href="https://www.thunderforest.com/terms/" rel="nofollow">Thunderforest</a>) require an attribution as well. Make sure to give credit where credit is due.</p>
+<h3><a id="user-content-markers-circles-and-polygons" class="anchor" aria-hidden="true" href="#markers-circles-and-polygons"><span aria-hidden="true" class="octicon octicon-link"></span></a>Markers, circles and polygons</h3>
+<p>Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let’s add a marker:</p>
+<pre><code>var marker = L.marker([51.5, -0.09]).addTo(mymap);
+</code></pre>
+<p>Adding a circle is the same (except for specifying the radius in meters as a second argument), but lets you control how it looks by passing options as the last argument when creating the object:</p>
+<pre><code>var circle = L.circle([51.508, -0.11], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 500
+}).addTo(mymap);
+</code></pre>
+<p>Adding a polygon is as easy:</p>
+<pre><code>var polygon = L.polygon([
+    [51.509, -0.08],
+    [51.503, -0.06],
+    [51.51, -0.047]
+]).addTo(mymap);
+</code></pre>
+<h3><a id="user-content-working-with-popups" class="anchor" aria-hidden="true" href="#working-with-popups"><span aria-hidden="true" class="octicon octicon-link"></span></a>Working with popups</h3>
+<p>Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:</p>
+<p>Try clicking on our objects. The <code>bindPopup</code> method attaches a popup with the specified HTML content to your marker so the popup appears when you click on the object, and the <code>openPopup</code> method (for markers only) immediately opens the attached popup.</p>
+<p>You can also use popups as layers (when you need something more than attaching a popup to an object):</p>
+<p>Here we use <code>openOn</code> instead of <code>addTo</code> because it handles automatic closing of a previously opened popup when opening a new one which is good for usability.</p>
+<h3><a id="user-content-dealing-with-events" class="anchor" aria-hidden="true" href="#dealing-with-events"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dealing with events</h3>
+<p>Every time something happens in Leaflet, e.g. user clicks on a marker or map zoom changes, the corresponding object sends an event which you can subscribe to with a function. It allows you to react to user interaction:</p>
+<p>Each object has its own set of events — see <a href="https://leafletjs.com/reference.html" rel="nofollow">documentation</a> for details. The first argument of the listener function is an event object — it contains useful information about the event that happened. For example, map click event object (<code>e</code> in the example above) has <code>latlng</code> property which is a location at which the click occurred.</p>
+<p>Let’s improve our example by using a popup instead of an alert:</p>
+<p>Try clicking on the map and you will see the coordinates in a popup. <a href="https://leafletjs.com/examples/quick-start/example.html" rel="nofollow">View the full example →</a></p>
+<p>Now you’ve learned Leaflet basics and can start building map apps straight away! Don’t forget to take a look at the detailed <a href="https://leafletjs.com/reference.html" rel="nofollow">documentation</a> or <a href="https://leafletjs.com/examples.html" rel="nofollow">other examples</a>.</p>
+
+        </body>
+    </html>
+    

@@ -1,0 +1,236 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Machine Learning 1 Lesson 1 - Hiromi Suenaga - Med a31c5b56369e4f848a9f90a8f2007c4a</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-machine-learning-1-lesson-1---hiromi-suenaga---medium" class="anchor" aria-hidden="true" href="#machine-learning-1-lesson-1---hiromi-suenaga---medium"><span aria-hidden="true" class="octicon octicon-link"></span></a>Machine Learning 1: Lesson 1 - Hiromi Suenaga - Medium</h1>
+<p>Created: Feb 21, 2020 12:05 PM
+URL: <a href="https://medium.com/@hiromi_suenaga/machine-learning-1-lesson-1-84a1dc2b5236" rel="nofollow">https://medium.com/@hiromi_suenaga/machine-learning-1-lesson-1-84a1dc2b5236</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Machine%20Learning%201%20Lesson%201%20-%20Hiromi%20Suenaga%20-%20Med%20a31c5b56369e4f848a9f90a8f2007c4a/1ZzaVXSfj0SCERQUCnQljpw.png"><img src="Machine%20Learning%201%20Lesson%201%20-%20Hiromi%20Suenaga%20-%20Med%20a31c5b56369e4f848a9f90a8f2007c4a/1ZzaVXSfj0SCERQUCnQljpw.png" alt="1*ZzaVXSfj0SCERQUCnQljpw.png" style="max-width: 100%;"></a></p>
+<h1><a id="user-content-syllabus-in-brief" class="anchor" aria-hidden="true" href="#syllabus-in-brief"><span aria-hidden="true" class="octicon octicon-link"></span></a>Syllabus in brief</h1>
+<p>Depending on time and class interests, we’ll cover something like (not necessarily in this order):</p>
+<p>Train vs. test</p>
+<ul>
+<li>Effective validation set construction</li>
+</ul>
+<p>Trees and ensembles</p>
+<ul>
+<li>Creating random forests</li>
+<li>Interpreting random forests</li>
+</ul>
+<p>What is ML? Why do we use it?</p>
+<ul>
+<li>What makes a good ML project?</li>
+<li>Structured vs unstructured data</li>
+<li>Examples of failures/mistakes</li>
+</ul>
+<p>Feature engineering</p>
+<p>Regularized models trained with SGD</p>
+<ul>
+<li>GLMs, Elasticnet, etc (NB: see what James covered)</li>
+</ul>
+<p>Basic neural nets</p>
+<p>KNN</p>
+<p>CV / bootstrap (Diabetes data set?)</p>
+<p>Ethical considerations</p>
+<p>Skip:</p>
+<ul>
+<li>Dimensionality reduction</li>
+<li>Interactions</li>
+<li>Monitoring training</li>
+<li>Collaborative filtering</li>
+<li>Momentum and LR annealing</li>
+</ul>
+<h1><a id="user-content-random-forest-blue-book-for-bulldozers" class="anchor" aria-hidden="true" href="#random-forest-blue-book-for-bulldozers"><span aria-hidden="true" class="octicon octicon-link"></span></a>Random Forest: Blue Book for Bulldozers</h1>
+<pre><code>%load_ext autoreload%autoreload 2%matplotlib inlinefrom fastai.imports import *from fastai.structured import *from pandas_summary import DataFrameSummaryfrom sklearn.ensemble import RandomForestRegressor, RandomForestClassifierfrom IPython.display import display
+</code></pre>
+<p>Data science ≠Software engineering [<a href="https://youtu.be/CzdWqFTmn0Y?t=8m43s" rel="nofollow">08:43</a>]. You will see code that does not follow PEP 8 and things like <code>import *</code>, but go along with it for a while. What we are doing right now is prototyping models, and prototyping models has a very different set of best practices that are taught nowhere. The key is to be able to do things very interactively and iteratively. Jupyter notebook makes this easy. If you ever wondered what <code>display</code> is, you can do one of the three things:</p>
+<ol>
+<li>type <code>display</code> in a cell and press shift+enter — it will tell you where it came from <code>&lt;function IPython.core.display.display&gt;</code>
+</li>
+<li>type <code>?display</code> in a cell and press shift+enter — it will show you the documentation</li>
+<li>type <code>??display</code> in a cell and press shift+enter — it will show you the source code. This is particularly useful for fastai library because most of the functions are easy to read and no longer than 5 lines long.</li>
+</ol>
+<p>Entering to Kaggle competition will let you know whether you are competent at this kind of data in this kind of model. Is the accuracy bad because the the data is so noisy that you cannot do better? Or is it actually an easy dataset and you have made a mistake? When you are working on your own project with your own dataset, you will not get this kind of feedback — we just have to know that we have good effective techniques to reliably building baseline model.</p>
+<p>Machine learning should help us understand a dataset, not just make predictions about it [<a href="https://youtu.be/CzdWqFTmn0Y?t=15m36s" rel="nofollow">15:36</a>]. So by picking an area which we are not familiar with, it is a good test of whether we can build an understanding. Otherwise what can happen is that your intuition about the data can make it very difficult for you to be open-minded enough to see what the data really says.</p>
+<p>There are a few options to download the data:</p>
+<ol>
+<li>Download to your computer and <code>scp</code> to AWS</li>
+<li>From Firefox [<a href="https://youtu.be/CzdWqFTmn0Y?t=17m32s" rel="nofollow">17:32</a>], press <code>ctrl + shift + i</code> to open web developer tool. Go to <code>Network</code> tab, click on <code>Download</code> button, and cancel out of the dialog box. It shows network connections that were initiated. You then right-click on it and select <code>Copy as cURL</code>. Paste the command and add <code>-o bulldozer.zip</code> at the end (possibly remove <code>— — 2.0</code> in the cURL command)</li>
+</ol>
+<p>Jupyter trick [<a href="https://youtu.be/CzdWqFTmn0Y?t=21m39s" rel="nofollow">21:39</a>] — you can open web-based terminal like so:</p>
+<p>The goal of this competition is to use the training set which contains data through the end of 2011 to predict the sale price of bulldozers.</p>
+<p><strong>Structured data</strong>: Columns representing a wide range of different types of things such as identifier, currency, date, size.</p>
+<p><strong>Unstructured data</strong>: Images</p>
+<p><code>pandas</code> is the most important library when you are working with structured data which is usually imported as <code>pd</code>.</p>
+<pre><code>df_raw = pd.read_csv(f'{PATH}Train.csv', low_memory=False,                      parse_dates=["saledate"])
+</code></pre>
+<ul>
+<li>
+<code>parse_dates</code> — A list of any columns that contain dates</li>
+<li>
+<code>low_memory=False</code> — Forces it to read more of the file to decide what the types are.</li>
+</ul>
+<pre><code>def display_all(df):    with pd.option_context("display.max_rows", 1000):         with pd.option_context("display.max_columns", 1000):             display(df)
+</code></pre>
+<p>In Jupyter Notebook, if you type a variable name and press <code>ctrl+enter</code> whether that being Dataframe, video, HTML, etc — it will generally figure out a way of displaying it for you [<a href="https://youtu.be/CzdWqFTmn0Y?t=32m13s" rel="nofollow">32:13</a>].</p>
+<p>The variable we want to predict is called <strong>Dependent Variable</strong> in this case our dependent variable is <code>SalePrice</code></p>
+<p><strong>Question</strong>: Should you never look at the data because of the risk of overfit? [33:08] We want to find out at least enough to know that we have managed to imported okay, but tend not to really study it at all at this point, because we do not want to make too many assumptions about it. Many books say to do a lot of exploratory data analysis (EDA) first. We will learn machine learning driven EDA today.</p>
+<p>Root mean squared log error. The reason we use log is because generally, you care not so much about missing by $10 but missing by 10%. So if it was $1000,000 item and you are $100,000 off or if it was a $10,000 item and you are $1,000 off — we would consider those equivalent scale issues.</p>
+<pre><code>df_raw.SalePrice = np.log(df_raw.SalePrice)
+</code></pre>
+<ul>
+<li>
+<code>np</code> — Numpy lets us treat arrays, matrices, vectors, high dimensional tensors as if they are Python variables.</li>
+</ul>
+<p>Random forest is a universal machine learning technique.</p>
+<ul>
+<li>It can predict something that can be of any kind — it could be a category (classification), a continuous variable (regression).</li>
+<li>It can predict with columns of any kind — pixels, zip codes, revenues, etc (i.e. both structured and unstructured data).</li>
+<li>It does not generally overfit too badly, and it is very easy to stop it from overfitting.</li>
+<li>You do not need a separate validation set in general. It can tell you how well it generalizes even if you only have one dataset.</li>
+<li>It has few, if any, statistical assumptions. It does not assume that your data is normally distributed, the relationship is linear, or you have specified interactions.</li>
+<li>It requires very few pieces of feature engineering. For many different types of situation, you do not have to take the log of the data or multiply interactions together.</li>
+</ul>
+<p><strong>Question</strong>: What about a curse of dimensionality? [<a href="https://youtu.be/CzdWqFTmn0Y?t=38m16s" rel="nofollow">38:16</a>] There are two concepts you often hear — curse of dimensionality and no free lunch theorem. They are both largely meaningless and basically stupid and yet many people in the field not only know that but think the opposite so it is well worth explaining. The curse of dimensionality is this idea that the more columns you have, it creates a space that is more and more empty. There is this fascinating mathematical idea that the more dimensions you have, the more all of the points sit on the edge of that space. If you just have a single dimension where things are random, then they are spread out all over. Where else, if it is a square then the probability that they are in the middle means that they cannot be on the edge of either dimension so it is a little less likely that they are not on the edge. Each dimension you add, it becomes multiplicatively less likely that the point is not on the edge of at least one dimension, so in high dimensions, everything sits on the edge. What that means in theory is that the distance between points is much less meaningful. So if we assume it matters, then it would suggest that when you have lots of columns and you just use them without being careful to remove the ones you do not care about that things will not work. This turns out not to be the case for number of reasons</p>
+<ul>
+<li>Points still do have different distances away from each other. Just because they are on the edge, they still vary on how far away they are from each other and so this point is more similar at this point than it is to that point.</li>
+<li>So things like k-nearest neighbors actually work really well in high dimensions despite what the theoreticians claimed.What really happened here was that in 90’s, theory took over machine learning. There was this concept of support vector machines that were theoretically well justified, extremely easy to analyze mathematically, and you can prove things about them — and we lost a decade of real practical development. And all these theories became very popular like the curse of dimensionality. Nowadays the world of machine learning has become very empirical and it turns out that in practice, building models on lots of columns works really well.</li>
+<li>No free lunch theorem [<a href="https://youtu.be/CzdWqFTmn0Y?t=41m8s" rel="nofollow">41:08</a>] — their claim is that there is no type of model that works well for any kind of dataset. In the mathematical sense, any random dataset by definition is random, so there is not going to be some way of looking at every possible random dataset that is in someway more useful than any other approach. In real world, we look at data which is not random. Mathematically we would say it sits on some lower dimensional manifold. It was created by some kind of causal structure. There are some relationships in there, so the truth is that we are not using random datasets and hence there are actually techniques that work much better than other techniques for nearly all of the datasets you look at. Nowadays, there are empirical researchers who study which techniques work a lot of the time. Ensembles of decisions trees, which random forest for one, is perhaps the technique which most often comes at the top. Fast.ai provides a standard way to pre-process them properly and set their parameters.</li>
+</ul>
+<p>Most popular and important package for machine learning in Python. It is not the best at everything (e.g. XGBoost is better than Gradient Boosting Tree), but pretty good at nearly everything.</p>
+<pre><code>m = RandomForestRegressor(n_jobs=-1)
+</code></pre>
+<ul>
+<li>RandomForestRegressor — regressor is a method for predicting continuous variables (i.e. regression)</li>
+<li>RandomForestClassifier — classifier is a method for predicting categorical variables (i.e. classification)</li>
+</ul>
+<pre><code>m.fit(df_raw.drop('SalePrice', axis=1), df_raw.SalePrice)
+</code></pre>
+<p>Everything in scikit-learn has the same form.</p>
+<ul>
+<li>Create an instance of an object for the machine learning model</li>
+<li>Call <code>fit</code> by passing in the independent variables (the things you are going to use to predict) and dependent variable (the thing you want to predict).</li>
+<li>
+<code>axis=1</code> means remove columns.</li>
+<li>
+<code>shift + tab</code> in Jupyter Notebook will bring up the inspection of the parameters of a function.</li>
+<li>“list-like” means anything you can index in Python.</li>
+</ul>
+<p>The above code will result in an error. There was a value inside the dataset “Conventional”, and it did not know how to create a model using that String. We have to pass numbers to most machine learning models and certainly to random forests. So step 1 is to convert everything into numbers.</p>
+<p>This dataset contains a mix of <strong>continuous</strong> and <strong>categorical</strong> variables.</p>
+<ul>
+<li>continuous — numbers where the meaning is numeric such as price.</li>
+<li>categorical — either numbers where the meaning is not continuous like zip code or string such as “large”, “medium”, “small”</li>
+</ul>
+<p>Here are some of the information we can extract from date — year, month, quarter, day of month, day of week, week of year, is it a holiday? weekend? was it raining? was there a sport event that day? It really depends on what you are doing. If you are predicting soda sales in SoMa, you would probably want to know if there was a San Francisco Giants ball game that day. What is in a date is one of the most important piece of feature engineering you can do and no machine learning algorithm can tell you whether the Giants were playing that day and that it was important. So this is where you need to do feature engineering.</p>
+<p>The <code>add_datepart</code> method extracts particular date fields from a complete datetime for the purpose of constructing categoricals. You should always consider this feature extraction step when working with date-time. Without expanding your date-time into these additional fields, you can’t capture any trend/cyclical behavior as a function of time at any of these granularities.</p>
+<pre><code>drop=Truegetattr
+</code></pre>
+<ul>
+<li>
+<code>getattr</code> — look inside of an object and finds an attribute with that name</li>
+<li>
+<code>drop=True</code> — unless specified, it will drop the date time field because we cannot use “saledate” directly because it is not a number.</li>
+</ul>
+<pre><code>fld = df_raw.saledatefld.dt.year
+</code></pre>
+<ul>
+<li>
+<code>fld</code> — Pandas series</li>
+<li>
+<code>dt</code> — <code>fld</code> does not have “year” because it only apply to Pandas series that are date time objects. So what Pandas does is it splits out different methods inside attributes that are specific to what they are. So date time objects will have <code>dt</code> attribute defined and that is where you will find all the date time specific attributes.</li>
+</ul>
+<pre><code>add_datepart(df_raw, 'saledate')df_raw.saleYear.head()
+</code></pre>
+<p><strong>Question</strong>: [<a href="https://youtu.be/CzdWqFTmn0Y?t=55m40s" rel="nofollow">55:40</a>] What is the difference between <code>df['saleYear']</code> and <code>df.saleYear</code> ? It is safer to use square brackets especially when assigning values and there is a possibility that the column does not already exist.</p>
+<p>After running <code>add_datepart</code>, it added many numerical columns and removed <code>saledate</code> column. This is not quite enough to get passed the error we saw earlier as we still have other columns that contain string values. Pandas has a concept of a category data type, but by default it would not turn anything into a category for you. Fast.ai provides a function called <code>train_cats</code> which creates categorical variables for everything that is a String. Behind the scenes, it creates a column that is an integer and it is going to store a mapping from the integers to the strings. <code>train_cats</code> is called “train” because it is training data specific. It is important that validation and test sets will use the same category mappings (in other words, if you used 1 for “high” for a training dataset, then 1 should also be for “high” in validation and test datasets). For validation and test dataset, use <code>apply_cats</code> instead.</p>
+<pre><code>Index(['High', 'Low', 'Medium'], dtype='object)
+</code></pre>
+<ul>
+<li>
+<code>df_raw.UsageBand.cat</code> — Similar to<code>fld.dt.year</code> , <code>.cat</code> gives you access to things assuming something is a category.</li>
+</ul>
+<p>The order does not matter too much, but since we are going to be creating a decision tree that split things at a single point (i.e. <code>High</code> vs. <code>Low</code> and <code>Medium</code> , <code>High</code> and <code>Low</code> vs. <code>Medium</code> ) which is a little bit weird. To order them in a sensible manner, you can do the following:</p>
+<pre><code>df_raw.UsageBand.cat.set_categories(['High', 'Medium', 'Low'],    ordered=True, inplace=True)
+</code></pre>
+<ul>
+<li>
+<code>inplace</code> will ask Pandas to change the existing dataframe rather than returning a new one.</li>
+</ul>
+<p>There is a kind of categorical variable called “ordinal”. An ordinal categorical variable has some kind of order (e.g. “Low” &lt; “Medium” &lt; “High”). Random forests are not terribly sensitive for that fact, but it is worth noting.</p>
+<pre><code>display_all(df_raw.isnull().sum().sort_index()/len(df_raw))
+</code></pre>
+<p>The above will add a number of empty values for each series, we sort them by the index (<code>[pandas.Series.sort_index](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.sort_index.html)</code>), and divide by a number of dataset.</p>
+<p>Reading CSV took about 10 seconds, and processing took another 10 seconds, so if we do not want to wait again, it is a good idea to save them. Here we will save it in a feather format. What this is going to do is to save it to disk in exactly the same basic format that it is in RAM. This is by far the fastest way to save something, and also to read it back. Feather format is becoming standard in not only Pandas but in Java, Apache Spark, etc.</p>
+<pre><code>os.makedirs('tmp', exist_ok=True)df_raw.to_feather('tmp/bulldozers-raw')
+</code></pre>
+<p>We can read it back as so:</p>
+<pre><code>df_raw = pd.read_feather('tmp/raw')
+</code></pre>
+<p>We will replace categories with their numeric codes, handle missing continuous values, and split the dependent variable into a separate variable.</p>
+<pre><code>df, y, nas = proc_df(df_raw, 'SalePrice')
+</code></pre>
+<p>proc_df in structured.py</p>
+<ul>
+<li>
+<code>df</code> — data frame</li>
+<li>
+<code>y_fld</code> — name of the dependent variable</li>
+<li>It makes a copy of the data frame, grab the dependent variable values (<code>y_fld</code>), and drop the dependent variable from the data frame.</li>
+<li>Then it will <code>fix_missing</code> (see below)</li>
+<li>We then will go through the data frame and call <code>numericalize</code> (see below).</li>
+<li>
+<code>dummies</code> — There are columns with a small number of possible values, you can put into dummies instead of numericalizing them. But we will not do that for now.</li>
+</ul>
+<p><strong>fix_missing</strong></p>
+<ul>
+<li>For numeric data type, first we check if there is null column. If so, it will create a new column with a name with <code>_na</code> appended at the end and set it to 1 if it is missing; 0 otherwise (boolean). It will then replace the missing value with a median.</li>
+<li>We do not need to do this for categorical variables because Pandas handles them automatically by setting them to <code>-1</code> .</li>
+</ul>
+<p><strong>numericalize</strong></p>
+<ul>
+<li>If it is not numeric and is a categorical type, we will replace the column with its code plus 1. By default pandas uses <code>-1</code> for missing, so now missing will have an ID of <code>0</code> .</li>
+</ul>
+<pre><code>df.head()
+</code></pre>
+<p>Now we have all numerical values. Note that booleans are treated as numbers. So we can create a random forest.</p>
+<pre><code>m = RandomForestRegressor(n_jobs=-1)m.fit(df, y)m.score(df,y)
+</code></pre>
+<p>Random forests are <strong>trivially parallelizable</strong> — meaning if you have more than one CPU, you can split up the data across different CPUs and it linearly scale. So the more CPUs you have, it will divide the time it takes by that number (not exactly but roughly). <code>n_jobs=-1</code> tells the random forest regressor to create a separate job/process for each CPU you have.</p>
+<p><code>m.score</code> will return r² value (1 is good, 0 is bad). We will learn r² next week.</p>
+<p>Wow, an r² of 0.98 — that’s great, right? Well, perhaps not…</p>
+<p>Possibly <strong>the most important idea</strong> in machine learning is that of having separate training &amp; validation data sets. As motivation, suppose you don’t divide up your data, but instead use all of it. And suppose you have lots of parameters:</p>
+<p><a href="https://datascience.stackexchange.com/questions/361/when-is-a-model-underfitted" rel="nofollow">Underfitting and Overfitting</a></p>
+<p>The error for the pictured data points is lowest for the model on the far right (the blue curve passes through the red points almost perfectly), yet it’s not the best choice. Why is that? If you were to gather some new data points, they most likely would not be on that curve in the graph on the right, but would be closer to the curve in the middle graph.</p>
+<p>This illustrates how using all our data can lead to <strong>overfitting</strong>. A validation set helps diagnose this problem.</p>
+<pre><code>n_valid = 12000  # same as Kaggle's test set sizen_trn = len(df)-n_validraw_train, raw_valid = split_vals(df_raw, n_trn)X_train, X_valid = split_vals(df, n_trn)y_train, y_valid = split_vals(y, n_trn)
+</code></pre>
+<h2><a id="user-content-base-model" class="anchor" aria-hidden="true" href="#base-model"><span aria-hidden="true" class="octicon octicon-link"></span></a>Base Model</h2>
+<p>By using validation set, you see that the r² is 0.88 for validation set.</p>
+<pre><code>CPU times: user 1min 3s, sys: 356 ms, total: 1min 3sWall time: 8.46 s[0.09044244804386327, 0.2508166961122146,0.98290459302099709,0.88765316048270615]
+</code></pre>
+<p>*<em>[training rmse, validation rmse, r² for training set, r² for validation set]</em></p>
+<p>If you check Kaggle competition’s public board, RMSE of 0.25 will fall around top 25%. Random forests are insanely powerful and this totally standardized process is insanely good for any datasets.</p>
+<h2><a id="user-content-before-the-next-class" class="anchor" aria-hidden="true" href="#before-the-next-class"><span aria-hidden="true" class="octicon octicon-link"></span></a>Before the next class</h2>
+<p>Please try this process to solve as many Kaggle competitions as possible. What will likely happen is that you will be pleasantly surprised that you will do pretty well with just an hour of lecture.</p>
+
+        </body>
+    </html>
+    

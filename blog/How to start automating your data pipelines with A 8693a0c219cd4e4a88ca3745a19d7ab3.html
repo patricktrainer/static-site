@@ -1,0 +1,102 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>How to start automating your data pipelines with A 8693a0c219cd4e4a88ca3745a19d7ab3</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-how-to-start-automating-your-data-pipelines-with-airflow" class="anchor" aria-hidden="true" href="#how-to-start-automating-your-data-pipelines-with-airflow"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to start automating your data pipelines with Airflow</h1>
+<p>Created: Feb 21, 2020 12:11 PM
+URL: <a href="https://blog.insightdatascience.com/airflow-101-start-automating-your-batch-workflows-with-ease-8e7d35387f94" rel="nofollow">https://blog.insightdatascience.com/airflow-101-start-automating-your-batch-workflows-with-ease-8e7d35387f94</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1NoOwQRWz2-Dy_QfOUbs1vA.jpeg"><img src="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1NoOwQRWz2-Dy_QfOUbs1vA.jpeg" alt="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1NoOwQRWz2-Dy_QfOUbs1vA.jpeg" style="max-width: 100%;"></a></p>
+<p>Copyrights (Production Line)</p>
+<p>In this blog, I cover the main concepts behind pipeline automation with Airflow and go through the code (and a few gotchas) to create your first workflow with ease.</p>
+<p>Data pipelines are built by defining a set of “tasks” to extract, analyze, transform, load and store the data. For example, a pipeline could consist of tasks like reading archived logs from S3, creating a Spark job to extract relevant features, indexing the features using Solr and updating the existing index to allow search. To automate this pipeline and run it weekly, you could use a time-based scheduler like <a href="https://en.wikipedia.org/wiki/Cron" rel="nofollow">Cron</a> by defining the workflows in Crontab. This is really good for simple workflows, but things get messier when you start to maintain the workflow in large organizations with dependencies. It gets complicated if you’re waiting on some input data from a third-party, and several teams are depending on your tasks to start their jobs.</p>
+<p>Airflow is a workflow scheduler to help with scheduling complex workflows and provide an easy way to maintain them. There are <a href="https://github.com/jghoman/awesome-apache-airflow">numerous resources</a> for understanding what Airflow does, but it’s much easier to understand by directly working through an example.</p>
+<p>Here are a few reasons to use Airflow:</p>
+<ul>
+<li>
+<strong>Open source:</strong> After starting as an internal project at Airbnb, Airflow had a natural need in the community. This was a major reason why it eventually became an open source project. It is currently <strong>maintained and managed</strong> as an incubating project at <strong><a href="https://airflow.apache.org/" rel="nofollow">Apache</a></strong>.</li>
+<li>
+<strong>Web Interface:</strong> Airflow ships with a Flask app that tracks all the defined workflows, and let’s you easily change, start, or stop them. You can also work with the command line, but the web interface is more intuitive.</li>
+<li>
+<strong>Python Based:</strong> Every part of the configuration is written in Python, including configuration of schedules and the scripts to run them. This removes the need to use restrictive JSON or XML configuration files.</li>
+</ul>
+<blockquote>
+<p>When workflows are defined as code, they become more maintainable, versionable, testable, and collaborative.</p>
+</blockquote>
+<p>Let’s look at few concepts that you’ll need to write our first workflow.</p>
+<h2><a id="user-content-directed-acyclic-graphs" class="anchor" aria-hidden="true" href="#directed-acyclic-graphs"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directed Acyclic Graphs</h2>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1xbaTpPkyt_Q5czvXTzZ0wQ.png"><img src="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1xbaTpPkyt_Q5czvXTzZ0wQ.png" alt="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1xbaTpPkyt_Q5czvXTzZ0wQ.png" style="max-width: 100%;"></a></p>
+<p>The DAG that we are building using Airflow</p>
+<p>In Airflow, Directed Acyclic Graphs (DAGs) are used to create the workflows. <strong>DAGs are a high-level outline that define the dependent and exclusive tasks that can be ordered and scheduled.</strong></p>
+<p>We will work on this example DAG that reads data from 3 sources independently. Once that is completed, we initiate a Spark job to join the data on a key and write the output of the transformation to Redshift.</p>
+<p>Defining a DAG enables the scheduler to know which tasks can be run immediately, and which have to wait for other tasks to complete. The Spark job has to wait for the three “read” tasks and populate the data into S3 and HDFS.</p>
+<h2><a id="user-content-scheduler" class="anchor" aria-hidden="true" href="#scheduler"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scheduler</h2>
+<p><strong>The Scheduler is the brains behind setting up the workflows</strong> in Airflow. As a user, interactions with the scheduler will be limited to providing it with information about the different tasks, and when it has to run. To ensure that Airflow knows all the DAGs and tasks that need to be run, there can only be one scheduler.</p>
+<h2><a id="user-content-operators" class="anchor" aria-hidden="true" href="#operators"><span aria-hidden="true" class="octicon octicon-link"></span></a>Operators</h2>
+<p><strong>Operators are the “workers” that run our tasks</strong>. Workflows are defined by creating a DAG of operators. Each operator runs a particular <em>task</em> written as Python functions or shell command. You can create custom operators by extending the <code>BaseOperator</code> class and implementing the <code>execute()</code> method.</p>
+<h2><a id="user-content-tasks" class="anchor" aria-hidden="true" href="#tasks"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tasks</h2>
+<p><strong>Tasks are user-defined activities ran by the operators</strong>. They can be functions in Python or external scripts that you can call. <a href="https://stackoverflow.com/questions/1077412/what-is-an-idempotent-operation" rel="nofollow">Tasks are expected to be idempotent</a> — no matter how many times you run a task, it needs to result in the same outcome for the same input parameters.</p>
+<p><em><strong>Note:</strong></em> Don’t confuse operators with tasks. Tasks are defined as “what to run?” and operators are “how to run”. For example, a Python function to read from S3 and push to a database is a <strong>task</strong>. The method that calls this Python function in Airflow is the <strong>operator</strong>. Airflow has built-in operators that you can use for common tasks.</p>
+<p>To put these concepts into action, we’ll install Airflow and define our first DAG.</p>
+<h2><a id="user-content-installation-and-folder-structure" class="anchor" aria-hidden="true" href="#installation-and-folder-structure"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and Folder structure</h2>
+<p>Airflow is easy (yet restrictive) to <a href="https://airflow.apache.org/installation.html" rel="nofollow">install as a single package</a>. Here is a typical folder structure for our environment to add DAGs, configure them and run them.</p>
+<p>We create a new Python file <code>my_dag.py</code> and save it inside the <code>dags</code> folder.</p>
+<h2><a id="user-content-importing-various-packages" class="anchor" aria-hidden="true" href="#importing-various-packages"><span aria-hidden="true" class="octicon octicon-link"></span></a>Importing various packages</h2>
+<pre><code># airflow relatedfrom airflow import DAGfrom airflow.operators.python_operator import PythonOperatorfrom airflow.operators.bash_operator import BashOperator# other packagesfrom datetime import datetimefrom datetime import timedelta
+</code></pre>
+<p>We import three classes, <code>DAG</code>, <code>BashOperator</code> and <code>PythonOperator</code> that will define our basic setup.</p>
+<h2><a id="user-content-setting-up-default_args" class="anchor" aria-hidden="true" href="#setting-up-default_args"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up <code>default_args</code>
+</h2>
+<pre><code>default_args = {    'owner': 'airflow',    'depends_on_past': False,    'start_date': datetime(2018, 9, 1),    'email_on_failure': False,    'email_on_retry': False,    'schedule_interval': '@daily',    'retries': 1,    'retry_delay': timedelta(seconds=5),}
+</code></pre>
+<p>This helps setting up default configuration that applies to the DAG. <a href="https://airflow.apache.org/concepts.html#default-arguments" rel="nofollow">This link</a> provides more details on how to configure the <code>default_args</code> and the additional parameters available.</p>
+<h2><a id="user-content-defining-our-dag-tasks-and-operators" class="anchor" aria-hidden="true" href="#defining-our-dag-tasks-and-operators"><span aria-hidden="true" class="octicon octicon-link"></span></a>Defining our DAG, Tasks, and Operators</h2>
+<p>Let’s define all the tasks for our existing workflow. We have three tasks that read data from their respective sources and store them in S3 and HDFS. They are defined as Python functions that will be called by our operators. We can <a href="http://book.pythontips.com/en/latest/args_and_kwargs.html" rel="nofollow">pass parameters to the function using <code>**args</code> and <code>**kwargs</code></a> from our operator. For instance, the function <code>source2_to_hdfs</code> takes a named parameter <code>config</code> and two context parameters <code>ds</code> and <code>**kwargs</code>.</p>
+<pre><code>def source1_to_s3(): # code that writes our data from source 1 to s3def source2_to_hdfs(config, ds, **kwargs): # code that writes our data from source 2 to hdfs # ds: the date of run of the given task. # kwargs: keyword arguments containing context parameters for the run.def source3_to_s3(): # code that writes our data from source 3 to s3
+</code></pre>
+<p>We instantiate a DAG object below. The <code>schedule_interval</code> is set for daily and the <code>start_date</code> is set for <code>September 1st 2018</code> as given in the <code>default_args</code>.</p>
+<pre><code>default_args
+</code></pre>
+<p>We then have to create four tasks in our DAG. We use <code>PythonOperator</code> for the three tasks defined as Python functions and <code>BashOperator</code> for running the Spark job.</p>
+<pre><code>source1_to_s3source2_to_hdfsdagsource3_to_s3dagdag
+</code></pre>
+<p>The tasks of pushing data to S3 (<code>src1_s3</code> and <code>src3_s3</code>) are created using <code>PythonOperator</code> and setting the <code>python_callable</code> as the name of the function that we defined earlier. The task <code>src2_hdfs</code> has additional parameters including context and a custom <code>config</code> parameter to the function. the <code>dag</code> parameter will attach the task to the DAG (though that workflow hasn’t been shown yet).</p>
+<p>The <code>BashOperator</code> includes the <code>bash_command</code> parameter that submits a Spark job to process data and store it in Redshift. We set up the dependencies between the operators by using the <code>&gt;&gt;</code> and <code>&lt;&lt;</code>.</p>
+<pre><code># setting dependenciessrc1_s3 &gt;&gt; spark_jobsrc2_hdfs &gt;&gt; spark_jobsrc3_s3 &gt;&gt; spark_job
+</code></pre>
+<p>You can also use <code>set_upstream()</code> or <code>set_downstream()</code> to create the dependencies for Airflow version 1.7 and below.</p>
+<pre><code># for Airflow &lt;v1.7spark_job.set_upstream(src1_s3)spark_job.set_upstream(src2_hdfs)# alternatively using set_downstreamsrc3_s3.set_downstream(spark_job)
+</code></pre>
+<h2><a id="user-content-adding-our-dag-to-the-airflow-scheduler" class="anchor" aria-hidden="true" href="#adding-our-dag-to-the-airflow-scheduler"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding our DAG to the Airflow scheduler</h2>
+<p>The easiest way to work with Airflow once you define our DAG is to use the web server. Airflow internally uses a SQLite database to track active DAGs and their status. Use the following commands to start the web server and scheduler (which will launch in two separate windows).</p>
+<p>Alternatively, you can start them as services by setting up <code>systemd</code> using the <a href="https://github.com/apache/incubator-airflow/tree/master/scripts/systemd">scripts from the Apache project</a>. Here are screenshots from the web interface for the workflow that we just created.</p>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1KsTBUZ0U0xd_ipgx9zkH1A.png"><img src="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1KsTBUZ0U0xd_ipgx9zkH1A.png" alt="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1KsTBUZ0U0xd_ipgx9zkH1A.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1UMb-AWONbRKlDuBzFzXpCA.png"><img src="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1UMb-AWONbRKlDuBzFzXpCA.png" alt="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1UMb-AWONbRKlDuBzFzXpCA.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1172CWPEwnhNYowqm4NZ_UA.png"><img src="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1172CWPEwnhNYowqm4NZ_UA.png" alt="How%20to%20start%20automating%20your%20data%20pipelines%20with%20A%208693a0c219cd4e4a88ca3745a19d7ab3/1172CWPEwnhNYowqm4NZ_UA.png" style="max-width: 100%;"></a></p>
+<p>Here is the entire code for this workflow:</p>
+<p><em><strong>We have written our first DAG using Airflow. Every day, this DAG will read data from three sources and store them in S3 and HDFS. Once the data is in the required place, we have a Spark job that runs an ETL task. We have also provided instructions to handle retries and the time to wait before retrying.</strong></em></p>
+<p><strong>Use Refresh on the web interface:</strong> Any changes that you make to the DAGs or tasks don’t get automatically updated in Airflow. You’ll need to use the Refresh button on the web server to load the latest configurations.</p>
+<p><strong>Be careful when changing <code>start_date</code> and <code>schedule_interval</code>:</strong> As already mentioned, Airflow maintains a database of information about the various runs. Once you run a DAG, it creates entries in the database with those details. Any changes to the <code>start_date</code> and <code>schedule_interval</code> can cause the workflow to be in a weird state that may not recover properly.</p>
+<p><strong>Start scheduler separately:</strong> It seems obvious to start the scheduler when the web server is started. Airflow doesn’t work that way for an important reason — to provide separation of concerns when deployed in a cluster environment where the Scheduler and web server aren’t necessarily onthe same machine.</p>
+<p><strong>Understand Cron definitions when using it in <code>schedule_interval</code></strong>: You can set the value for <code>schedule_interval</code> in a similar way you set a Cron job. Be sure you understand how they are configured. <a href="https://en.wikipedia.org/wiki/Cron" rel="nofollow">Here</a> is a good start to know more about those configurations.</p>
+<p>You can also check out <a href="https://airflow.incubator.apache.org/faq.html" rel="nofollow">more FAQs</a> that the Airflow project has compiled to help beginners get started with writing workflows easily.</p>
+
+        </body>
+    </html>
+    

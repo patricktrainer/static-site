@@ -124,7 +124,10 @@ def github_md_to_html(body):
     response = requests.post(
         "https://api.github.com/markdown",
         json={"text": body},
-        headers={"Accept": "application/vnd.github+json"},
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
+        },
     )
     if response.status_code == 200:
         return response.text
@@ -142,12 +145,12 @@ def main():
     posts = get_posts("./posts")
 
     # write new html files for each post in blog directory
-    for post in posts:
-        title = get_post_title(post)
-        content = md_to_html(post)
-        html = html_page(title, content)
-        with open(f"./blog/{title}.html", "w") as f:
-            f.write(html)
+    # for post in posts:
+    #     title = get_post_title(post)
+    #     content = md_to_html(post)
+    #     html = html_page(title, content)
+    #     with open(f"./blog/{title}.html", "w") as f:
+    #         f.write(html)
 
     # strip .md from post names and create links
     post_links = [

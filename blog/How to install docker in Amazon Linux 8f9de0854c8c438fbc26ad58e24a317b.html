@@ -1,0 +1,48 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>How to install docker in Amazon Linux 8f9de0854c8c438fbc26ad58e24a317b</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-how-to-install-docker-in-amazon-linux" class="anchor" aria-hidden="true" href="#how-to-install-docker-in-amazon-linux"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to install docker in Amazon Linux</h1>
+<p>Created: Jun 13, 2020 12:14 AM
+URL: <a href="https://www.lewuathe.com/how-to-install-docker-in-amazon-linux.html" rel="nofollow">https://www.lewuathe.com/how-to-install-docker-in-amazon-linux.html</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="How%20to%20install%20docker%20in%20Amazon%20Linux%208f9de0854c8c438fbc26ad58e24a317b/catch.png"><img src="How%20to%20install%20docker%20in%20Amazon%20Linux%208f9de0854c8c438fbc26ad58e24a317b/catch.png" alt="How%20to%20install%20docker%20in%20Amazon%20Linux%208f9de0854c8c438fbc26ad58e24a317b/catch.png" style="max-width: 100%;"></a></p>
+<p>The usage of Docker is growing more and more. Our daily development tends to depend on the container platform highly. But I found AWS Linux I recently launched does not have Docker engine as default. It is a frustrating situation even I just want to use Docker in AWS environment. Here is the process to install Docker engine in your AWS Linux. That article is written mainly for avoiding my memory lost :)</p>
+<p>FYI: The AMI I used in this experiment is <code>ami-0f9ae750e8274075b</code>. Amazon Linux 2.</p>
+<h1><a id="user-content-install-docker-engine" class="anchor" aria-hidden="true" href="#install-docker-engine"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install Docker Engine</h1>
+<pre><code>$ sudo yum update -y
+
+$ sudo yum install -y docker
+
+$ sudo service docker start
+Starting cgconfig service:                                 [  OK  ]
+Starting Docker:                                           [  OK  ]
+
+</code></pre>
+<h1><a id="user-content-add-user-group" class="anchor" aria-hidden="true" href="#add-user-group"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add User Group</h1>
+<p>But you need to prepend <code>sudo</code> every time you run docker command. Please don’t forget to add <code>ec2-user</code> to <code>docker</code> group.</p>
+<pre><code>$ sudo usermod -a -G docker ec2-user
+
+</code></pre>
+<p>After you log in the instance again, you should be able to run docker command without any difficulty.</p>
+<p>Thanks</p>
+
+        </body>
+    </html>
+    

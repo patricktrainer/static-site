@@ -1,0 +1,84 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Flask and Firebase and Pyrebase, Oh my! - upperlin 903c0d52cec6482f94c66111bea702fb</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-flask-and-firebase-and-pyrebase-oh-my---upperlinecode" class="anchor" aria-hidden="true" href="#flask-and-firebase-and-pyrebase-oh-my---upperlinecode"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flask and Firebase and Pyrebase, Oh my! - upperlinecode</h1>
+<p>Created: Mar 25, 2020 6:56 PM
+URL: <a href="https://blog.upperlinecode.com/flask-and-firebase-and-pyrebase-oh-my-f30548d68ea9" rel="nofollow">https://blog.upperlinecode.com/flask-and-firebase-and-pyrebase-oh-my-f30548d68ea9</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Flask%20and%20Firebase%20and%20Pyrebase,%20Oh%20my!%20-%20upperlin%20903c0d52cec6482f94c66111bea702fb/056yGK5rxndWlLYDF.jpg"><img src="Flask%20and%20Firebase%20and%20Pyrebase,%20Oh%20my!%20-%20upperlin%20903c0d52cec6482f94c66111bea702fb/056yGK5rxndWlLYDF.jpg" alt="0*56yGK5rxndWlLYDF.jpg" style="max-width: 100%;"></a></p>
+<p>I’ve been scouring the web for good resources on connecting a Flask application to Firebase, and I’m telling you, it’s slim pickings. In this post (or series of posts, if this gets too long), I’m going to show you how to build out a fully functioning CRUD application using Firebase. You could do this much more easily using Django or a more robust framework, but what’s the fun in that? I love the fact that Flask is such a lightweight framework and that it’s so open and flexible.</p>
+<p>The project we’re going to be building out is a <strong>community event event board</strong>- a place where users (who are logged in) can post events for their neighbors. Think of it as the digital version one of those coffee shop bulletin boards where folks can see what is happening in their neighborhood.</p>
+<p>Note: We’re assuming some knowledge of Flask already since we’re not starting from scratch. You should be able to create a basic app using routes, jinja2 templates, forms, and static files.</p>
+<h2><a id="user-content-initial-setup" class="anchor" aria-hidden="true" href="#initial-setup"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initial setup</h2>
+<p>We’re going to start by downloading and opening a template that will get us going without too much setup. Feel free to skip this if you don’t want to follow along.</p>
+<p>Once you’ve done this, open the project in your text editor, and then run the following commands in the terminal to install the flask and python-dotenv (for our environment variables) packages:</p>
+<h2><a id="user-content-run-the-application" class="anchor" aria-hidden="true" href="#run-the-application"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run the application</h2>
+<p>Run the app by typing the following command in to your terminal:</p>
+<pre><code>flask run
+</code></pre>
+<p>This will fire up the local server, and get your app running at the default port 8080. Open it up in a browser by navigating to <a href="http://localhost:8080/" rel="nofollow">http://localhost:8080/</a></p>
+<h2><a id="user-content-examine-the-existing-codebase" class="anchor" aria-hidden="true" href="#examine-the-existing-codebase"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examine the existing codebase</h2>
+<p>Take a look at what currently exists. We’ll start at our controller: the <code>routes.py</code> file. In this file we see:</p>
+<ul>
+<li>Importing packages that we currently need.</li>
+<li>A global variable <code>events</code> that is holding an array of dictionaries with each event's information. We'll eventually replace this with a Firebase database.</li>
+<li>Our routes and the functions that are called when those routes are triggered by a url.</li>
+<li>When ‘/’ or ‘/index’ are triggered, the index() function is run and the <code>index.html</code> template is rendered. We pass in the <code>events</code> variable to be templated in using jinja2.</li>
+</ul>
+<p>When ‘/events/new’ is triggered, the new_event.html page is rendered, with a form that posts event data back to the controller. In the controller, the form data is unpacked from the request and appended to the <code>events</code>variable. After this is done we redirect back to the '/' route.</p>
+<p>Take some time to follow the flow of the code here.</p>
+<h2><a id="user-content-database-setup" class="anchor" aria-hidden="true" href="#database-setup"><span aria-hidden="true" class="octicon octicon-link"></span></a>Database Setup</h2>
+<p>In order to replace our array of dictionaries with a real database, we need to do some basic setup on Firebase. Head to <a href="https://gist.github.com/dfenjves/www.firebase.google.com">firebase.google.com</a>, sign up, and then create a new project.</p>
+<p>Go through the popup and give your project a (relevant) name:</p>
+<p>Congratulations! You’ve initialized your first Firebase project! You’re not quite there yet though.</p>
+<p>Once you see your dashboard, head over to the database section and click on “create database”.</p>
+<p>You’ll want to start your database up in “test mode” so that you don’t need user authentication quite yet.</p>
+<p>Once the database is created, make sure you switch the dropdown from “cloud firestore” to “realtime database”:</p>
+<h2><a id="user-content-installing-pyrebase" class="anchor" aria-hidden="true" href="#installing-pyrebase"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing Pyrebase</h2>
+<p>We’re going to use a Python wrapper for the Firebase API called <a href="https://github.com/thisbejim/Pyrebase">Pyrebase</a>. Let’s add it to our project by running:</p>
+<p>In our routes.py file, add <code>import pyrebase</code> to the import section at the top of the page.</p>
+<h2><a id="user-content-connecting-to-your-firebase-db" class="anchor" aria-hidden="true" href="#connecting-to-your-firebase-db"><span aria-hidden="true" class="octicon octicon-link"></span></a>Connecting to your Firebase DB</h2>
+<p>To connect to your firebase database, you’ll need to set up a dictionary variable with your configuration data in your <code>routes.py</code> file. The <code>authDomain</code>, <code>databaseURL</code>, <code>projectId</code>, and <code>storageBucket</code> should all use the name you gave your firebase project during setup.</p>
+<p>** Important: Do not expose your API Key or the JSON file with your private key! Put your API key in an environment variable in your <code>.env</code> file - and make sure not to upload that file to github (it is ignored by default in this repository)! **</p>
+<p>This is what your .env file (in the root directory of your project) should look like:</p>
+<p>You’ll also want to go to your settings -&gt; Service Accounts and then generate a new private key. That will download a JSON file that you can connect to your config variables. In the example below, we renamed the JSON file <code>firebase-private-key.json</code> and we also added that file to the <code>.gitignore</code> so that it doesn't get tracked by git and uploaded to github.</p>
+<p>Back to the routes.py file — once you’ve set up your config variable correctly, add the following code underneath:</p>
+<p>This code connects to our project using our configuration data, and then creates a <code>db</code> variable to interact with the Firebase database that we created earlier.</p>
+<p>You’ve hooked up your local application to your Firebase database using Pyrebase. Now it’s time to start using the <code>db</code>variable you created earlier to get and send data to the database.</p>
+<h2><a id="user-content-sending-data-to-firebase" class="anchor" aria-hidden="true" href="#sending-data-to-firebase"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sending data to Firebase</h2>
+<p>Let’s go back and take a look at what happens when the “New Event” form is posted to our controller.</p>
+<p>We currently append the <code>new_event</code> variable (that comes from the form) to the <code>events</code> list that we created earlier on. Unfortunately that events list will not persist (save) our data, so we're going to replace this with a call to our firebase <code>db</code>variable:</p>
+<p>To test if this worked (you won’t see anything change on the index page since we haven’t updated it yet), head to the Firebase Console and open up your project, clicking on the ‘database’ section. You should see that the event you submitted is now a “node” in your database, under the node “events” (which was created as well since this was your first upload to that node — future submissions to <code>db.child("events")</code> will just add on to that node).</p>
+<p>Try submitting a few more events to see what this looks like in the Firebase console.</p>
+<h2><a id="user-content-retrieving-data-from-firebase" class="anchor" aria-hidden="true" href="#retrieving-data-from-firebase"><span aria-hidden="true" class="octicon octicon-link"></span></a>Retrieving data from Firebase</h2>
+<p>Now let’s turn to pulling in our Firebase content, rather than sending new information to the database. We are currently doing this in the routing for our <code>/index</code> page by accessing the <code>events</code> list and sending it through to the template for rendering:</p>
+<p>Go ahead and delete the events variable defined at the top of the page — you’re not going to need that anymore since you’re moving to Firebase. Next, inside of our <code>index()</code> method we'll create a new variabe called <code>db_events</code> that pulls in the data we want from Firebase (the "events" node), and we'll pass that in to our template for rendering:</p>
+<p>Now reload your app and you should hopefully see data getting pulled in from your Firebase database!</p>
+<p>You’re not going to get good at Flask and Firebase unless you get a lot of practice. Here are a few things you can try doing to solidify this knowledge:</p>
+<ul>
+<li>Add a ‘locations’ form on a new page where users can upload different locations events might take place. Save these to a new node in your firebase db.</li>
+<li>Add another field to your events form and then make sure that that content gets rendered correctly on your index page</li>
+<li>Build a similar app to inventory anything else you’re interested in: animals, groceries, todo items, etc.To test if this worked (you won’t see anything change on the index page since we haven’t updated it yet), head to the Firebase Console and open up your project, clicking on the ‘database’ section. You should see that the event you submitted is now a “node” in your database, under the node “events” (which was created as well since this was your first upload to that node — future submissions to <code>db.child("events")</code> will just add on to that node).</li>
+</ul>
+<p>Try submitting a few more events to see what this looks like in the Firebase console.</p>
+
+        </body>
+    </html>
+    

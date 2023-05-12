@@ -1,0 +1,188 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>What is the front controller design pattern 0157185d2ea44ee7a102c83ec41269d6</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-what-is-the-front-controller-design-pattern" class="anchor" aria-hidden="true" href="#what-is-the-front-controller-design-pattern"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is the front controller design pattern?</h1>
+<p>Created: Jun 17, 2020 4:45 PM
+URL: <a href="https://www.educative.io/edpresso/what-is-the-front-controller-design-pattern" rel="nofollow">https://www.educative.io/edpresso/what-is-the-front-controller-design-pattern</a></p>
+<p>The <strong>front controller <a href="https://www.educative.io/edpresso/design-patterns-in-java" rel="nofollow">design pattern</a></strong> is used to refine the structure of an application which:</p>
+<ol>
+<li>
+</li></ol>
+<pre><code>Receives different types of requests from clients.
+</code></pre>
+<ol start="2">
+<li>
+</li></ol>
+<pre><code>Authenticates clients.
+</code></pre>
+<ol start="3">
+<li>
+</li></ol>
+<pre><code>Displays an output of the requests.
+</code></pre>
+<h2><a id="user-content-parts-of-the-pattern" class="anchor" aria-hidden="true" href="#parts-of-the-pattern"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parts of the pattern</h2>
+<ol>
+<li>
+</li></ol>
+<pre><code>The **front controller** receives a request from the client, authenticates it, and forwards the request to the *dispatcher*.
+</code></pre>
+<ol start="2">
+<li>
+</li></ol>
+<pre><code>The **dispatcher** determines the type of the request and allocates it to the relevant *handler*.
+</code></pre>
+<ol start="3">
+<li>
+</li></ol>
+<pre><code>The **handler** executes the business logic and updates the *view*.
+</code></pre>
+<ol start="4">
+<li>
+</li></ol>
+<pre><code>The **view** is the front-end container of the result produced from the request.
+</code></pre>
+<h2><a id="user-content-uml-diagram" class="anchor" aria-hidden="true" href="#uml-diagram"><span aria-hidden="true" class="octicon octicon-link"></span></a>UML diagram</h2>
+<p><a href="What%20is%20the%20front%20controller%20design%20pattern%200157185d2ea44ee7a102c83ec41269d6/6238711576526848">What%20is%20the%20front%20controller%20design%20pattern%200157185d2ea44ee7a102c83ec41269d6/6238711576526848</a></p>
+<pre><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+// Views:
+
+class View1{
+public:
+    void update() {
+        cout &lt;&lt; "Bills payed." &lt;&lt; endl;
+    }
+};
+
+class View2{
+public:
+    void update() {
+        cout &lt;&lt; "Username updated." &lt;&lt; endl;
+    }
+};
+
+class View3{
+public:
+    void update() {
+        cout &lt;&lt; "Password changed." &lt;&lt; endl;
+    }
+};
+
+// Handlers:
+
+class Handler1{
+private:
+    View1* view1;
+    
+public:
+    Handler1() {
+        view1 = new View1();
+    }
+    void updateView() {
+        view1-&gt;update();
+    }
+};
+
+class Handler2{
+private:
+    View2* view2;
+    
+public:
+    Handler2() {
+        view2 = new View2();
+    }
+    void updateView() {
+        view2-&gt;update();
+    }
+};
+
+class Handler3{
+private:
+    View3* view3;
+    
+public:
+    Handler3() {
+        view3 = new View3();
+    }
+    void updateView() {
+        view3-&gt;update();
+    }
+};
+
+// Dispatcher:
+class Dispatcher{
+private:
+    Handler1* handler1;
+    Handler2* handler2;
+    Handler3* handler3;
+    
+public:
+    Dispatcher(){
+        handler1 = new Handler1();
+        handler2 = new Handler2();
+        handler3 = new Handler3();
+    }
+    void dispatch(string req) {
+        if(req == "pay bills")
+            handler1-&gt;updateView();
+        else if(req == "update username")
+            handler2-&gt;updateView();
+        else if(req == "change password")
+            handler3-&gt;updateView();
+        else
+            cout &lt;&lt; "Invalid request!" &lt;&lt; endl;
+    }
+};
+
+// Controller:
+class Controller{
+private:
+    Dispatcher* myDispatcher;
+    bool authUser(string user) {
+        if(user == "authentic")
+            return true;
+        else
+            return false;
+    }
+public:
+    Controller(){
+        myDispatcher = new Dispatcher();
+    }
+    void forwardRequest(string u, string req) {
+        if(authUser(u))
+            myDispatcher-&gt;dispatch(req);
+    }
+};
+
+int main(){
+    Controller ctrl;
+    ctrl.forwardRequest("authentic", "pay bills");
+    
+    return 0;
+}
+
+</code></pre>
+
+        </body>
+    </html>
+    

@@ -1,0 +1,106 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Adding Faust to your Existing Architecture - Robin fa659df44629451e9e77a705722ea621</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-adding-faust-to-your-existing-architecture---robinhood-engineering" class="anchor" aria-hidden="true" href="#adding-faust-to-your-existing-architecture---robinhood-engineering"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding Faust to your Existing Architecture - Robinhood Engineering</h1>
+<p>Created: Jun 13, 2020 7:48 AM
+URL: <a href="https://robinhood.engineering/adding-faust-to-your-existing-architecture-39b0ebd1f7c9" rel="nofollow">https://robinhood.engineering/adding-faust-to-your-existing-architecture-39b0ebd1f7c9</a></p>
+<p>A few weeks ago we <a href="https://robinhood.engineering/faust-stream-processing-for-python-a66d3a51212d" rel="nofollow">open sourced</a> <a href="https://github.com/robinhood/faust">Faust</a>, a Python stream processing library that we built at <a href="https://robinhood.com/" rel="nofollow">Robinhood</a> to make it extremely easy to build and deploy traditionally complex streaming architectures.</p>
+<p>As Robinhood has grown and we have added more and more functionality to our product, our infrastructure has also evolved. We have added numerous internal services and technologies to help us solve different problems. This has resulted in a typical application often needing to interact with one or many different services.</p>
+<p>Typical streaming frameworks such as <a href="https://spark.apache.org/streaming/" rel="nofollow">Spark</a> require external dependencies to be packaged with the app in specific ways, and submitted into the <a href="https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html" rel="nofollow">Yarn</a>/<a href="http://mesos.apache.org/" rel="nofollow">Mesos</a> cluster that is running the application. This is usually a detour from how Python applications typically manage dependencies — <a href="https://docs.python-guide.org/dev/virtualenvs/" rel="nofollow">virtualenv and pip</a>.</p>
+<p>We built Faust as a library to allow for it to be used with any existing tools you may be using. Simply install Faust, and use it to develop Python applications as you typically would. We use <a href="https://medium.freecodecamp.org/a-guide-to-asynchronous-programming-in-python-with-asyncio-232e2afa44f6" rel="nofollow">Python Asyncio</a> to achieve high performance I/O.</p>
+<p>In this blog post we will walk through some examples of how we use Faust to interact with various different services using off-the-shelf libraries.</p>
+<p><a href="https://redis.io/" rel="nofollow">Redis</a> has established itself as an in-memory data store of choice owing to its <a href="https://redis.io/topics/data-types" rel="nofollow">data structures</a>, amazing query speeds and simplicity. We use Redis on Robinhood’s Data team across a variety of use cases. Following is an example, showing how we use Redis to cache messages on the Robinhood Feed.</p>
+<p>We can install <a href="https://github.com/NoneGG/aredis">aredis</a> and Faust using pip:</p>
+<pre><code>pip install aredis
+pip install faust
+</code></pre>
+<p>Upon installing the dependencies, let’s first define our Faust application, Kafka topic and models:</p>
+<pre><code>import datetime
+import faustclass Activity(faust.Record, isodates=True):
+    user: str
+    message: str
+    timestamp: datetime.datetimeapp = faust.App("redis_example", broker="kafka://localhost:9092")
+activities_topic = app.topic("feed_activities", value_type=Activity)
+</code></pre>
+<p>We can now create an <a href="http://faust.readthedocs.io/en/latest/userguide/agents.html" rel="nofollow">agent</a> which reads feed activities coming in through this topic, and adds the messages to the user’s Redis sorted set as follows:</p>
+<pre><code>@app.agent(activities_topic)
+async def save_activities(activities):
+    async for activity in activities:
+        client = aredis.StrictRedis(host="localhost", port=6379)
+        await client.zadd(activity.user, activity.timestamp, activity.message)
+</code></pre>
+<p>As shown above, we use Redis as you would use it in any app. Faust doesn’t require any special drivers or modes for using Redis. All it needs is a Redis library that’s compatible with Python Asyncio.</p>
+<p>We often use streaming apps that need to talk to other services over HTTP. Below is an example of how we use the Python <a href="https://aiohttp.readthedocs.io/en/stable/index.html" rel="nofollow">aiohttp</a> library from a Faust streaming app for one of our use cases at Robinhood.</p>
+<p>First, let us install the Python library we will use for HTTP requests:</p>
+<pre><code>pip install aiohttp
+</code></pre>
+<p>We skip the app and model definition which is similar to the previous, and straightaway look at how we would design our agent. We create an agent which processes orders and uses a third part HTTP API to send order confirmation emails to our customers:</p>
+<pre><code>async def send_confirmation(order):
+    url = f"https://emailer.robinhood.com/"
+    data = {
+        "user": order.user_id,
+        "subject": "Order Confirmation",
+        "body" f"Order: {order.quantity} shares of {order.symbol}",
+    }
+    async with aiohttp.ClientSession() as session:
+        await session.post(url, json=data)@app.agent(orders_topic)
+async def add_symbol(orders):
+    async for order in orders:
+        await send_confirmation(order)
+</code></pre>
+<p>A lot of our internal services export REST APIs. The ability to easily integrate aiohttp with Faust apps allows us to break down a variety of our backend systems into simple and isolated streaming apps.</p>
+<p>Robinhood operates on large amounts of time series data such as tick by tick price data for each stock symbol. We use <a href="https://www.influxdata.com/" rel="nofollow">InfluxDB</a> to store some of these time series. Below is an example of how we query InfluxDB from a Faust application.</p>
+<p>Again, as before, let us install the Python library we will use to query InfluxDB:</p>
+<pre><code>pip install aioinflux
+</code></pre>
+<p>We now create an agent which looks at the orders topic from above and looks at the time series in InfluxDB for the particular stock to get the price at which the order executed was the price in the market at the time. We do this to ensure that we are giving the best quality of executions to our customers.</p>
+<pre><code>@app.agent(orders_topic)
+async def add_symbol(orders):
+    async for order in orders:
+        client = aioinflux.InfluxDBClient()
+        query = f"SELECT price FROM marketdata WHERE symbol = {order.symbol} AND timestamp &lt;= {order.timestamp} ORDER BY DESC LIMIT 1"
+        order.market_price = await client.query(query)
+        await quality_topic.send(key=order.id, value=order)
+</code></pre>
+<p>The ability to easily integrate streaming apps with InfluxDB lets us solve problems where we need to work with multiple time series.</p>
+<p>The data team at Robinhood uses the <a href="https://www.elastic.co/elk-stack" rel="nofollow">ELK (Elasticsearch-Logstash-Kibana)</a> stack quite extensively. Last year, we published a <a href="https://robinhood.engineering/taming-elk-4e1349f077c3" rel="nofollow">post</a> about how we use the ELK stack along with Kafka. Below is an example of how you can query Elasticsearch from your Faust app.</p>
+<p>We first install the <a href="https://github.com/elastic/elasticsearch-py-async">elasticsearcy-py-async</a> library that we will use in this example:</p>
+<pre><code>pip install elasticsearch-async
+</code></pre>
+<p>We now create an agent which looks at incoming search queries and adds the top search result from our search service running on top of Elasticsearch.</p>
+<pre><code>async def get_top_result(query_string):
+    client = elasticsearch_async.AsyncElasticsearch()
+    query = {"query": query_string}
+    resp = await client.search(index="search_index", body=query)
+    return resp["hits"]["hits"]@app.agent(search_queries_topic)
+async def add_top_search_result(search_queries):
+    async for query in search_queries:
+        query.top_result = await get_top_result(query.query_string)
+        await top_results_topic.send(key=query.top_result, value=query)
+</code></pre>
+<p>Faust makes it easy for us to build architectures where we use Elasticsearch as our data store of choice.</p>
+<p>The above examples show how we use Faust with external dependencies, across several use cases. In the coming weeks we will go deeper into some of the specific ways we use Faust.</p>
+<p>Faust works well with most common Python libraries making it very easy to use with any existing applications. We’re very excited to see how developers will use Faust, and what use cases they will come up with.</p>
+<p>Please feel free to leave a comment here or a note on <a href="https://github.com/robinhood/faust">Github</a> if you have any questions or thoughts. We’re also <a href="https://careers.robinhood.com/" rel="nofollow">hiring</a>!</p>
+
+        </body>
+    </html>
+    

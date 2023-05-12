@@ -1,0 +1,161 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Duplicating a repository - GitHub Help d8c3a4be56b5435489f21fbb850d7293</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-duplicating-a-repository---github-help" class="anchor" aria-hidden="true" href="#duplicating-a-repository---github-help"><span aria-hidden="true" class="octicon octicon-link"></span></a>Duplicating a repository - GitHub Help</h1>
+<p>Created: Jan 30, 2020 8:55 PM
+URL: <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository</a></p>
+<p><a href="https://help.github.com/en/github">GitHub.com</a> <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories">Creating, cloning, and archiving repositories</a> <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github">Creating a repository on GitHub</a> <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Duplicating a repository</a></p>
+<h1><a id="user-content-duplicating-a-repository" class="anchor" aria-hidden="true" href="#duplicating-a-repository"><span aria-hidden="true" class="octicon octicon-link"></span></a>Duplicating a repository</h1>
+<p>To duplicate a repository without forking it, you can run a special clone command, then mirror-push to the new repository.</p>
+<p><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mac</a> <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Windows</a> <a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Linux</a></p>
+<h3><a id="user-content-in-this-article" class="anchor" aria-hidden="true" href="#in-this-article"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">In this article</a></h3>
+<ul>
+<li><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository</a></li>
+<li><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository that contains Git Large File Storage objects</a></li>
+<li><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository in another location</a></li>
+</ul>
+<p>Before you can duplicate a repository and push to your new copy, or <em>mirror</em>, of the repository, you must <a href="https://help.github.com/en/articles/creating-a-new-repository">create the new repository</a> on GitHub. In these examples, <code>exampleuser/new-repository</code> or <code>exampleuser/mirrored</code> are the mirrors.</p>
+<h3><a id="user-content-mirroring-a-repository" class="anchor" aria-hidden="true" href="#mirroring-a-repository"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository</a></h3>
+<ol>
+<li>
+</li></ol>
+<pre><code>Open Terminal.
+</code></pre>
+<ol start="2">
+<li>
+</li></ol>
+<pre><code>Create a bare clone of the repository.
+
+```
+exampleuserold-repository
+```
+</code></pre>
+<ol start="3">
+<li>
+</li></ol>
+<pre><code>Mirror-push to the new repository.
+
+```
+old-repositoryexampleusernew-repository
+```
+</code></pre>
+<ol start="4">
+<li>
+</li></ol>
+<pre><code>Remove the temporary local repository you created in step 1.
+
+```
+old-repository
+```
+</code></pre>
+<h3><a id="user-content-mirroring-a-repository-that-contains-git-large-file-storage-objects" class="anchor" aria-hidden="true" href="#mirroring-a-repository-that-contains-git-large-file-storage-objects"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository that contains Git Large File Storage objects</a></h3>
+<ol>
+<li>
+</li></ol>
+<pre><code>Open Terminal.
+</code></pre>
+<ol start="2">
+<li>
+</li></ol>
+<pre><code>Create a bare clone of the repository. Replace the example username with the name of the person or organization who owns the repository, and replace the example repository name with the name of the repository you'd like to duplicate.
+
+```
+exampleuserold-repository
+```
+</code></pre>
+<ol start="3">
+<li>
+</li></ol>
+<pre><code>Navigate to the repository you just cloned.
+
+```
+old-repository
+```
+</code></pre>
+<ol start="4">
+<li>
+</li></ol>
+<pre><code>Pull in the repository's Git Large File Storage objects.
+
+```
+$ git lfs fetch --all
+```
+</code></pre>
+<ol start="5">
+<li>
+</li></ol>
+<pre><code>Mirror-push to the new repository.
+
+```
+exampleusernew-repository
+```
+</code></pre>
+<ol start="6">
+<li>
+</li></ol>
+<pre><code>Push the repository's Git Large File Storage objects to your mirror.
+
+```
+exampleuser/new-repository.git
+```
+</code></pre>
+<ol start="7">
+<li>
+</li></ol>
+<pre><code>Remove the temporary local repository you created in step 1.
+
+```
+old-repository
+```
+</code></pre>
+<h3><a id="user-content-mirroring-a-repository-in-another-location" class="anchor" aria-hidden="true" href="#mirroring-a-repository-in-another-location"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository">Mirroring a repository in another location</a></h3>
+<p>If you want to mirror a repository in another location, including getting updates from the original, you can clone a mirror and periodically push the changes.</p>
+<ol>
+<li>
+</li></ol>
+<pre><code>Open Terminal.
+</code></pre>
+<ol start="2">
+<li>
+</li></ol>
+<pre><code>Create a bare mirrored clone of the repository.
+
+```
+exampleuserrepository-to-mirror
+```
+</code></pre>
+<ol start="3">
+<li>
+</li></ol>
+<pre><code>Set the push location to your mirror.
+
+```
+repository-to-mirrorexampleusermirrored
+```
+</code></pre>
+<p>As with a bare clone, a mirrored clone includes all remote branches and tags, but all local references will be overwritten each time you fetch, so it will always be the same as the original repository. Setting the URL for pushes simplifies pushing to your mirror. To update your mirror, fetch updates and push.</p>
+<pre><code>$ git fetch -p origin
+$ git push --mirror
+</code></pre>
+
+        </body>
+    </html>
+    

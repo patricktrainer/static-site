@@ -1,0 +1,140 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Hosting Flask servers on Firebase from scratch - F 6f6d061308384c86b6ae338520f2590d</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-hosting-flask-servers-on-firebase-from-scratch---firebase-developers---medium" class="anchor" aria-hidden="true" href="#hosting-flask-servers-on-firebase-from-scratch---firebase-developers---medium"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hosting Flask servers on Firebase from scratch - Firebase Developers - Medium</h1>
+<p>Created: Mar 30, 2020 7:22 AM
+URL: <a href="https://medium.com/firebase-developers/hosting-flask-servers-on-firebase-from-scratch-c97cfb204579" rel="nofollow">https://medium.com/firebase-developers/hosting-flask-servers-on-firebase-from-scratch-c97cfb204579</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Hosting%20Flask%20servers%20on%20Firebase%20from%20scratch%20-%20F%206f6d061308384c86b6ae338520f2590d/19xKNnh6ZBJaEFpf1-3jKxg.png"><img src="Hosting%20Flask%20servers%20on%20Firebase%20from%20scratch%20-%20F%206f6d061308384c86b6ae338520f2590d/19xKNnh6ZBJaEFpf1-3jKxg.png" alt="1*9xKNnh6ZBJaEFpf1-3jKxg.png" style="max-width: 100%;"></a></p>
+<h2><a id="user-content-python-devs--rejoice--firebase-hosting--supports-dynamic-server-backends-with-cloud-run-️-alright-thats-enough-emojis-time-to-dive-into-the-details" class="anchor" aria-hidden="true" href="#python-devs--rejoice--firebase-hosting--supports-dynamic-server-backends-with-cloud-run-️-alright-thats-enough-emojis-time-to-dive-into-the-details"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python devs <g-emoji class="g-emoji" alias="snake" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f40d.png">🐍</g-emoji>! Rejoice <g-emoji class="g-emoji" alias="tada" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png">🎉</g-emoji>! Firebase Hosting <g-emoji class="g-emoji" alias="fire" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f525.png">🔥</g-emoji> supports dynamic server backends with Cloud Run <g-emoji class="g-emoji" alias="running_man" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3c3-2642.png">🏃‍♂️</g-emoji>! Alright. That’s enough emojis. Time to dive into the details.</h2>
+<p><strong>Nope!</strong> Back in 2017 Firebase integrated Hosting with Cloud Functions to allow you to dynamically generate content on the server and send it back through their Content Delivery Network (CDN). This allowed you two mix and match a strategy of serving dynamic pages and plain ol’ static pages.</p>
+<p>At the time, however, these functions were limited to a Node.js runtime. Today, Cloud Run allows you to do so much more.</p>
+<h2><a id="user-content-any-server-backend-with-cloud-run" class="anchor" aria-hidden="true" href="#any-server-backend-with-cloud-run"><span aria-hidden="true" class="octicon octicon-link"></span></a>Any server backend with Cloud Run</h2>
+<p>With Firebase Hosting integrating with Cloud Run, you can generate content from anything that fits within a stateless Docker container. This means you can pick whatever language and server framework your heart desires.</p>
+<p>This tutorial will show you how to get a Flask server working from scratch with Firebase Hosting and Cloud Run. Let’s get started!</p>
+<h2><a id="user-content-note-you-dont-need-to-install-docker" class="anchor" aria-hidden="true" href="#note-you-dont-need-to-install-docker"><span aria-hidden="true" class="octicon octicon-link"></span></a>Note: You don’t need to install Docker</h2>
+<p>Cloud Run is a serverless way to run Docker containers. However, this tutorial will use Cloud Build to build and store your container for Cloud Run. No need to worry if you don’t have Docker installed.</p>
+<p>Let’s get started off right with a simple project structure. You don’t need to create each file and folder upfront, but you can use this as a guide throughout the tutorial.</p>
+<pre><code>flask-fire (root dir)
+├── server
+| ├── src
+|    └── app.py
+|    └── templates
+|       └── index.html 
+| ├── Dockerfile
+├── static
+|  └── style.css 
+├── firebase.json
+├── .firebaserc
+</code></pre>
+<p>The split between <code>server</code> and <code>static</code> is important. We might be executing server code in some cases, but that doesn’t mean we want that code to serve our static files, too.</p>
+<p>Create an <code>index.html</code> file in the <code>server/src/templates</code> directory and paste in the following code:</p>
+<p>Then open or create <code>server/src/app.py</code> and paste in the following code.</p>
+<p>This is just a simple Flask server that renders a template in response to the index (<code>/</code>) endpoint .The Flask server will automatically look in the <code>templates</code> folder and look for the <code>index.html</code> file. The template renders <code>"Flask + Firebase"</code> with the server’s current time.</p>
+<p>Now that you have the code for a simple Flask server, let’s get it working in a Docker container.</p>
+<p>Inside of <code>server</code> create a file called <code>Dockerfile</code>. No extension needed. If you’ve never worked with Docker before, think of Docker as a chef that builds delicious self-contained software environments and a <code>Dockerfile</code> as a recipe to run your server code.</p>
+<p>Let’s go over each section.</p>
+<ol>
+<li>This sets the base image of the container. Your code will run on a version of Python 3.7.</li>
+<li>Install the needed dependencies to run the server: Flask and gunicorn.</li>
+<li>Copy the server’s source files into a folder within the container named <code>app</code>. Then set the working directory to that <code>app</code> folder.</li>
+<li>Set an environment variable for the port for 8080. Note: Cloud Run expects the port to be 8080.</li>
+<li>Run <code>gunicorn</code> bound to the 8080 port.</li>
+</ol>
+<p>With the Dockerfile written, let’s deploy!</p>
+<p>If you don’t have a project in mind, go to the <a href="https://console.firebase.google.com/" rel="nofollow">Firebase Console</a> and create a new project. Keep track of the project id, you’ll need this soon.</p>
+<h2><a id="user-content-cloud-run-has-a-free-tier" class="anchor" aria-hidden="true" href="#cloud-run-has-a-free-tier"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cloud Run has a free tier</h2>
+<p>To use Cloud Run with Firebase Hosting you currently need billing enabled, which requires putting a credit card on file. However! That doesn’t mean you’re going to get charged. <strong><a href="https://cloud.google.com/run/pricing" rel="nofollow">Cloud Run comes with a free tier</a></strong>. You’ll likely operate in the free tier unless you are using it on a production site or sending large amounts of traffic to your site all month long.</p>
+<p>With billing enabled, it’s time to let Cloud Build do the heavy work of building our server code into a Docker container.</p>
+<p>To get Cloud Run to execute your container you need to store it in Google <a href="https://cloud.google.com/container-registry/" rel="nofollow">Cloud’s Container Registry</a> (GCR). You can upload a local container, but that requires installing Docker, which this tutorial does not require. Instead you’ll send it to Cloud Build and it will build it and upload to GCR for you.</p>
+<p>For this step you’ll need to install the <a href="https://cloud.google.com/sdk/docs/quickstarts" rel="nofollow">Google Cloud CLI</a> (a.k.a <code>gcloud</code>). Once you have it installed you can use it to initialize the SDK to authorize to your account.</p>
+<pre><code>gcloud init
+</code></pre>
+<p>After you have initialized everything, open a terminal to the <code>server</code> directory and run the following command:</p>
+<pre><code>gcloud builds submit --tag gcr.io/&lt;project-id&gt;/flask-fire
+</code></pre>
+<p>Once you see a success message you’re ready to deploy to Cloud Run.</p>
+<p>Inside the same <code>server</code> directory, run the following command to upload to Cloud Run.</p>
+<pre><code>gcloud beta run deploy --image gcr.io/&lt;project-id&gt;/flask-fire
+</code></pre>
+<p>You may be asked questions about enabling APIs and allowing unauthenticated access. Say yes to both. Don’t worry about the access; since this is a web server it needs to be publicly available.</p>
+<p>After the deploy completes, you should see a service URL like this: <code>https://flask-fire-239532hash-us-central-1.a.run.app</code>. Paste that link into a new browser tab and you should see the bland <code>"Flask + Firebase"</code> text.</p>
+<p>Now it’s time to set up Firebase Hosting to serve your static files and the content generated with Cloud Run.</p>
+<p>To set up Firebase Hosting you’ll need the Firebase CLI installed via npm. You can do this locally, globally, or with even with<code>[npx](https://www.npmjs.com/package/npx)</code>. For the sake of simplicity I’ll cover a local install (global installs can sometimes be messy).</p>
+<p>Open a terminal to the root of the project directory and run the following commands:</p>
+<pre><code>npm init -y # creates a package.json
+npm install -D firebase-tools
+</code></pre>
+<p>This should create a <code>node_modules</code> folder with all kinds of dependencies in it. From here we can invoke the Firebase CLI to set up Hosting. From the root of the project run the following command:</p>
+<pre><code>./node_modules/.bin/firebase init hosting
+</code></pre>
+<p>This calls the locally installed Firebase CLI to set up Firebase Hosting within your project. You’ll be asked a few questions:</p>
+<pre><code>Select a default Firebase project for this directory: (Use arrow keys)
+&gt; your-project-idSelect a default Firebase project for this directory: &lt;project-id&gt;
+What do you want to use as your public directory? static
+Configure as a single-page app (rewrite all urls to /index.html)? N
+</code></pre>
+<p>This sets up your app to deploy to the proper Firebase project. The second question sets up Firebase Hosting to deploy the static directory. Responding no to that last question will not configure re-writes for a SPA (single-page web application). You should see a <code>firebase.json</code> and <code>.firebaserc</code> in the root of your project.</p>
+<h2><a id="user-content-make-sure-no-indexhtml-exists" class="anchor" aria-hidden="true" href="#make-sure-no-indexhtml-exists"><span aria-hidden="true" class="octicon octicon-link"></span></a>Make sure no <code>index.html</code> exists!</h2>
+<p>The CLI may write a <code>404.html</code> and an <code>index.html</code> in the <code>static</code> directory. <strong>If that happens make sure to delete the <code>index.html</code>.</strong> Firebase Hosting serves static files first. This means if <code>index.html</code> exists, it will not call out to the Cloud Run container. To delete then file, run the following command from the root of the project:</p>
+<pre><code>rm static/index.html # Mac/Linux
+del static/index.html # Windows
+</code></pre>
+<h2><a id="user-content-add-a-stylecss-in-the-static-directory" class="anchor" aria-hidden="true" href="#add-a-stylecss-in-the-static-directory"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add a style.css in the static directory</h2>
+<p>To add some style to your web app, create a<code>static/style.css</code> file with the following contents:</p>
+<p>With the project set up locally, we can hook up Cloud Run to Firebase Hosting.</p>
+<p>Firebase Hosting calls out to Cloud Run when it finds a matching URL pattern rewrite in your <code>firebase.json</code> and no static file exists. This allows you to build your site with static and dynamic routes. Since this is a simple site, you’re going to serve every path through a re-write. You don’t need to worry about setting up routes for static assets since Firebase Hosting serves them first.</p>
+<p>Open up your <code>firebase.json</code> and create a new re-write rule like below:</p>
+<p>The <code>"rewrites"</code> section creates an array of rewrites with a single object. This object specifies that when a request comes in matching a <code>"source"</code> of <code>"**"</code> (which is everything), it will call out to Cloud Run to the container tagged <code>"flask-fire"</code> , which you previously deployed to Cloud Run.</p>
+<p>Let’s serve this locally to see it work in action. Open a terminal to the root of your project and run the following command:</p>
+<pre><code>./node_modules/.bin/firebase serve
+</code></pre>
+<p>This will run your site on a port of <code>locahost:5000</code>. <strong>Note:</strong> While your static files are being served locally, the emulator is still making a call out to Cloud Run.</p>
+<p>You’ll notice that the site still renders <code>"Firebase + Flask"</code> but it’s centered and has Lobster font! How lovely.</p>
+<p>The next step is to set up custom caching control over your content in the CDN.</p>
+<p>A huge advantage of using Cloud Run with Firebase Hosting is the control over the CDN cache. Firebase Hosting allows you to control how long a piece of content stays in the CDN cache via a <code>Cache-Control</code> header.</p>
+<pre><code>Cache-Control: public,max-age=300,s-maxage=600
+</code></pre>
+<p>The <code>s-maxage</code> property tells Firebase Hosting to keep the content in the cache for 10 minutes. During this 10 minute period Firebase Hosting will skip running your server code in Cloud Run and serve the cache content directly.</p>
+<blockquote>
+<p>What happens if I don’t set a Cache-Control header? If you don’t set a Cache-Control header (and no underlying system sets the header), Firebase Hosting will call out to Cloud Run each and every time.</p>
+</blockquote>
+<p>Flask’s <code>make_response</code> make it easy to attach headers. Open up <code>app.py</code> and modify the <code>index()</code> route to the following:</p>
+<p>The code above does the following:</p>
+<ol>
+<li>Create the template given the context.</li>
+<li>Create a response with the template.</li>
+<li>Attach a <code>Cache-Control</code> header to control store the content for a 10 minute period in the local CDN edge server. This time period is referred to as a Time To Live or TTL.</li>
+</ol>
+<p>Let’s get to the fun part! Deploying!</p>
+<p>First you’ll need to redeploy the container since changes were made to the server code. Run the following commands:</p>
+<pre><code>gcloud builds submit --tag gcr.io/&lt;project-id&gt;/flask-fire
+gcloud beta run deploy --image gcr.io/&lt;project-id&gt;/flask-fire
+</code></pre>
+<p>This build the container in Cloud Build and deploy to Cloud Run. Now run the Firebase deploy command</p>
+<pre><code>firebase deploy
+</code></pre>
+<p>That’s it! You have deployed a Flask app on to Firebase Hosting and possibly learned a thing or two about Docker and CDNs along the way.</p>
+<p>You now have a deployed Flask app that only regenerates when the <code>Cache-Control</code> TTL has expired! The timestamp will stay the same until the TTL expires and the regeneration process begins again.</p>
+<p>So there it is— with just a few simple steps, you can create a dynamic web site hosted entirely on Firebase Hosting. Does this inspire you to build your own website using Firebase and Flask? If so, I’d love to see what you created! Drop me a comment below, or <a href="https://twitter.com/_davideast" rel="nofollow">send me a tweet</a>!</p>
+
+        </body>
+    </html>
+    

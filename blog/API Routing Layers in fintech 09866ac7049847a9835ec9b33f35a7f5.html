@@ -1,0 +1,115 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>API Routing Layers in fintech 09866ac7049847a9835ec9b33f35a7f5</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-api-routing-layers-in-fintech" class="anchor" aria-hidden="true" href="#api-routing-layers-in-fintech"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Routing Layers in fintech</h1>
+<p>Created: May 26, 2020 7:19 PM
+URL: <a href="https://kunle.app/may-2020-API-routing-layers.html" rel="nofollow">https://kunle.app/may-2020-API-routing-layers.html</a></p>
+<p><a href="https://kunle.app/index.html" rel="nofollow">Home</a></p>
+<p>Every end customer facing financial services product is built on a stack of vendors. These vendors (roughly speaking) do things that the product team can’t (and shouldn’t) build themselves. For a typical neobank, here’s what that stack might look like:</p>
+<p><a target="_blank" rel="noopener noreferrer" href="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/stack.jpeg"><img src="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/stack.jpeg" alt="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/stack.jpeg" style="max-width: 100%;"></a></p>
+<p>For each of these functions, there are typically several competing vendors. Sometimes the content is the same (Eg Idemia vs. CPI both manufacture cards) and sometimes the function is the same with different content (eg Q2 vs. Galileo both provide system of record/issuing processing services, but on top of different banks). An emergent strategy I’ve observed over the last several months is modern, developer driven companies aggregating all the vendors in competition, and serving them up to developers/fintech customers in a single API. Some examples of this are Alloy (aggregating several identity verification vendors and enabling you to access them from a single API) and Payitoff (aggregating several student loan programs and enabling you to access them all from a single API).</p>
+<h3><a id="user-content-macro-trends-behind-this" class="anchor" aria-hidden="true" href="#macro-trends-behind-this"><span aria-hidden="true" class="octicon octicon-link"></span></a>Macro trends behind this</h3>
+<h3><a id="user-content-enterprise-orgs-for-developer-problems" class="anchor" aria-hidden="true" href="#enterprise-orgs-for-developer-problems"><span aria-hidden="true" class="octicon octicon-link"></span></a>Enterprise orgs for developer problems</h3>
+<p>Many fintech vendors are enterprise sales companies. Often, vendors of a similar service will differ in quality in subtle ways. The differences are typically too hard to detect in advance from a website or a reference call. For example, an IDV vendor might have terrible coverage of consumer identities in your specific demographic. Worse yet, if you’re a fast growing product, your use case and demographic will probably change quickly as you grow, and in some cases you’ll outgrow that vendor really quickly. This dynamic means that by the time you realize a vendor doesn't work for you, you've signed a contract and done an integration. that you're now maintaining</p>
+<p>Routing layers enable you to compare service quality and quickly switch vendors, without having to go through multiple enterprise sales cycles.</p>
+<h3><a id="user-content-bespoke-integrations--implementations" class="anchor" aria-hidden="true" href="#bespoke-integrations--implementations"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bespoke Integrations &amp; Implementations</h3>
+<p>Depending where you are in the stack, these vendors can be quite complicated. A brand new issuer integration with a card manufacturer &amp; personalization house, even when all parties are extremely motivated, takes multiple months with multiple people at each company, and there are myriad, subtle ways the integration can fail. I’ve heard of card personalization integrations where the cards shipped to customers with improperly encoded expiration dates and CVVs in the chip, so card swipes worked but dips and taps failed. These mistakes get even more expensive when you're scaling rapidly and you take on multiple integrations in sequence.</p>
+<p>Routing layers enable you to get the technical benefits of multiple integrations with the execution burden of only one.</p>
+<h3><a id="user-content-organizational-distortion" class="anchor" aria-hidden="true" href="#organizational-distortion"><span aria-hidden="true" class="octicon octicon-link"></span></a>Organizational Distortion</h3>
+<p>5 years ago, barely any API routing layers in financial services existed (I can’t think of a single one). For a lot of these functions, fast growing financial services companies would shoulder the execution burden of building and maintaining multiple integrations on first generation APIs that had barely seen hypergrowth (a lot had seen large scale, growing rapidly from small to large, exposes many bugs that aren’t present when you’re steadily small or steadily large) . These services were rarely central to the core business, so they always eventually faced the awkward organizational decision of who owned it; who would keep the integration up to date, take the vendor calls, troubleshoot breaking issues, or renegotiate costs. Expertise would be hard to maintain because ambitious teams inside the company want to work on the main thing or the hot thing, not the necessary but non-core thing.</p>
+<p>Routing layers solve this problem explicitly; they attach a revenue model to a (often unsexy) function, which funds its continued development and maintenance. For the fintech building on an routing layer, you might pay a slightly higher per unit price to consume the service (because the routing layer marks up the cost of the underlying vendor) but the overall organizational cost is lower, simply because you don’t have to distort your org by taking on non-core work.</p>
+<p>In addition, many of these vendors will have embedded fixed costs such as implementation fees, monthly minimums, access fees, or support charges. Routing layers aggregate all these costs and amortize them across several customers. They might pass it on to a fintech in the form of higher unit costs, but for a pre-product market fit company, higher variable costs provide more flexibility than lower fixed costs.</p>
+<p>A good example of the organization distortion effect is Stripe’s effect on acquiring. The emergence of Stripe unleashed hundreds of engineers at many companies who would otherwise be working on payments, to work on other parts of the business, because Stripe took out a lot of the overhead.</p>
+<h3><a id="user-content-segment-for-x" class="anchor" aria-hidden="true" href="#segment-for-x"><span aria-hidden="true" class="octicon octicon-link"></span></a>Segment for X</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/segment.png"><img src="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/segment.png" alt="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/segment.png" style="max-width: 100%;"></a></p>
+<p>Segment was the first API routing layer I remember seeing. At launch, their value proposition was that you could call their APIs from your product, and get access to your analytics data in any analytics service, starting with Mixpanel, Google Analytics and Kissmetrics. The advantage was that you could easily switch between analytics services without having to re-instrument your product and without having to implement a new API.</p>
+<h3><a id="user-content-one-api-multiple-vendors" class="anchor" aria-hidden="true" href="#one-api-multiple-vendors"><span aria-hidden="true" class="octicon octicon-link"></span></a>One API, multiple vendors</h3>
+<p>The common thread amongst API routing layers I’ve seens is that they enable a single integration, that allows you to programmatically access multiple vendors without having to do an additional integration. Alloy for instance enables fintechs to access multiple identity verification vendors simply by integrating into Alloy’s APIs. This means you can integrate with Alloy and have peace of mind that you could access Lexis, Idology, Blockscore and others by just changing a parameter in the API request.</p>
+<p><a target="_blank" rel="noopener noreferrer" href="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/alloy.png"><img src="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/alloy.png" alt="API%20Routing%20Layers%20in%20fintech%2009866ac7049847a9835ec9b33f35a7f5/alloy.png" style="max-width: 100%;"></a></p>
+<h3><a id="user-content-advantages-for-early-stage-product-teams" class="anchor" aria-hidden="true" href="#advantages-for-early-stage-product-teams"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advantages for early stage product teams</h3>
+<p>When done well, an API routing layer gives an early stage product team material advantages. First, they can access the breadth of functionality that would otherwise only be available to companies with a lot of resources. Second, an API routing layer gives you routing optionality; if a particular vendor is slow, expensive, unreliable, unsuitable, or down, you can switch to a competitor with minimal technical overhead. Third, lots of vendors are better than their competitors at subtle things. Using an API routing layer enables you to use the best vendor for the best job. An aggregator for card personalization would enable you to issue cards close to a cardholder’s location for faster delivery. An aggregator for acquiring merchant payments would enable you to smartly route payment traffic according to the needs of your customers - you can route between Stripe and Adyen because one is cheaper for a specific transaction type, has better acceptance for a particular set of transaction parameters, or is available in a country that the other is not.  Essentially, API routing layers enable fast growing products to quickly achieve the right cost, speed, reliability, or experience optimization for your business.</p>
+<h3><a id="user-content-tilting-the-field" class="anchor" aria-hidden="true" href="#tilting-the-field"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tilting the field</h3>
+<p>The net result of API routing layers emerging in fintech is that small startups can, early in their development, have massive optionality and coverage, which enables similar impact and feature depth as large, well resourced incumbents. Large incumbents (or even in many cases later stage startups) had an advantage years ago because they invested in multiple integrations which gave them all the necessary optionality (primarily to reduce costs) and coverage (primarily to improve customer reach). API routing layers take away this advantage, because a startup can simply integrate once and get the same optionality, while the incumbent struggles to staff and maintain the legacy implementation. Of course, incumbents can integrate into API routing layers as well, but now they have an organizational problem; they have to assign a team to a non-core project, which already has its baggage, and that team has to swap out implementations in flight without breaking the customer experience, or trodding over the egos of internal stakeholders in the process.</p>
+<p>There’s already a few examples of API routing layers in financial services, and there are a handful of parts of the ecosystem I’ve yet to see rolled up this way. Some examples of companies aggregating multiple APIs into one include:</p>
+<p>Identity Verification:</p>
+<ul>
+<li>Aggregated vendors: Idology, Transunion, Lexis Nexis, Socure. Advantages:
+<ul>
+<li>Easily switch between KYC vendors</li>
+<li>Reduce costs through switching</li>
+<li>Increasing pass rates by running customers through multiple vendors</li>
+</ul>
+</li>
+<li>Companies: Alloy</li>
+</ul>
+<p>Payroll linking &amp; income verification</p>
+<ul>
+<li>Aggregated Services: ADP, Gusto, Paylocity, Gusto, Trinet, Paychex, Paycor. Advantages:</li>
+<li>Single lightweight integration</li>
+<li>Coverage of as many payroll providers as possible (and consequently enabling a user to access all their sources of income)</li>
+<li>Companies: Pinwheel, Atomic, Argyle</li>
+</ul>
+<p>Student loan programs</p>
+<ul>
+<li>Federal, state, local, servicer specific, demography specific, economic status specific programs. Advantages</li>
+<li>Coverage of the widest range of programs for the widest range of students</li>
+<li>Minimal integration cost</li>
+<li>Companies: Payitoff, Summer</li>
+</ul>
+<p>In full transparency, I'm invesed in Payitoff, Alloy and Pinwheel.</p>
+<h3><a id="user-content-areas-where-this-model-may-be-applied" class="anchor" aria-hidden="true" href="#areas-where-this-model-may-be-applied"><span aria-hidden="true" class="octicon octicon-link"></span></a>Areas where this model may be applied</h3>
+<p>This model has been deployed frequently in SAAS and more recently in financial services, but I don't believe it's bounded to those domains. When looking at where else to apply it, it appears to be most effective in domains where there are lots of vendors providing functionally the same service, but they either a) cover different populations of end users, b) have a high degree of variability in the quality of their services, or c) are difficult to evaluate in advance before using them. Some financial services subdomains with no routing layers include:</p>
+<p>Card manufacturing</p>
+<ul>
+<li>Idemia, CPI, G&amp;D, Perfect Plastic, Arroweye</li>
+<li>Advantages: faster card delivery, redundancy</li>
+</ul>
+<p>Merchant payment processing</p>
+<ul>
+<li>Stripe, Adyen, Braintree, Worldpay, Globalpayments, Bolt</li>
+<li>Advantages: cost, acceptance, redundancy</li>
+</ul>
+<p>Credit checks for loan underwriting</p>
+<ul>
+<li>Vendors: Experian, Transunion, Equifax</li>
+<li>Advantages: cost, coverage</li>
+</ul>
+<p>Bank account linking</p>
+<ul>
+<li>Plaid, Yodlee, Quovo, Finicity</li>
+<li>Advantages: Coverage, reliability</li>
+</ul>
+<p>Bank account issuing</p>
+<ul>
+<li>Every BAAS platform: Q2, Marqeta, Synapse, Galileo, i2c,</li>
+<li>Advantages: Issuing cost, Reliability</li>
+</ul>
+<p>Bank underwriting</p>
+<ul>
+<li>Radius, Evolve, Regions, Sutton</li>
+<li>Advantages: bank account portability</li>
+</ul>
+<p>Outside of financial services, there are a few gargantuan domains, such as healthcare, construction, logistics, natural resources, and others that have a high degree of fragmentation and variability between legacy vendors. I suspect they would all benefit from this approach.</p>
+<p>Thanks to Dami Omojola, Laura Spiekerman, Dhanji Prasanna, Justin Overdorff and Kurt Lin for reading this in draft form.</p>
+
+        </body>
+    </html>
+    

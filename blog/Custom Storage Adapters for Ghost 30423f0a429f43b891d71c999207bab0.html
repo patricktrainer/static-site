@@ -1,0 +1,156 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Custom Storage Adapters for Ghost 30423f0a429f43b891d71c999207bab0</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-custom-storage-adapters-for-ghost" class="anchor" aria-hidden="true" href="#custom-storage-adapters-for-ghost"><span aria-hidden="true" class="octicon octicon-link"></span></a>Custom Storage Adapters for Ghost</h1>
+<p>Created: Apr 22, 2020 7:06 AM
+URL: <a href="https://ghost.org/docs/concepts/storage-adapters/" rel="nofollow">https://ghost.org/docs/concepts/storage-adapters/</a></p>
+<p>It's possible to send your publication's images to a 3rd party service, CDN or database using a custom storage module.</p>
+<p>The storage layer is used to store images from an upload admin UI, from the API, and also when images are included in a zip file uploaded to the importer. Using a custom storage module allows you to change where images are stored without changing Ghost core.</p>
+<h2><a id="user-content-using-a-custom-storage-adapter" class="anchor" aria-hidden="true" href="#using-a-custom-storage-adapter"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using a custom storage adapter</h2>
+<p>By default Ghost stores images on your filesystem. The default location is the Ghost content path in your Ghost folder under <code>content/images</code>, or an alternative custom content path that you have configured.</p>
+<p>In order to use a custom storage adapter, your custom configuration file needs to be updated to provide config for your new storage module and set it as active:</p>
+<pre><code>storage: {
+    active: 'my-module',
+    'my-module': {
+        key: 'abcdef'
+    }
+}
+</code></pre>
+<p>The storage block should have 2 items:</p>
+<ul>
+<li>An active key, which contains the name* of your module</li>
+<li>A key which reflects the name* of your module, containing any config your module needs</li>
+</ul>
+<h2><a id="user-content-available-custom-storage-adapters" class="anchor" aria-hidden="true" href="#available-custom-storage-adapters"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available custom storage adapters</h2>
+<ul>
+<li>
+<a href="https://github.com/TryGhost/Ghost/blob/0304816/core/server/storage/local-file-store.js">local-file-store</a> (default) saves images to the local filesystem</li>
+<li>
+<a href="https://gist.github.com/ErisDS/559e11bf3e84b89a9594">http-store passes</a> image requests through to an HTTP endpoint</li>
+<li>
+<a href="https://github.com/spanishdict/ghost-s3-compat">s3-store</a> saves to Amazon S3 and proxies requests to S3</li>
+<li>
+<a href="https://github.com/colinmeinke/ghost-storage-adapter-s3">s3-store</a> saves to Amazon S3 and works with 0.10+</li>
+<li>
+<a href="https://github.com/Minwe/qn-store">qn-store</a> saves to Qiniu</li>
+<li>
+<a href="https://github.com/mmornati/ghost-cloudinary-store">ghost-cloudinary-store</a> saves to Cloudinary</li>
+<li>
+<a href="https://github.com/eexit/ghost-storage-cloudinary">ghost-storage-cloudinary</a> saves to Cloudinary with RetinaJS support</li>
+<li>
+<a href="https://github.com/sanddudu/upyun-ghost-store">upyun-ghost-store</a> saves to Upyun</li>
+<li>
+<a href="https://github.com/pupboss/ghost-upyun-store">ghost-upyun-store</a> saves to Upyun</li>
+<li>
+<a href="https://github.com/robincsamuel/ghost-google-drive">ghost-google-drive</a> saves to Google Drive</li>
+<li>
+<a href="https://github.com/tparnell8/ghost-azurestorage">ghost-azure-storage</a> saves to Azure Storage</li>
+<li>
+<a href="https://github.com/wrenth04/ghost-imgur">ghost-imgur</a> saves to Imgur</li>
+<li>
+<a href="https://github.com/thombuchi/ghost-google-cloud-storage">google-cloud-storage</a> saves to Google Cloud Storage</li>
+<li>
+<a href="https://github.com/MT-Libraries/ghost-oss-store">ghost-oss-store</a> saves to Aliyun OSS</li>
+<li>
+<a href="https://github.com/martiendt/ghost-storage-adapter-b2">ghost-b2</a> saves to Backblaze B2</li>
+<li>
+<a href="https://github.com/ifvictr/ghost-github">ghost-github</a> saves to GitHub</li>
+<li>
+<a href="https://github.com/zce/pages-store">pages-store</a> saves to GitHub Pages or other pages service, e.g. Coding Pages</li>
+<li>
+<a href="https://github.com/bartt/ghost-webdav-storage-adapter">WebDAV Storage</a> saves to a WebDAV server.</li>
+<li>
+<a href="https://github.com/ZhelinCheng/ghost-qcloud-cos">ghost-qcloud-cos</a> saves to Tencent Cloud COS.</li>
+</ul>
+<h2><a id="user-content-creating-a-custom-storage-adapter" class="anchor" aria-hidden="true" href="#creating-a-custom-storage-adapter"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating a custom storage adapter</h2>
+<p>In order to replace the storage module, use these requirements. You can also take a look at our <a href="https://github.com/TryGhost/Ghost/blob/master/core/server/adapters/storage/LocalFileStorage.js">default local storage implementation</a>.</p>
+<ol>
+<li>Create a new folder named <code>storage</code> inside <code>content/adapters</code>
+</li>
+<li>Inside of <code>content/adapters/storage</code> create a file or a folder: <code>content/adapters/storage/my-module.js</code> or <code>content/adapters/storage/my-module</code> - if using a folder, create a file called <code>index.js</code> inside it</li>
+</ol>
+<h3><a id="user-content-base-adapter-class-inheritance" class="anchor" aria-hidden="true" href="#base-adapter-class-inheritance"><span aria-hidden="true" class="octicon octicon-link"></span></a>Base adapter class inheritance</h3>
+<p>A custom storage adapter must inherit from your base storage adapter. By default the Base Storage Adapter is installed by Ghost and should be available in your custom adapter.</p>
+<pre><code>'use strict';
+
+var BaseAdapter = require('ghost-storage-base');
+
+class MyCustomAdapter extends BaseAdapter{
+  constructor() {
+    super();
+  }
+}
+
+module.exports = MyCustomAdapter;
+</code></pre>
+<h3><a id="user-content-required-methods" class="anchor" aria-hidden="true" href="#required-methods"><span aria-hidden="true" class="octicon octicon-link"></span></a>Required methods</h3>
+<p>Your custom storage adapter must implement five required functions:</p>
+<ul>
+<li>
+<code>save</code> - The <code>.save()</code> method stores the image and returns a promise which resolves the path from which the image should be requested in future.</li>
+<li>
+<code>exists</code> - Used by the base storage adapter to check whether a file exists or not</li>
+<li>
+<code>serve</code> - Ghost calls <code>.serve()</code> as part of its middleware stack, and mounts the returned function as the middleware for serving images</li>
+<li><code>delete</code></li>
+<li><code>read</code></li>
+</ul>
+<pre><code>'use strict';
+
+var BaseAdapter = require('ghost-storage-base');
+
+class MyCustomAdapter extends BaseAdapter{
+  constructor() {
+    super();
+  }
+  
+  exists() {
+
+  }
+
+  save() {
+
+  }
+
+  serve() {
+    return function customServe(req, res, next) {
+      next();
+    }
+  }
+
+  delete() {
+
+  }
+
+  read() {
+
+  }
+}
+
+module.exports = MyCustomAdapter;
+</code></pre>
+<h2><a id="user-content-summary" class="anchor" aria-hidden="true" href="#summary"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h2>
+<p>You have discovered how to use a custom storage module to replace the storage layer which handles images with custom code.</p>
+<p>It's good practise to create a public GitHub repository to make your module available for others and you can share your new module in our <a href="https://forum.ghost.org/" rel="nofollow">forum</a>.</p>
+
+        </body>
+    </html>
+    

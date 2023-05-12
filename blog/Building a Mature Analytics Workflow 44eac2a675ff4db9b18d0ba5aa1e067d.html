@@ -1,0 +1,88 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Building a Mature Analytics Workflow 44eac2a675ff4db9b18d0ba5aa1e067d</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-building-a-mature-analytics-workflow" class="anchor" aria-hidden="true" href="#building-a-mature-analytics-workflow"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building a Mature Analytics Workflow</h1>
+<p>Created: Feb 21, 2020 12:07 PM
+URL: <a href="https://blog.fishtownanalytics.com/building-a-mature-analytics-workflow/" rel="nofollow">https://blog.fishtownanalytics.com/building-a-mature-analytics-workflow/</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Building%20a%20Mature%20Analytics%20Workflow%2044eac2a675ff4db9b18d0ba5aa1e067d/barn-images-t5YUoHW6zRo-unsplash--1-.jpg"><img src="Building%20a%20Mature%20Analytics%20Workflow%2044eac2a675ff4db9b18d0ba5aa1e067d/barn-images-t5YUoHW6zRo-unsplash--1-.jpg" alt="Building%20a%20Mature%20Analytics%20Workflow%2044eac2a675ff4db9b18d0ba5aa1e067d/barn-images-t5YUoHW6zRo-unsplash--1-.jpg" style="max-width: 100%;"></a></p>
+<p>Over the past year, I and the folks at RJMetrics have had the opportunity to observe, and participate in, a significant evolution of the analytics ecosystem. The center of gravity in mature analytics organizations has shifted away from proprietary, end-to-end tools towards more composable solutions made up of:</p>
+<ul>
+<li>data integration scripts and/or tools,</li>
+<li>high-performance analytic databases,</li>
+<li>SQL, R, and/or Python, and</li>
+<li>visualization tools.</li>
+</ul>
+<p>This change has unlocked a world of possibility, but analytics teams (ours included) have still faced challenges in consistently delivering high-quality, low-latency analytics.</p>
+<p>Part of our response to these challenges has been the development of our second product, <a href="https://rjmetrics.com/product/pipeline" rel="nofollow">RJMetrics Pipeline</a>. But having reliable access to data in an analytic database is only part of the challenge that teams are facing today. This post outlines our understanding of these challenges and the efforts we’re undertaking to solve them.</p>
+<p>Analytics teams have a workflow problem today. Too often, analysts operate in isolation, and this creates suboptimal outcomes. Knowledge is siloed. We too often rewrite analyses that a colleague had already written. We fail to grasp the nuances of datasets that we’re less familiar with. We differ in our calculations of a shared metric. As a result, organizations suffer from reduced decision speed and reduced decision quality.</p>
+<p>Analytics doesn’t have to be this way. In fact, the playbook for solving these problems already exists — on our software engineering teams.</p>
+<p>The same techniques that software engineering teams use to collaborate on the rapid creation of quality applications can apply to analytics. We believe it’s time to build an open set of tools and processes to make that happen.</p>
+<h3><a id="user-content-analytics-is-collaborative" class="anchor" aria-hidden="true" href="#analytics-is-collaborative"><span aria-hidden="true" class="octicon octicon-link"></span></a>Analytics is collaborative</h3>
+<p>Most of the problems with the current analytics workflow aren’t so bad if you’re working alone. You know about all of the data available to you, you know what it means, and you know how it was created. But you don’t scale. As soon as your analytics needs grow beyond a single analyst, these problems begin to manifest.</p>
+<p>We believe a mature analytics team’s techniques and workflow should have the following collaboration features:</p>
+<h3><a id="user-content-version-control" class="anchor" aria-hidden="true" href="#version-control"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Version Control</strong></h3>
+<p>Analytic code — whether it’s Python, SQL, Java, or anything else — should be version controlled. Analysis changes as data and businesses evolve, and it’s important to know who changed what, when.</p>
+<p>Bad data can lead to bad analyses, and bad analyses can lead to bad decisions. Any code that generates data or analysis should be reviewed and tested.</p>
+<h3><a id="user-content-documentation" class="anchor" aria-hidden="true" href="#documentation"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Documentation</strong></h3>
+<p>Your analysis is a software application, and, like every other software application, people are going to have questions about how to use it. Even though it might seem simple, in reality the “Revenue” line you’re showing could mean dozens of things. Your code should come packaged with a basic description of how it should be interpreted, and your team should be able to add to that documentation as additional questions arise.</p>
+<p>Further, your analysis may need to be extended or modified by another member of your team, so document any portions of the code that may benefit from clarification.</p>
+<h3><a id="user-content-modularity" class="anchor" aria-hidden="true" href="#modularity"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Modularity</strong></h3>
+<p>If you build a series of analyses about your company’s revenue, and your colleague does as well, you should use the same input data. Copy-paste is not a good approach here — if the definition of the underlying set changes, it will need to be updated everywhere it was used. Instead, think of the schema of a data set as its public interface. Create tables, views, or other data sets that expose a consistent schema and can be modified if business logic changes.</p>
+<h3><a id="user-content-analytic-code-is-an-asset" class="anchor" aria-hidden="true" href="#analytic-code-is-an-asset"><span aria-hidden="true" class="octicon octicon-link"></span></a>Analytic code is an asset</h3>
+<p>Data collection, processing, and analysis have all grown exponentially in capability in the past decades. As a result, analytics as a practice provides more value than ever to organizations.</p>
+<blockquote>
+<p>Today, the success of an organization can be directly linked to its ability to make effective, fast decisions based on data.</p>
+</blockquote>
+<p>If analytics is core to the success of an organization, the code, processes, and tooling required to produce that analysis are core organizational investments.We believe a mature analytics organization’s workflow should have the following characteristics so as to protect and grow that investment:</p>
+<h3><a id="user-content-environments" class="anchor" aria-hidden="true" href="#environments"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Environments</strong></h3>
+<p>Analytics requires multiple environments. Analysts need the freedom to work without impacting users, while users need service level guarantees so that they can trust the data they rely on to do their jobs.</p>
+<h3><a id="user-content-service-level-guarantees" class="anchor" aria-hidden="true" href="#service-level-guarantees"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Service level guarantees</strong></h3>
+<p>Analytics teams should stand behind the accuracy of all analysis that has been promoted to production. Errors should be treated with the same level of urgency as bugs in a production product. Any code being retired from production should go through a deprecation process.</p>
+<h3><a id="user-content-design-for-maintainability" class="anchor" aria-hidden="true" href="#design-for-maintainability"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Design for maintainability</strong></h3>
+<p>Most of the cost involved in software development is in the maintenance phase. Because of this, software engineers write code with an eye towards maintainability.</p>
+<p>Analytic code, however, is often fragile. Changes in underlying data break most analytic code in ways that are hard to predict and to fix.</p>
+<p>Analytic code should be written with an eye towards maintainability. Future changes to the schema and data should be anticipated and code should be written to minimize the corresponding impact.</p>
+<h3><a id="user-content-analytics-workflows-require-automated-tools" class="anchor" aria-hidden="true" href="#analytics-workflows-require-automated-tools"><span aria-hidden="true" class="octicon octicon-link"></span></a>Analytics workflows require automated tools</h3>
+<p>Frequently, much of an analytic workflow is manual. Piping data from source to destination, from stage to stage, can eat up a majority of an analyst’s time. Software engineers build extensive tooling to support the manual portions of their jobs. In order to implement the analytics workflows we are suggesting, similar tools will be required.</p>
+<p>Here’s one example of an automated workflow:</p>
+<ol>
+<li>models and analysis are downloaded from multiple source control repositories,</li>
+<li>code is configured for the given environment,</li>
+<li>code is tested, and</li>
+<li>code is deployed.</li>
+</ol>
+<p>Workflows like this should be built to execute with a single command.</p>
+<p>Analyst Collective is an open source project created with a single goal: <strong>build tools to facilitate this analytic workflow</strong>. Today, we’re announcing the release of the first version of our initial set of tools:</p>
+<ul>
+<li>
+<strong><a href="https://github.com/analyst-collective/dbt">dbt</a> (data build tool)</strong> is a deployment tool for data models. Today it supports Amazon Redshift. Future versions of dbt will a) extend it to become a package management system, enabling an open source analytics ecosystem, b) automatically run tests on top of data models, and c) extend it to other analytic databases.</li>
+<li>
+<strong><a href="https://github.com/analyst-collective/analytics">analytics</a></strong> is an open source repository of data models and analysis for common software-as-a-service applications. This code is written using conventions that enable it to be easily portable between organizations using a particular SaaS application. This repository is a proof of concept for the Analyst Collective workflow.</li>
+<li>
+<strong><a href="https://github.com/analyst-collective/data-generator">data generator</a></strong> is a tool for building robust test datasets. It allows users to specify both the schema and the business logic of a dataset and then generates realistic data conforming to this specification. Data generated in this fashion will play a key role in testing analytic code.</li>
+</ul>
+<p>All Analyst Collective code is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" rel="nofollow">Apache License v 2.0</a>.</p>
+<p>Analyst Collective is sponsored by <a href="https://rjmetrics.com/product/pipeline" rel="nofollow">RJMetrics Pipeline</a>, a tool that helps data engineers and analysts consolidate data into Amazon Redshift. I and the other core Analyst Collective members are employees of RJMetrics and use Pipeline heavily ourselves, but the Analyst Collective Viewpoint and code is equally relevant regardless of how you get your data into Redshift.</p>
+<p>With this release we’re officially opening the doors for feedback and contributions from the community. We’d love to hear what you think as we continue to make investments in Analyst Collective. Step through our <a href="http://dbt.readthedocs.io/en/master/" rel="nofollow">getting started guide</a> and <a href="http://ac-slackin.herokuapp.com/" rel="nofollow">join our Slack community</a>!</p>
+
+        </body>
+    </html>
+    

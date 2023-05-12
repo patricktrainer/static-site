@@ -1,0 +1,166 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Binomial options pricing model - Wikipedia aad15f50e3744cf0aed55b7aa8320dea</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-binomial-options-pricing-model---wikipedia" class="anchor" aria-hidden="true" href="#binomial-options-pricing-model---wikipedia"><span aria-hidden="true" class="octicon octicon-link"></span></a>Binomial options pricing model - Wikipedia</h1>
+<p>Created: Dec 5, 2019 10:45 AM
+Tags: Finance, Statistics
+URL: <a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">https://en.wikipedia.org/wiki/Binomial_options_pricing_model</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/Arbre_Binomial_Options_Reelles.png"><img src="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/Arbre_Binomial_Options_Reelles.png" alt="Arbre_Binomial_Options_Reelles.png" style="max-width: 100%;"></a></p>
+<p>In <a href="https://en.wikipedia.org/wiki/Finance" rel="nofollow">finance</a>, the <strong>binomial options pricing model</strong> (<strong>BOPM</strong>) provides a generalizable <a href="https://en.wikipedia.org/wiki/Numerical_analysis" rel="nofollow">numerical method</a> for the valuation of <a href="https://en.wikipedia.org/wiki/Option_(finance)" rel="nofollow">options</a>. Essentially, the model uses a "discrete-time" (<a href="https://en.wikipedia.org/wiki/Lattice_model_(finance)" rel="nofollow">lattice based</a>) model of the varying price over time of the <a href="https://en.wikipedia.org/wiki/Underlying" rel="nofollow">underlying</a> financial instrument, addressing cases where the <a href="https://en.wikipedia.org/wiki/Closed-form_expression" rel="nofollow">closed-form</a> <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_formula" rel="nofollow">Black–Scholes formula</a> is wanting.</p>
+<p>The binomial model was first proposed by <a href="https://en.wikipedia.org/wiki/William_F._Sharpe" rel="nofollow">William Sharpe</a> in the 1978 edition of Investments (<a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number" rel="nofollow">ISBN</a> <a href="https://en.wikipedia.org/wiki/Special:BookSources/013504605X" rel="nofollow">013504605X</a>),<a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[1]</a> and formalized by <a href="https://en.wikipedia.org/wiki/John_Carrington_Cox" rel="nofollow">Cox</a>, <a href="https://en.wikipedia.org/wiki/Stephen_Ross_(economist)" rel="nofollow">Ross</a> and <a href="https://en.wikipedia.org/wiki/Mark_Rubinstein" rel="nofollow">Rubinstein</a> in 1979<a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[2]</a> and by Rendleman and Bartter in that same year.<a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[3]</a></p>
+<h2><a id="user-content-use-of-the-modeledit" class="anchor" aria-hidden="true" href="#use-of-the-modeledit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use of the model[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=1" rel="nofollow">edit</a>]</h2>
+<p>The Binomial options pricing model approach has been widely used since it is able to handle a variety of conditions for which other models cannot easily be applied. This is largely because the BOPM is based on the description of an <a href="https://en.wikipedia.org/wiki/Underlying_instrument" rel="nofollow">underlying instrument</a> over a period of time rather than a single point. As a consequence, it is used to value <a href="https://en.wikipedia.org/wiki/American_option" rel="nofollow">American options</a> that are exercisable at any time in a given interval as well as <a href="https://en.wikipedia.org/wiki/Bermudan_option" rel="nofollow">Bermudan options</a> that are exercisable at specific instances of time. Being relatively simple, the model is readily implementable in computer <a href="https://en.wikipedia.org/wiki/Software" rel="nofollow">software</a> (including a <a href="https://en.wikipedia.org/wiki/Spreadsheet" rel="nofollow">spreadsheet</a>).</p>
+<p>Although computationally slower than the <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model" rel="nofollow">Black–Scholes formula</a>, it is more accurate, particularly for longer-dated options on securities with <a href="https://en.wikipedia.org/wiki/Dividend" rel="nofollow">dividend</a> payments. For these reasons, various versions of the binomial model are widely used by practitioners in the options markets.[<a href="https://en.wikipedia.org/wiki/Wikipedia:Citation_needed" rel="nofollow">citation needed</a>]</p>
+<p>For options with several sources of uncertainty (e.g., <a href="https://en.wikipedia.org/wiki/Real_option" rel="nofollow">real options</a>) and for options with complicated features (e.g., <a href="https://en.wikipedia.org/wiki/Asian_option" rel="nofollow">Asian options</a>), binomial methods are less practical due to several difficulties, and <a href="https://en.wikipedia.org/wiki/Monte_Carlo_option_model" rel="nofollow">Monte Carlo option models</a> are commonly used instead. When simulating a small number of time steps <a href="https://en.wikipedia.org/wiki/Monte_Carlo_simulation" rel="nofollow">Monte Carlo simulation</a> will be more computationally time-consuming than BOPM (cf. <a href="https://en.wikipedia.org/wiki/Monte_Carlo_methods_in_finance" rel="nofollow">Monte Carlo methods in finance</a>). However, the worst-case runtime of BOPM will be <a href="https://en.wikipedia.org/wiki/Exponential_time" rel="nofollow">O(2n)</a>, where n is the number of time steps in the simulation. Monte Carlo simulations will generally have a <a href="https://en.wikipedia.org/wiki/Polynomial_time" rel="nofollow">polynomial time complexity</a>, and will be faster for large numbers of simulation steps. <a href="https://en.wikipedia.org/wiki/Monte_Carlo_simulation" rel="nofollow">Monte Carlo simulations</a> are also less susceptible to sampling errors, since binomial techniques use discrete time units. This becomes more true the smaller the discrete units become.</p>
+<h2><a id="user-content-methodedit" class="anchor" aria-hidden="true" href="#methodedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Method[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=2" rel="nofollow">edit</a>]</h2>
+<p><a target="_blank" rel="noopener noreferrer" href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/500px-Arbre_Binomial_Options_Reelles.png"><img src="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/500px-Arbre_Binomial_Options_Reelles.png" alt="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/500px-Arbre_Binomial_Options_Reelles.png" style="max-width: 100%;"></a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/Untitled%20Database%20b6eb1d50a16d41d9b7acd71ea5d00381.csv">Untitled</a></p>
+<p>The binomial pricing model traces the evolution of the option's key underlying variables in discrete-time. This is done by means of a binomial lattice (tree), for a number of time steps between the valuation and expiration dates. Each node in the lattice represents a possible price of the underlying at a given point in time.</p>
+<p>Valuation is performed iteratively, starting at each of the final nodes (those that may be reached at the time of expiration), and then <a href="https://en.wikipedia.org/wiki/Backward_induction" rel="nofollow">working backwards</a> through the tree towards the first node (valuation date). The value computed at each stage is the value of the option at that point in time.</p>
+<p>Option valuation using this method is, as described, a three-step process:</p>
+<ol>
+<li>price tree generation,</li>
+<li>calculation of option value at each final node,</li>
+<li>sequential calculation of the option value at each preceding node.</li>
+</ol>
+<h3><a id="user-content-step-1-create-the-binomial-price-treeedit" class="anchor" aria-hidden="true" href="#step-1-create-the-binomial-price-treeedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Step 1: Create the binomial price tree[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=3" rel="nofollow">edit</a>]</h3>
+<p>The tree of prices is produced by working forward from valuation date to expiration.</p>
+<p>At each step, it is assumed that the <a href="https://en.wikipedia.org/wiki/Underlying_instrument" rel="nofollow">underlying instrument</a> will move up or down by a specific factor (</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c3e6bb763d22c20916ed4f0bb6bd49d7470cffd8">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c3e6bb763d22c20916ed4f0bb6bd49d7470cffd8</a></p>
+<p>or</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/e85ff03cbe0c7341af6b982e47e9f90d235c66ab">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/e85ff03cbe0c7341af6b982e47e9f90d235c66ab</a></p>
+<p>) per step of the tree (where, by definition,</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9418b55d44983bad84c6530b9368538a9892b9ef">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9418b55d44983bad84c6530b9368538a9892b9ef</a></p>
+<p>and</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/5f15d45850d0fb6f9b86b6ff899f71e679e67374">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/5f15d45850d0fb6f9b86b6ff899f71e679e67374</a></p>
+<p>). So, if</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/4611d85173cd3b508e67077d4a1252c9c05abca2">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/4611d85173cd3b508e67077d4a1252c9c05abca2</a></p>
+<p>is the current price, then in the next period the price will either be</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/d2d300295bbe9a42f6778c122702ea649aa6deb8">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/d2d300295bbe9a42f6778c122702ea649aa6deb8</a></p>
+<p>or</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/8eda62013c246ced6f1cba53b03e546e3aaa1e12">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/8eda62013c246ced6f1cba53b03e546e3aaa1e12</a></p>
+<p>.</p>
+<p>The up and down factors are calculated using the underlying <a href="https://en.wikipedia.org/wiki/Volatility_(finance)" rel="nofollow">volatility</a>,</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/59f59b7c3e6fdb1d0365a494b81fb9a696138c36">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/59f59b7c3e6fdb1d0365a494b81fb9a696138c36</a></p>
+<p>, and the time duration of a step,</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/65658b7b223af9e1acc877d848888ecdb4466560">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/65658b7b223af9e1acc877d848888ecdb4466560</a></p>
+<p>, measured in years (using the <a href="https://en.wikipedia.org/wiki/Day_count_convention" rel="nofollow">day count convention</a> of the underlying instrument). From the condition that the <a href="https://en.wikipedia.org/wiki/Variance" rel="nofollow">variance</a> of the log of the price is</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b0e1c37781b3dc7893867cccbc045477dacaf2f0">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b0e1c37781b3dc7893867cccbc045477dacaf2f0</a></p>
+<p>, we have:</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/85bfc1738db1939b56899f171150474d163b6364">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/85bfc1738db1939b56899f171150474d163b6364</a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c3033d03393e1aaf762ffe28d1c979aedf3b236e">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c3033d03393e1aaf762ffe28d1c979aedf3b236e</a></p>
+<p>Above is the original Cox, Ross, &amp; Rubinstein (CRR) method; there are various other techniques for generating the lattice, such as "the equal probabilities" tree, see.<a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[4][5]</a></p>
+<p>The CRR method ensures that the tree is recombinant, i.e. if the underlying asset moves up and then down (u,d), the price will be the same as if it had moved down and then up (d,u)—here the two paths merge or recombine. This property reduces the number of tree nodes, and thus accelerates the computation of the option price.</p>
+<p>This property also allows that the value of the underlying asset at each node can be calculated directly via formula, and does not require that the tree be built first. The node-value will be:</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/7a987c3b255bd6672f2ac4f5a46592004575067c">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/7a987c3b255bd6672f2ac4f5a46592004575067c</a></p>
+<p>Where</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/d73a2c58c0ef96f8d3052f27c743edbda96ae7d6">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/d73a2c58c0ef96f8d3052f27c743edbda96ae7d6</a></p>
+<p>is the number of up ticks and</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/0b86cf1e41ad94827d86efab7fbc998502df0ecf">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/0b86cf1e41ad94827d86efab7fbc998502df0ecf</a></p>
+<p>is the number of down ticks.</p>
+<h3><a id="user-content-step-2-find-option-value-at-each-final-nodeedit" class="anchor" aria-hidden="true" href="#step-2-find-option-value-at-each-final-nodeedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Step 2: Find Option value at each final node[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=4" rel="nofollow">edit</a>]</h3>
+<p>At each final node of the tree—i.e. at expiration of the option—the option value is simply its <a href="https://en.wikipedia.org/wiki/Option_time_value" rel="nofollow">intrinsic</a>, or exercise, value.</p>
+<p><a href="https://en.wikipedia.org/wiki/Extreme_value" rel="nofollow">Max</a> [ (Sn − K), 0 ], for a <a href="https://en.wikipedia.org/wiki/Call_option" rel="nofollow">call option</a> Max [ (K − Sn), 0 ], for a <a href="https://en.wikipedia.org/wiki/Put_option" rel="nofollow">put option</a>:</p>
+<p>Where K is the <a href="https://en.wikipedia.org/wiki/Strike_price" rel="nofollow">strike price</a> and</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9f049ac28d4ac8097b625f9d71c1f22b2ebd1bc4">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9f049ac28d4ac8097b625f9d71c1f22b2ebd1bc4</a></p>
+<p>is the spot price of the underlying asset at the nth period.</p>
+<h3><a id="user-content-step-3-find-option-value-at-earlier-nodesedit" class="anchor" aria-hidden="true" href="#step-3-find-option-value-at-earlier-nodesedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Step 3: Find Option value at earlier nodes[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=5" rel="nofollow">edit</a>]</h3>
+<p>Once the above step is complete, the option value is then found for each node, starting at the penultimate time step, and working back to the first node of the tree (the valuation date) where the calculated result is the value of the option.</p>
+<p>In overview: the "binomial value" is found at each node, using the <a href="https://en.wikipedia.org/wiki/Risk-neutral_measure" rel="nofollow">risk neutrality</a> assumption; see <a href="https://en.wikipedia.org/wiki/Rational_pricing" rel="nofollow">Risk neutral valuation</a>. If exercise is permitted at the node, then the model takes the greater of binomial and exercise value at the node.</p>
+<p>The steps are as follows:</p>
+<ol>
+<li>
+<p>Under the risk neutrality assumption, today's <a href="https://en.wikipedia.org/wiki/Fair_value" rel="nofollow">fair price</a> of a <a href="https://en.wikipedia.org/wiki/Derivative_(finance)" rel="nofollow">derivative</a> is equal to the <a href="https://en.wikipedia.org/wiki/Expected_value" rel="nofollow">expected value</a> of its future payoff discounted by the <a href="https://en.wikipedia.org/wiki/Risk-free_interest_rate" rel="nofollow">risk free rate</a>. Therefore, expected value is calculated using the option values from the later two nodes ( and ) weighted by their respective probabilities—"probability" <strong>p</strong> of an up move in the underlying, and "probability" <strong>(1−p)</strong> of a down move. The expected value is then discounted at <strong>r</strong>, the <a href="https://en.wikipedia.org/wiki/Risk-free_interest_rate" rel="nofollow">risk free rate</a> corresponding to the life of the option.</p>
+<p>Option up</p>
+<p>Option down</p>
+<p>The following formula to compute the <a href="https://en.wikipedia.org/wiki/Expectation_value" rel="nofollow">expectation value</a> is applied at each node:</p>
+<p>, or</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b75e23dc7ad848aee9b22bb4cef7cb97ae667b83">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b75e23dc7ad848aee9b22bb4cef7cb97ae667b83</a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/00282af864f696abbe09d86960fe7d10ed44f0f4">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/00282af864f696abbe09d86960fe7d10ed44f0f4</a></p>
+<p>where  is the option's value for the  node at time t,</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/6586a79a20630949cb9f3809b10bc9ba637166cb">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/6586a79a20630949cb9f3809b10bc9ba637166cb</a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b20367c858b407ee650081aad55d73bc9bfb1850">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/b20367c858b407ee650081aad55d73bc9bfb1850</a></p>
+<p>is chosen such that the related <a href="https://en.wikipedia.org/wiki/Binomial_distribution" rel="nofollow">binomial distribution</a> simulates the <a href="https://en.wikipedia.org/wiki/Geometric_Brownian_motion" rel="nofollow">geometric Brownian motion</a> of the underlying stock with parameters <strong>r</strong> and <strong>σ</strong>,</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/30baa98e7511726459fb5f5fd0de92a05366b7a5">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/30baa98e7511726459fb5f5fd0de92a05366b7a5</a></p>
+<p>q is the <a href="https://en.wikipedia.org/wiki/Dividend_yield" rel="nofollow">dividend yield</a> of the underlying corresponding to the life of the option. It follows that in a risk-neutral world futures price should have an expected growth rate of zero and therefore we can consider  for futures.</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9e6bb6ede6621aa135f419f86549cffc92479e38">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/9e6bb6ede6621aa135f419f86549cffc92479e38</a></p>
+<p>Note that for p to be in the interval  the following condition on  has to be satisfied .</p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c79c6838e423c1ed3c7ea532a56dc9f9dae8290b">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/c79c6838e423c1ed3c7ea532a56dc9f9dae8290b</a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/8c28867ecd34e2caed12cf38feadf6a81a7ee542">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/8c28867ecd34e2caed12cf38feadf6a81a7ee542</a></p>
+<p><a href="Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/4fe08220c8b2f64274902355b60d96d5963b2143">Binomial%20options%20pricing%20model%20-%20Wikipedia%20aad15f50e3744cf0aed55b7aa8320dea/4fe08220c8b2f64274902355b60d96d5963b2143</a></p>
+<p>(Note that the alternative valuation approach, <a href="https://en.wikipedia.org/wiki/Arbitrage-free" rel="nofollow">arbitrage-free</a> pricing, yields identical results; see “<a href="https://en.wikipedia.org/wiki/Rational_pricing" rel="nofollow">delta-hedging</a>”.)</p>
+</li>
+<li>
+<p>This result is the "Binomial Value". It represents the fair price of the derivative at a particular point in time (i.e. at each node), given the evolution in the price of the underlying to that point. It is the value of the option if it were to be held—as opposed to exercised at that point.</p>
+</li>
+<li>
+<p>Depending on the style of the option, evaluate the possibility of early exercise at each node: if (1) the option can be exercised, and (2) the exercise value exceeds the Binomial Value, then (3) the value at the node is the exercise value.</p>
+<ul>
+<li>For a <a href="https://en.wikipedia.org/wiki/European_option" rel="nofollow">European option</a>, there is no option of early exercise, and the binomial value applies at all nodes.</li>
+<li>For an <a href="https://en.wikipedia.org/wiki/American_option" rel="nofollow">American option</a>, since the option may either be held or exercised prior to expiry, the value at each node is: Max (Binomial Value, Exercise Value).</li>
+<li>For a <a href="https://en.wikipedia.org/wiki/Bermudan_option" rel="nofollow">Bermudan option</a>, the value at nodes where early exercise is allowed is: Max (Binomial Value, Exercise Value); at nodes where early exercise is not allowed, only the binomial value applies.</li>
+</ul>
+</li>
+</ol>
+<p>In calculating the value at the next time step calculated—i.e. one step closer to valuation—the model must use the value selected here, for “Option up”/“Option down” as appropriate, in the formula at the node. The aside <a href="https://en.wikipedia.org/wiki/Algorithm" rel="nofollow">algorithm</a> demonstrates the approach computing the price of an American put option, although is easily generalized for calls and for European and Bermudan options:</p>
+<h2><a id="user-content-relationship-with-blackscholesedit" class="anchor" aria-hidden="true" href="#relationship-with-blackscholesedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relationship with Black–Scholes[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=6" rel="nofollow">edit</a>]</h2>
+<p>Similar <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes" rel="nofollow">assumptions</a> underpin both the binomial model and the <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes" rel="nofollow">Black–Scholes model</a>, and the binomial model thus provides a <a href="https://en.wikipedia.org/wiki/Discrete_time_and_continuous_time" rel="nofollow">discrete time</a> <a href="https://en.wikipedia.org/wiki/Approximation" rel="nofollow">approximation</a> to the continuous process underlying the Black–Scholes model. The binomial model assumes that movements in the price follow a <a href="https://en.wikipedia.org/wiki/Binomial_distribution" rel="nofollow">binomial distribution</a>; for many trials, this binomial distribution approaches the <a href="https://en.wikipedia.org/wiki/Lognormal_distribution" rel="nofollow">lognormal distribution</a> assumed by Black–Scholes. In this case then, for <a href="https://en.wikipedia.org/wiki/European_option" rel="nofollow">European options</a> without dividends, the binomial model value converges on the Black–Scholes formula value as the number of time steps increases. <a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[5]</a> <a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[4]</a></p>
+<p>In addition, when analyzed as a numerical procedure, the CRR binomial method can be viewed as a <a href="https://en.wikipedia.org/wiki/Special_case" rel="nofollow">special case</a> of the <a href="https://en.wikipedia.org/wiki/Finite_difference_method" rel="nofollow">explicit finite difference method</a> for the Black–Scholes <a href="https://en.wikipedia.org/wiki/Partial_differential_equation" rel="nofollow">PDE</a>; see <a href="https://en.wikipedia.org/wiki/Finite_difference_methods_for_option_pricing" rel="nofollow">finite difference methods for option pricing</a>.[<a href="https://en.wikipedia.org/wiki/Wikipedia:Citation_needed" rel="nofollow">citation needed</a>]</p>
+<p>In 2011, <a href="https://en.wikipedia.org/w/index.php?title=Evangelos_Georgiadis_(mathematician)&amp;action=edit&amp;redlink=1" rel="nofollow">Georgiadis</a> showed that the binomial options pricing model has a lower bound on complexity that rules out a <a href="https://en.wikipedia.org/wiki/Closed-form_expression" rel="nofollow">closed-form solution</a>.<a href="https://en.wikipedia.org/wiki/Binomial_options_pricing_model" rel="nofollow">[6]</a></p>
+<h2><a id="user-content-see-alsoedit" class="anchor" aria-hidden="true" href="#see-alsoedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>See also[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=7" rel="nofollow">edit</a>]</h2>
+<ul>
+<li>
+<a href="https://en.wikipedia.org/wiki/Trinomial_tree" rel="nofollow">Trinomial tree</a>, a similar model with three possible paths per node.</li>
+<li><a href="https://en.wikipedia.org/wiki/Tree_(data_structure)" rel="nofollow">Tree (data structure)</a></li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model" rel="nofollow">Black–Scholes</a>: binomial lattices are able to handle a variety of conditions for which Black–Scholes cannot be applied.</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Monte_Carlo_option_model" rel="nofollow">Monte Carlo option model</a>, used in the valuation of options with complicated features that make them difficult to value through other methods.</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Real_options_analysis" rel="nofollow">Real options analysis</a>, where the BOPM is widely used.</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Quantum_finance" rel="nofollow">Quantum finance</a>, quantum binomial pricing model.</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Mathematical_finance" rel="nofollow">Mathematical finance</a>, which has a list of related articles.</li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Employee_stock_option" rel="nofollow">Employee stock option#Valuation</a>, where the BOPM is widely used.</li>
+<li><a href="https://en.wikipedia.org/wiki/Implied_binomial_tree" rel="nofollow">Implied binomial tree</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Edgeworth_binomial_tree" rel="nofollow">Edgeworth binomial tree</a></li>
+</ul>
+<h2><a id="user-content-edit" class="anchor" aria-hidden="true" href="#edit"><span aria-hidden="true" class="octicon octicon-link"></span></a>[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=8" rel="nofollow">edit</a>]</h2>
+<h2><a id="user-content-external-linksedit" class="anchor" aria-hidden="true" href="#external-linksedit"><span aria-hidden="true" class="octicon octicon-link"></span></a>External links[<a href="https://en.wikipedia.org/w/index.php?title=Binomial_options_pricing_model&amp;action=edit&amp;section=9" rel="nofollow">edit</a>]</h2>
+<ul>
+<li>
+<a href="http://www.sjsu.edu/faculty/watkins/binomial.htm" rel="nofollow">The Binomial Model for Pricing Options</a>, Prof. Thayer Watkins</li>
+<li>
+<a href="http://faculty.darden.virginia.edu/conroyb/derivatives/Binomial%20Option%20Pricing%20_f-0943_.pdf" rel="nofollow">Binomial Option Pricing</a> (<a href="https://en.wikipedia.org/wiki/PDF" rel="nofollow">PDF</a>), Prof. Robert M. Conroy</li>
+<li>
+<a href="http://demonstrations.wolfram.com/BinomialOptionPricingModel/" rel="nofollow">Binomial Option Pricing Model</a> by Fiona Maclachlan, <a href="https://en.wikipedia.org/wiki/The_Wolfram_Demonstrations_Project" rel="nofollow">The Wolfram Demonstrations Project</a>
+</li>
+<li>
+<a href="http://ssrn.com/abstract=844104" rel="nofollow">On the Irrelevance of Expected Stock Returns in the Pricing of Options in the Binomial Model: A Pedagogical Note</a> by Valeri Zakamouline</li>
+<li>
+<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2428763" rel="nofollow">A Simple Derivation of Risk-Neutral Probability in the Binomial Option Pricing Model</a> by Greg Orosi</li>
+</ul>
+
+        </body>
+    </html>
+    

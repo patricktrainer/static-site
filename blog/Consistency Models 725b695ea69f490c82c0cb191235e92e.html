@@ -1,0 +1,81 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Consistency Models 725b695ea69f490c82c0cb191235e92e</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-consistency-models" class="anchor" aria-hidden="true" href="#consistency-models"><span aria-hidden="true" class="octicon octicon-link"></span></a>Consistency Models</h1>
+<p>Created: Jun 18, 2020 3:07 PM
+URL: <a href="https://jepsen.io/consistency" rel="nofollow">https://jepsen.io/consistency</a></p>
+<p>This clickable map (adapted from <a href="http://www.vldb.org/pvldb/vol7/p181-bailis.pdf" rel="nofollow">Bailis, Davidson, Fekete et al</a> and <a href="https://arxiv.org/pdf/1512.00168.pdf" rel="nofollow">Viotti &amp; Vukolic</a>) shows the relationships between common consistency models for concurrent systems. Arrows show the relationship between consistency models. For instance, strict serializable implies both serializability and linearizability, linearizability implies sequential consistency, and so on. Colors show how available each model is, for a distributed system on an asynchronous network.</p>
+<p>Jepsen analyses the safety properties of distributed systems–most notably, identifying violations of consistency models. But what are consistency models? What phenomena do they allow? What kind of consistency does a given program really need?</p>
+<p>In this reference guide, we provide basic definitions, intuitive explanations, and theoretical underpinnings of various consistency models for engineers and academics alike.</p>
+<p><em>Distributed</em> systems are a type of <em>concurrent</em> system, and much of the literature on concurrency control applies directly to distributed systems. Indeed, most of the concepts we’re going to discuss were originally formulated for single-node concurrent systems. There are, however, some important differences in <em>availability</em> and <em>performance</em>.</p>
+<p>Systems have a logical <em>state</em> which changes over time. For instance, a simple system could be a single integer variable, with states like <code>0</code>, <code>3</code>, and <code>42</code>. A mutex has only two states: locked or unlocked. The states of a key-value store might be maps of keys to values, for instance: <code>{cat: 1, dog: 1}</code>, or <code>{cat: 4}</code>.</p>
+<p>A <em>process</em><a href="https://jepsen.io/consistency" rel="nofollow">1</a> is a logically single-threaded program which performs computation and runs operations. Processes are never asynchronous—we model asynchronous computation via independent processes. We say “logically single-threaded” to emphasize that while a process can only do one thing at a time, its implementation may be spread across multiple threads, operating system processes, or even physical nodes—just so long as those components provide the illusion of a coherent singlethreaded program.</p>
+<p>An operation is a transition from state to state. For instance, a single-variable system might have operations like <code>read</code> and <code>write</code>, which get and set the value of that variable, respectively. A counter might have operations like <em>increments</em>, <em>decrements</em>, and <em>reads</em>. An SQL store might have operations like <em>selects</em> and <em>updates</em>.</p>
+<p>In theory, we could give every state transition a unique name. A lock has exactly two transition: <code>lock</code> and <code>unlock</code>. An integer register has an infinite number of reads and writes: <code>read-the-value-1</code>, <code>read-the-value-2</code>, …, and <code>write-1</code>, <code>write-2</code>, ….</p>
+<p>To make this more tractable, we break up these transitions into <em>functions</em> like <code>read</code>, <code>write</code>, <code>cas</code>, <code>increment</code>, etc., and <em>values</em> that parameterize those functions. In a single register system, a write of 1 could be written:</p>
+<pre><code>{:f :write, :value 1}
+
+</code></pre>
+<p>Given a key-value store, we might increment the value of key “a” by 3 like so:</p>
+<pre><code>{:f :increment, :value ["a" 3]}
+
+</code></pre>
+<p>In a transactional store, the value could be a complex transaction. Here we read the current value of <code>a</code>, finding 2, and set <code>b</code> to <code>3</code>, in a single state transition:</p>
+<pre><code>{:f :txn, :value [[:read "a" 2] [:write "b" 3]]}
+
+</code></pre>
+<p>Operations, in general, take time. In a multithreaded program, an operation might be a function call. In distributed systems, an operation might mean sending a request to a server, and receiving a response.</p>
+<p>To model this, we say that each operation has an <em>invocation time</em> and, should it complete, a strictly greater <em>completion time</em>, both given by an imaginary<a href="https://jepsen.io/consistency" rel="nofollow">2</a>, perfectly synchronized, globally accessible clock.<a href="https://jepsen.io/consistency" rel="nofollow">3</a> We refer to these clocks as providing a <em>real-time</em> order, as opposed to clocks that only track causal ordering.<a href="https://jepsen.io/consistency" rel="nofollow">4</a></p>
+<p>Since operations take time, two operations might overlap in time. For instance, given two operations A and B, A could begin, B could begin, A could complete, and then B could complete. We say that two operations A and B are <em>concurrent</em> if there is some time during which A and B are both executing.</p>
+<p>Processes are single-threaded, which implies that no two operations executed by the same process are ever concurrent.</p>
+<p>If an operation does not complete for some reason (perhaps because it timed out or a critical component crashed) that operation <em>has no completion time</em>, and must, in general, be considered concurrent with every operation after its invocation. It may or may not execute.</p>
+<p>A process with an operation is in this state is effectively stuck, and can never invoke another operation again. If it <em>were</em> to invoke another operation, it would violate our single-threaded constraint: processes only do one thing at a time.</p>
+<p>A <em>history</em> is a collection of operations, including their concurrent structure.</p>
+<p>Some papers represent this as a set of operations, where each operation includes two numbers, representing their invocation and completion time; concurrent structure is inferred by comparing the time windows between processes.</p>
+<p>Jepsen represents a history as an ordered list of invocation and completion operations, effectively splitting each operation in two. This representation is more convenient for algorithms which iterate over the history, keeping a representation of concurrent operations and possible states.</p>
+<p>A <em>consistency model</em> is a set of histories. We use consistency models to define which histories are “good”, or “legal” in a system. When we say a history “violates serializability” or “is not serializable”, we mean that the history is not in the set of serializable histories.</p>
+<p>We say that consistency model A implies model B if A is a subset of B. For example, linearizability implies sequential consistency because every history which is linearizable is also sequentially consistent. This allows us to relate consistency models in a hierarchy.</p>
+<p>Speaking informally, we refer to smaller, more restrictive consistency models as “stronger”, and larger, more permissive consistency models as “weaker”.</p>
+<p>Not all consistency models are directly comparable. Often, two models allow different behavior, but neither contains the other.</p>
+<ol>
+<li>
+<p><a href="https://jepsen.io/consistency" rel="nofollow"><g-emoji class="g-emoji" alias="leftwards_arrow_with_hook" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/21a9.png">↩</g-emoji></a></p>
+<p>Different texts may refer to processes as nodes, hosts, actors, agents, sites, or threads, often with subtle distinctions depending on context.</p>
+</li>
+<li>
+<p><a href="https://jepsen.io/consistency" rel="nofollow"><g-emoji class="g-emoji" alias="leftwards_arrow_with_hook" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/21a9.png">↩</g-emoji></a></p>
+<p>This magical synchronized clock doesn’t actually need to exist, but some consistency models imply that <em>if such a clock were to exist</em>, some operations would happen before others.</p>
+</li>
+<li>
+<p><a href="https://jepsen.io/consistency" rel="nofollow"><g-emoji class="g-emoji" alias="leftwards_arrow_with_hook" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/21a9.png">↩</g-emoji></a></p>
+<p>You may have heard “relativity means there is no such thing as simultaneity” used as an argument that synchronized clocks cannot exist. This is a misunderstanding: the equations of special and general relativity provide exact equations for time transformations, and it is possible to define any number of sensible, globally-synchronized time clocks. Consistency constraints that refer to these clocks will depend on the <em>choice</em> of clock, e.g. depending on one’s reference frame, a system might or might not provide linearizability. The good news is that a.) for all intents and purposes, clocks on earth are so close to each other’s velocities and accelerations that errors are much smaller than side-channel latencies, and b.) many of the algorithms for ensuring real-time bounds in asynchronous networks use causal messages to enforce a real-time order, and the resulting order is therefore invariant across <em>all</em> reference frames.</p>
+</li>
+<li>
+<p><a href="https://jepsen.io/consistency" rel="nofollow"><g-emoji class="g-emoji" alias="leftwards_arrow_with_hook" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/21a9.png">↩</g-emoji></a></p>
+<p>“Real-time” also refers to programs that guarantee execution in a certain time duration, but we’re using the term to refer to time in the real world, as opposed to possibly unsynchronized local clocks, or some kind of logical temporal relationship.</p>
+</li>
+</ol>
+<p>Copyright © 2016–2020 Jepsen, LLC.</p>
+<p>We do our best to provide accurate information, but if you see a mistake, please <a href="mailto:errata@jepsen.io">let us know</a>.</p>
+
+        </body>
+    </html>
+    

@@ -1,0 +1,94 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>The Bash Guide 878cec9b3dfd48de8733ca49b0e0e1b9</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-the-bash-guide" class="anchor" aria-hidden="true" href="#the-bash-guide"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Bash Guide</h1>
+<p>Created: Mar 21, 2020 10:12 PM
+URL: <a href="https://guide.bash.academy/" rel="nofollow">https://guide.bash.academy/</a></p>
+<p>This guide is an introduction to basic and advanced concepts of the bash shell.</p>
+<p>It teaches both newcomers and long-time users the best, safest and most robust ways of writing powerful bash scripts as well as making efficient and speedy interactive use of the shell.</p>
+<p>This guide has gone through several iterations and is the result of a severe lack of consistent, clear and reliable language on the topic on the rest of the Internet as well as the public library or book stores.</p>
+<h2><a id="user-content-authorship" class="anchor" aria-hidden="true" href="#authorship"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorship</h2>
+<p>The primary author and maintainer of this guide is <a href="https://www.lhunath.com/" rel="nofollow">lhunath (Maarten Billemont)</a>.</p>
+<p>This guide is open source, licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow">Creative Commons Attribution-ShareAlike 4.0 International License</a> (CC-BY-SA). The source code is available at <a href="https://github.com/lhunath/guide.bash.academy">GitHub</a>. Go there to report issues or fork the guide to contribute changes (big or small). To keep up to date with new chapters or improvements to this guide, you could star the GitHub project.</p>
+<p>For advice, comments, suggestions, corrections or recommendations, contact lhunath, <a href="https://github.com/lhunath/guide.bash.academy/issues">file an issue</a> or visit the freenode.org #bash community on IRC.</p>
+<p>This guide is an active work in progress. New chapters are being written and existing chapters are continuously being updated and improved.</p>
+<p>Using this guide, I am sharing my knowledge and expertise with the world freely in the hopes of benefitting you and all others like you. If you've benefitted from the knowledge and experience gained through this guide, consider "giving back" to encourage a society of open access and freedom of information. You can give back by providing feedback on the guide at the GitHub project page, making corrections by hitting the <em>edit</em> buttons on the chapter pages, sharing this guide with any of your friends that have similar interests so that they too may learn as you have, or contributing financially in gratitude for my work, time and effort put into writing and maintaining this guide.</p>
+<h2><a id="user-content-exercises" class="anchor" aria-hidden="true" href="#exercises"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exercises</h2>
+<p>After introducing new practical concepts, the guide offers a set of exercises to allow you to practice your new knowledge. For a summary of all exercises in this guide, see <a href="https://guide.bash.academy/exercises" rel="nofollow">our exercises index</a>.</p>
+<h2><a id="user-content-chapters" class="anchor" aria-hidden="true" href="#chapters"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chapters</h2>
+<ol>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/inception/" rel="nofollow">Inception</a>: What is bash, and where does it live?</p>
+<p>beta</p>
+<p>An introduction to bash, installing and starting it; the terminal, the keyboard and the display; programs, processes and how their flow of information is connected.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/commands/" rel="nofollow">Commands And Arguments</a>: How do I give bash instructions?</p>
+<p>beta</p>
+<p>About what a command is, and how to issue them; interactive mode and scripts; command syntax, searching commands and programs by name; arguments and word splitting as well as input and output redirection.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/expansions/" rel="nofollow">Variables and Expansions</a>: How do I store and work with data?</p>
+<p>alpha</p>
+<p>Bash parameters and variables; environment variables, special parameters and array parameters; expanding parameters, expansion operators, command substitution and process substitution; pathname expansion, tilde expansion and brace expansion.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/conditionals/" rel="nofollow">Tests And Conditionals</a>: Different commands for different data.</p>
+<p>draft</p>
+<p>Exit codes, success and failure, testing files, strings and numbers, handling different conditions, conditional operators and conditional compound commands.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/loops/" rel="nofollow">Loops And Functions</a>: Avoid repeating yourself.</p>
+<p>todo</p>
+<p>Iterating commands using for loops, while and until loops, select statements and grouping them in functions.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/asynchronous/" rel="nofollow">Asynchronous Commands</a>: Doing work in the background and managing jobs.</p>
+<p>todo</p>
+<p>About jobs, asynchronous commands, job control, process identifiers and signals, process management, inter-process communications.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/terminal/" rel="nofollow">Colors And Terminal Commands</a>: Advanced control over the terminal display.</p>
+<p>todo</p>
+<p>Terminals and terminal sequences, terminal identifiers, terminfo and terminal capabilities, outputting colors, moving the cursor and querying the terminal's state.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/readline/" rel="nofollow">Customizing The Prompt</a>: Changing the look and feel of the interactive shell.</p>
+<p>todo</p>
+<p>Prompting, prompt commands and the DEBUG signal, readline, bind and input modes and hotkeys, programmatic command completion.</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/advanced/" rel="nofollow">Advanced Topics</a>: About syntax sugar, specific use cases and shell tricks.</p>
+<p>todo</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/practices/" rel="nofollow">Recommendations And Pitfalls</a>: How to do things well and how to do things very, very badly.</p>
+<p>todo</p>
+</li>
+<li>
+<p>I'm done <a href="https://guide.bash.academy/external/" rel="nofollow">Noteworthy External Tools</a>: Bash is limited, but augmented by a powerful toolset.</p>
+<p>todo</p>
+</li>
+</ol>
+
+        </body>
+    </html>
+    

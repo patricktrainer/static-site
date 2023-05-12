@@ -1,0 +1,66 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Leaflet How to save various marker position in db  558a7fd1f375477193e92140fa1b0697</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-leaflet-how-to-save-various-marker-position-in-db-and-load-later---stack-overflow" class="anchor" aria-hidden="true" href="#leaflet-how-to-save-various-marker-position-in-db-and-load-later---stack-overflow"><span aria-hidden="true" class="octicon octicon-link"></span></a>Leaflet: How to save various marker position in db and load later - Stack Overflow</h1>
+<p>Created: Feb 27, 2020 2:03 PM
+URL: <a href="https://stackoverflow.com/questions/36185565/leaflet-how-to-save-various-marker-position-in-db-and-load-later" rel="nofollow">https://stackoverflow.com/questions/36185565/leaflet-how-to-save-various-marker-position-in-db-and-load-later</a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="Leaflet%20How%20to%20save%20various%20marker%20position%20in%20db%20%20558a7fd1f375477193e92140fa1b0697/apple-touch-icon2.png"><img src="Leaflet%20How%20to%20save%20various%20marker%20position%20in%20db%20%20558a7fd1f375477193e92140fa1b0697/apple-touch-icon2.png" alt="apple-touch-icon@2.png" style="max-width: 100%;"></a></p>
+<p>I would do something like this:</p>
+<pre><code>var map = L.map('mapcanvas').setView([51.505, -0.09], 13);
+
+map.on('click', function(e){
+    // Place marker
+    var marker = new L.marker(e.latlng).addTo(map);
+
+    // Ajax query to save the values:
+    var data = {
+        lat: e.latlng.lat,
+        lng: e.latlng.lng
+    }
+
+    var request = new XMLHttpRequest();
+        request.open('POST', '/my/url', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.send(data);
+});
+</code></pre>
+<p>Although it is probably better to use jQuery.</p>
+<p>You would then obtain your saved values from the database, store them in a js object, like</p>
+<pre><code>var positions = [
+    {
+        lat: 123.45
+        lng: 123.45
+    },
+    {
+        lat: 123.45
+        lng: 123.45
+    }
+]
+</code></pre>
+<p>Iterate over them and add markers:</p>
+<pre><code>for (var i in positions) {
+    new L.marker([positions[i].lat, positions[i].lng]).addTo(map);
+}
+</code></pre>
+
+        </body>
+    </html>
+    

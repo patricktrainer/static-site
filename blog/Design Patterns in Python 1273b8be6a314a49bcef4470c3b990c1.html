@@ -1,0 +1,90 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Design Patterns in Python 1273b8be6a314a49bcef4470c3b990c1</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-design-patterns-in-python" class="anchor" aria-hidden="true" href="#design-patterns-in-python"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design Patterns in Python</h1>
+<p>Created: Jun 21, 2020 6:25 PM
+URL: <a href="https://stackabuse.com/design-patterns-in-python/" rel="nofollow">https://stackabuse.com/design-patterns-in-python/</a></p>
+<h3><a id="user-content-introduction" class="anchor" aria-hidden="true" href="#introduction"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h3>
+<p>Design Patterns are reusable models for solving known and common problems in software architecture.</p>
+<p>They're best described as templates for dealing with a certain usual situation. An architect might have a template for designing certain kinds of door-frames which he fits into many of his projects, and a software engineer, or software architect, should know templates for solving frequent programming challenges.</p>
+<p>A good presentation of a design pattern should include:</p>
+<ul>
+<li>Name</li>
+<li>Motivating problem</li>
+<li>Solution</li>
+<li>Consequences</li>
+</ul>
+<h3><a id="user-content-equivalent-problems" class="anchor" aria-hidden="true" href="#equivalent-problems"><span aria-hidden="true" class="octicon octicon-link"></span></a>Equivalent Problems</h3>
+<p>If you were thinking that that's a pretty <a href="https://en.wikipedia.org/wiki/Fuzzy_logic" rel="nofollow">fuzzy</a> concept, you'd be right. For instance, we could say that the following "pattern" solves all of your problems:</p>
+<ol>
+<li>Fetch and prepare the necessary data and other resources</li>
+<li>Do the calculations needed and perform the necessary work</li>
+<li>Make logs of what you're doing</li>
+<li>Release all resources</li>
+<li>???</li>
+<li>Profit</li>
+</ol>
+<p>This is an example of thinking <em>too abstract</em>. You can't really call this a pattern because it's not really a good model for solving any problem, despite being technically applicable to any of them (including making dinner).</p>
+<p>On the other extreme, you can have solutions that are just too concrete to be called a pattern. For instance, you could wonder whether <a href="https://stackabuse.com/quicksort-in-python/" rel="nofollow">QuickSort</a> is a pattern for solving the sorting problem.</p>
+<p>It certainly is a common programming problem, and QuickSort is a good solution for it. However, it can be applied to any sorting problem with little to no modification.</p>
+<p>Once you have it in a library and you can call it, your only real job is to make your object comparable somehow, you don't really have to deal with the essence of it yourself to modify it to fit your particular problem.</p>
+<p>Equivalent problems are somewhere between these concepts. These are different problems that are sufficiently similar that you can apply a same model to them, but sufficiently different that this model has to be customized considerably to be applicable in each case.</p>
+<p>Patterns that could be applied to these sorts of problems are what we can meaningfully dub <em>design patterns</em>.</p>
+<h3><a id="user-content-why-use-design-patterns" class="anchor" aria-hidden="true" href="#why-use-design-patterns"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why use Design Patterns?</h3>
+<p>You're probably familiar with some design patterns already through practice of writing code. A lot of good programmers eventually gravitate towards them even without being explicitly taught or they just pick them up from seniors along the way.</p>
+<p>Motivations for making, learning, and utilizing design patterns are manyfold. They're a way to give names to complex abstract concepts to enable discussion and teaching.</p>
+<p>They make communication within teams faster, because someone can just use the pattern's name instead of whipping out a whiteboard. They enable you to learn from the experiences of people who came before you, rather than having to reinvent the wheel by going through the whole crucible of gradually improving practices yourself (and having to constantly cringe at your old code).</p>
+<p>Bad solutions that tend to be commonly invented because they seem logical on the first glance are often called <a href="https://en.wikipedia.org/wiki/Anti-pattern" rel="nofollow">anti-patterns</a>. In order for something to justly be called an anti-pattern it needs to be commonly reinvented and there needs to be a pattern for the same problem which solves it better.</p>
+<p>Despite the obvious utility in practice, design patterns are also useful for learning. They introduce you to many problems that you may not have considered and allow you to think about scenarios that you may not have had hands-on experience with in-depth.</p>
+<p>They're a must-learn for all, and they're an exceptionally good learning resource for all aspiring architects and developers who may be at the beginning of their careers and lacking the first-hand experience of grappling with various problems the industry provides.</p>
+<h3><a id="user-content-design-patterns-in-python-1" class="anchor" aria-hidden="true" href="#design-patterns-in-python-1"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design Patterns in Python</h3>
+<p>Traditionally, design patterns have been classified into three main categories: <a href="https://stackabuse.com/design-patterns-in-python/" rel="nofollow">Creational</a>, <a href="https://stackabuse.com/design-patterns-in-python/" rel="nofollow">Structural</a>, and <a href="https://stackabuse.com/design-patterns-in-python/" rel="nofollow">Behavioral</a>. There are other categories, like <a href="https://en.wikipedia.org/wiki/Architectural_pattern" rel="nofollow">architectural</a> or <a href="https://en.wikipedia.org/wiki/Concurrency_pattern" rel="nofollow">concurrency</a> patterns, but they're beyond the scope of this article.</p>
+<p>There are also Python-specific design patterns that are created specifically around the problems that the structure of the language itself provides or that deal with problems in special ways that are only allowed because of the structure of the language.</p>
+<p><strong>Creational Design Patterns</strong> deal with creation of classes or objects. They serve to abstract away the specifics of classes so that we'd be less dependent on their exact implementation, or so that we wouldn't have to deal with complex construction whenever we need them, or so we'd ensure some special instantiation properties. They're very useful for lowering levels of dependency and controlling how the user interacts with our classes.</p>
+<p><strong>Structural Design Patterns</strong> deal with assembling objects and classes into larger structures, while keeping those structures flexible and efficient. They tend to be really useful for improving readability and maintainability of the code, ensure functionalities are properly separated, encapsulated, and that there are effective minimal interfaces between interdependent things.</p>
+<p><strong>Behavioral Design Patterns</strong> deal with algorithms in general, and assignment of responsibility between interacting objects. For example, they're good practices in cases where you may be tempted to implement a naive solution, like <a href="https://en.wikipedia.org/wiki/Busy_waiting" rel="nofollow">busy waiting</a>, or load your classes with unnecessary code for one specific purpose that isn't the core of their functionality.</p>
+<h3><a id="user-content-creational-design-patterns" class="anchor" aria-hidden="true" href="#creational-design-patterns"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creational Design Patterns</h3>
+<h3><a id="user-content-structural-design-patterns" class="anchor" aria-hidden="true" href="#structural-design-patterns"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structural Design Patterns</h3>
+<h3><a id="user-content-behavioral-design-patterns" class="anchor" aria-hidden="true" href="#behavioral-design-patterns"><span aria-hidden="true" class="octicon octicon-link"></span></a>Behavioral Design Patterns</h3>
+<p><em><strong>Coming soon!</strong></em></p>
+<ul>
+<li>Chain of Responsibility</li>
+<li>Command</li>
+<li>Iterator</li>
+<li>Mediator</li>
+<li>Memento</li>
+<li>Observer</li>
+<li>State</li>
+<li>Strategy</li>
+<li>Visitor</li>
+</ul>
+<h3><a id="user-content-python-specific-design-patterns" class="anchor" aria-hidden="true" href="#python-specific-design-patterns"><span aria-hidden="true" class="octicon octicon-link"></span></a>Python-Specific Design Patterns</h3>
+<p><em><strong>Coming soon!</strong></em></p>
+<ul>
+<li>Global Object Pattern</li>
+<li>Prebound Method Pattern</li>
+<li>Sentinel Object Pattern</li>
+</ul>
+<h3><a id="user-content-see-also" class="anchor" aria-hidden="true" href="#see-also"><span aria-hidden="true" class="octicon octicon-link"></span></a>See Also</h3>
+
+        </body>
+    </html>
+    

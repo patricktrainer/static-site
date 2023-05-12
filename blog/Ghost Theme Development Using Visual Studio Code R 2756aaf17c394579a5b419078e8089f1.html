@@ -1,0 +1,208 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Ghost Theme Development Using Visual Studio Code R 2756aaf17c394579a5b419078e8089f1</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1><a id="user-content-ghost-theme-development-using-visual-studio-code-remote-development-with-containers" class="anchor" aria-hidden="true" href="#ghost-theme-development-using-visual-studio-code-remote-development-with-containers"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ghost Theme Development Using Visual Studio Code Remote Development With Containers</h1>
+<p>Created: Apr 19, 2020 12:54 PM
+URL: <a href="https://geeklearning.io/visual-studio-code-remote-development-ghost-theme-with-containers/" rel="nofollow">https://geeklearning.io/visual-studio-code-remote-development-ghost-theme-with-containers/</a></p>
+<p>Earlier, I've introduced <a href="https://geeklearning.io/introduction-to-visual-studio-code-remote-development/" rel="nofollow">Visual Studio Remote Developmen</a>t and you might be wondering what a practical use case would be. In this post, I'll try to guide you through using the support for development in Containers.</p>
+<p>To showcase the scenario, I'll use a story about developing a theme for Ghost. Ghost is a popular blogging platform. One of its man feature is an awesome editor. It makes it possible to have the "Medium experience" on a self hosted blog.</p>
+<p>When it comes to developing a custom theme, it can become quite unsavory. You need to install ghost, then build your theme and publish it to your blog (or copy the files directly to the location and restart the blog).</p>
+<h1><a id="user-content-remote-containers-to-the-story" class="anchor" aria-hidden="true" href="#remote-containers-to-the-story"><span aria-hidden="true" class="octicon octicon-link"></span></a>Remote containers to the story</h1>
+<p>Before we jump into this, let me tell you what I was doing before Remote development on containers. I was actually already using containers with a customized set of gulp scripts. Here is a quick description of the steps it was running:</p>
+<ul>
+<li>Build the theme</li>
+<li>Copy it to a <code>.staging</code> directory</li>
+<li>Start a docker container with the database mounted to a <code>.data</code> and <code>.staging</code> mounted in the theme directory</li>
+<li>Watch for file changes, and repeat the step above.</li>
+</ul>
+<p>The problem with that approach is that restarting the container and docker is slow :(. So that was definitely far from a fun dev experience.</p>
+<h1><a id="user-content-remote-containers-to-the-rescue" class="anchor" aria-hidden="true" href="#remote-containers-to-the-rescue"><span aria-hidden="true" class="octicon octicon-link"></span></a>Remote containers to the rescue</h1>
+<p>Let's define the goals:</p>
+<ul>
+<li>I don't want ghost to be restarted.</li>
+<li>I want changes to be reflected as fast as possible.</li>
+<li>I still want to use a container though. I'm using a Macbook and a Surface book. I want to work easily on both.</li>
+<li>I want the install process to be as fast and simple as possible. Why? Because I still hope that one day @Mitch will help me, but if it takes more than 2 minutes to get started he will give up (he is a lazy bum).</li>
+</ul>
+<p>To showcase what's next, I'll start from <a href="https://github.com/TryGhost/London">the <code>London</code> theme</a>.</p>
+<h2><a id="user-content-configuring-the-container" class="anchor" aria-hidden="true" href="#configuring-the-container"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuring the container</h2>
+<p>Ghost already provides docker images, so we'll start from there. We will customize it as follow:</p>
+<ul>
+<li>Install Yarn so we can restore the theme dev dependencies</li>
+<li>Install <code>gscan</code> so we can validate our theme easily</li>
+<li>Configure <code>bash</code> as the default shell (who uses sh these days? zsh could be nice though)</li>
+<li>Define the URL environment variable for Ghost, so it will run nicely. In this instance we will user port <code>3001</code>.</li>
+</ul>
+<p><code>.devontainer/Dockerfile</code>:</p>
+<pre><code>FROM ghost
+
+# Configure apt
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+   &amp;&amp; apt-get -y install --no-install-recommends apt-utils 2&gt;&amp;1
+
+# Verify git and process tools are installed
+RUN apt-get install -y git procps
+
+# Remove outdated yarn from /opt and install via package
+# so it can be easily updated via apt-get upgrade yarn
+RUN rm -rf /opt/yarn-* \
+   &amp;&amp; rm -f /usr/local/bin/yarn \
+   &amp;&amp; rm -f /usr/local/bin/yarnpkg \
+   &amp;&amp; apt-get install -y curl apt-transport-https lsb-release \
+   &amp;&amp; curl -sS https://dl.yarnpkg.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/pubkey.gpg | apt-key add - 2&gt;/dev/null \
+   &amp;&amp; echo "deb https://dl.yarnpkg.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+   &amp;&amp; apt-get update \
+   &amp;&amp; apt-get -y install --no-install-recommends yarn
+
+RUN yarn global add gscan
+
+# Clean up
+RUN apt-get autoremove -y \
+   &amp;&amp; apt-get clean -y \
+   &amp;&amp; rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND=dialog
+
+ENV SHELL /bin/bash
+
+ENV url http://localhost:3001
+</code></pre>
+<h2><a id="user-content-visual-studio-code-configuration" class="anchor" aria-hidden="true" href="#visual-studio-code-configuration"><span aria-hidden="true" class="octicon octicon-link"></span></a>Visual Studio Code configuration</h2>
+<p>Visual Studio Code needs a <code>devcontainer.json</code> file to be able to understand what to do with you dockerfile. Its responsibility is to define options and to instruct the editor that the repo supports development in containers.</p>
+<p>In this file, we will define:</p>
+<ul>
+<li>the <code>dockerFile</code>.</li>
+<li>the Visual Studio extension.</li>
+<li>the ports we want to expose or map. You can specify either just a number, in which case it will map the port from the container on the same port. Alternatively you can use the docker port mapping syntax.</li>
+<li>finally, we will define a command which runs just after VS Code and builds our container. In our case it will create a symlink between a .data directory and ghost's data folder, so we never loose our database and won't have to reconfigure Ghost. Finally, we will restore our theme dependencies using Yarn.</li>
+</ul>
+<p><code>.devontainer/devcontainer.json</code>:</p>
+<pre><code>{
+    "dockerFile": "Dockerfile",
+    "extensions": [],
+    "appPort": [
+        "3001:2368"
+    ],
+    "postCreateCommand": "ln -s /workspaces/geek-learning-io-casper/.data /var/lib/ghost/content/data &amp;&amp; yarn install --production=false"
+}
+</code></pre>
+<h2><a id="user-content-tweaking-the-gulp-file" class="anchor" aria-hidden="true" href="#tweaking-the-gulp-file"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tweaking the gulp file</h2>
+<p>This step has nothing to do with Remote development and is only related to the ghost use case.</p>
+<p>We will need to add two packages, <code>ps-list</code> and <code>@try-ghost/admin-api</code> which we will respectively use to find the current node running ghost and to upload the theme.</p>
+<pre><code>yarn add ps-list @tryghost/admin-api --dev --production=false
+</code></pre>
+<p>In <code>gulpfile.js</code> we will add the following imports:</p>
+<pre><code>const psList = require('ps-list');
+const adminApiClient = require("@tryghost/admin-api");
+const fs = require('fs');
+const path = require('path');
+</code></pre>
+<p>Then we will replace the end section of the file with the following:</p>
+<pre><code>async function ghost() {
+    var exec = require("child_process").exec;
+    const processes = await psList();
+
+    const ghostProcess = processes.filter(x =&gt; x.cmd == "/usr/local/bin/node current/index.js");
+
+    if (ghostProcess.length) {
+        process.kill(ghostProcess[0].pid)
+    }
+
+    exec(
+        "node current/index.js",
+        { cwd: process.env.GHOST_INSTALL, env: process.env, detached: true },
+        function callback(error, stdout, stderr) {
+        }
+    );
+};
+
+async function deployThemeViaApi(done) {
+
+    var targetDir = 'dist/';
+    var themeName = require('./package.json').name;
+    var filename = themeName + '.zip';
+
+    const themePath = path.join(__dirname, targetDir, filename);
+
+    const url = "http://localhost:2368";
+
+    const client = new adminApiClient({
+        url,
+        key: fs.readFileSync(path.join(__dirname, '.token'), { encoding: 'utf8' }),
+        version: "v2"
+    });
+
+    await client.themes.upload({ file: themePath });
+};
+
+const cssWatcher = () =&gt; watch('assets/css/**', css);
+const hbsWatcher = () =&gt; watch(['*.hbs', 'partials/**/*.hbs', '!node_modules/**/*.hbs'], hbs);
+const watcher = parallel(cssWatcher, hbsWatcher);
+const build = series(css, js);
+const dev = series(build, serve, watcher);
+
+const zipBuild = series(build, zipper);
+
+const dockerCssWatcher = () =&gt; watch('assets/css/**', series(zipBuild, deployThemeViaApi));
+const dockerHbsWatcher = () =&gt; watch(['*.hbs', 'partials/**/*.hbs', '!node_modules/**/*.hbs'], series(zipBuild, deployThemeViaApi));
+const dockerWatcher = parallel(dockerCssWatcher, dockerHbsWatcher);
+
+const dockerDev = series(ghost, zipBuild, deployThemeViaApi, dockerWatcher);
+
+exports.ghost = ghost;
+exports.build = build;
+exports.zip = zipBuild;
+exports.dev = dev;
+exports.default = dockerDev;
+</code></pre>
+<p>This will change the default gulp task to a task designed to build, zip and deploy the theme to the blog on changes.</p>
+<h2><a id="user-content-updating-the-readme" class="anchor" aria-hidden="true" href="#updating-the-readme"><span aria-hidden="true" class="octicon octicon-link"></span></a>Updating the readme</h2>
+<p><a target="_blank" rel="noopener noreferrer" href="Ghost%20Theme%20Development%20Using%20Visual%20Studio%20Code%20R%202756aaf17c394579a5b419078e8089f1/aziz-acharki-gXndgCS-CGo-unsplash.jpg"><img src="Ghost%20Theme%20Development%20Using%20Visual%20Studio%20Code%20R%202756aaf17c394579a5b419078e8089f1/aziz-acharki-gXndgCS-CGo-unsplash.jpg" alt="Ghost%20Theme%20Development%20Using%20Visual%20Studio%20Code%20R%202756aaf17c394579a5b419078e8089f1/aziz-acharki-gXndgCS-CGo-unsplash.jpg" style="max-width: 100%;"></a></p>
+<p>Now we can upgrade the readme with the steps to get started, you'll notice that the longest part has to do we initializing ghost :) :</p>
+<pre><code>To develop on the theme we recommend that you use Visual Studio Code with the Remote development tools
+* Install [VS Code](https://code.visualstudio.com/)
+* Install [Remote Developement Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+* Clone this Repository (if not done already)
+* Open it
+* Hit `Ctrl/Command + Shift + P`, type Reopen
+* `Reopen Folder in container` should appear, Select and Press enter
+* Wait for the container to be build and start
+
+If it's your first time, start ghost using yarn gulp ghost
+* Open a browser on `https://localhost:3001` configure your blog and your account.
+* In the admin UI head to `Integrations`
+* Click on `Add Custom Integration` at the bottom of the page
+* Choose a name, for example `Theme upload`
+* Copy the admin API key
+* at the root of the repo create a `.token` file and paste the api key inside the file. Save it.
+* hit  `Ctrl/Command + C` to terminate the ghost command
+
+To start developping:
+* In the VS Code terminal
+* run `yarn gulp`
+</code></pre>
+<h1><a id="user-content-conclusion" class="anchor" aria-hidden="true" href="#conclusion"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h1>
+<p>As you can see, we can streamline the experience in a pretty nice way thanks to these new VS Code plugins. Ideally there would be no manual steps and the blog would be initialized automatically.</p>
+<p>Stay tuned for my next post on the same topic where we will use a compose file (multiple containers) and where I will share my struggles and solutions with the extension.</p>
+
+        </body>
+    </html>
+    
