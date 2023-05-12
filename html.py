@@ -19,7 +19,7 @@ def get_tempalate():
         <body>
             <header>
                 <nav>
-                    <a href="patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
