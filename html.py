@@ -1,5 +1,5 @@
 import os
-import httpx
+import requests
 
 
 def html_header(title):
@@ -87,9 +87,9 @@ def get_post_title(file):
 
 
 def github_md_to_html(body):
-    response = httpx.post(
+    response = requests.post(
         "https://api.github.com/markdown",
-        json={"text": body, "mode": "gfm"},
+        json={"text": body},
         headers={"Accept": "application/vnd.github+json"},
     )
     if response.status_code == 200:
