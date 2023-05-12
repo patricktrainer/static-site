@@ -38,6 +38,7 @@ def html_footer():
     </html>
     """
 
+
 def html_elements(tag, elements):
     return "".join([f"<{tag}>{el}</{tag}>" for el in elements])
 
@@ -91,6 +92,7 @@ def stylesheet():
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
     <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
     """
+
 
 def get_posts(dir):
     posts = []
