@@ -73,6 +73,7 @@ def html_list(items):
     <ul>
     """
     for item in items:
+        item = item.rsplit(None, 1)[0] 
         html += f"""
         <li>{item}</li>
         """
@@ -105,7 +106,9 @@ def get_posts(dir):
 def get_post_title(file):
     # strip .md from file name
     # use os.path.splitext to handle file extensions
-    return os.path.splitext(os.path.basename(file))[0]
+    title = os.path.splitext(os.path.basename(file))[0]
+    print(title)
+    return title
 
 
 def github_md_to_html(body):
