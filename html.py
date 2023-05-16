@@ -147,14 +147,6 @@ def md_to_html(file):
 def main():
     posts = get_posts("./posts")
 
-    # write new html files for each post in blog directory
-    # for post in posts:
-    #     title = get_post_title(post)
-    #     content = md_to_html(post)
-    #     html = html_page(title, content)
-    #     with open(f"./blog/{title}.html", "w") as f:
-    #         f.write(html)
-
     # strip .md from post names and create links
     post_links = [
         html_link(f"{post.replace('.md', '.html')}", get_post_title(post))
