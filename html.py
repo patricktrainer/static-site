@@ -147,18 +147,23 @@ def md_to_html(file):
 def main():
     posts = get_posts("./posts")
 
-    # strip .md from post names and create links
-    post_links = [
-        html_link(f"{post.replace('.md', '.html')}", get_post_title(post))
-        for post in posts
-    ]
-    blog_path = [b.replace("posts", "blog") for b in post_links]
-    content = html_list(blog_path)
+    # strip .md from post names, convert them to HTML, and create links
+    html_posts = []
+    for post in posts:
+        html_content = md_to_html(post)  # convert the Markdown to HTML
+        post_name = get_post_title(post)
+        post_link = html_link(f"{post_name}.html", post_name)
+
+        # Save the HTML to a new .html file
+        with open(f"./blog/{post_name}.html", "w") as f:
+            f.write(html_page(post_name, html_content))
+
+        html_posts.append(post_link)
+
+    content = html_list(html_posts)
     html = html_page("Blog", content)
     with open("./index.html", "w") as f:
         f.write(html)
 
-
 if __name__ == "__main__":
-
     main()
