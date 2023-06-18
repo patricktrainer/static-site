@@ -2,6 +2,7 @@ import hashlib
 import os
 import requests
 from jinja2 import Template
+import markdown
 
 
 def get_tempalate():
@@ -111,7 +112,7 @@ def get_post_title(file):
     return title
 
 
-def github_md_to_html(body):
+def _md_to_html(body):
     # create a unique hash for the body content
     body_hash = hashlib.sha256(body.encode()).hexdigest()
 
@@ -123,25 +124,15 @@ def github_md_to_html(body):
         with open(cache_file, "r") as f:
             return f.read()
 
-    # if it doesn't, make a request to the API
-    response = requests.post(
-        "https://api.github.com/markdown",
-        json={"text": body},
-        headers={
-            "Accept": "application/vnd.github+json",
-            "Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
-        },
-    )
-    if response.status_code == 200:
-        return response.text
-    else:
-        raise Exception(f"Error: {response.status_code} {response.text}")
-
+    # if it doesn't, convert it
+    html = markdown.markdown(body)
+    return html
+    
 
 def md_to_html(file):
     with open(file, "r") as f:
         md = f.read()
-    return github_md_to_html(md)
+    return _md_to_html(md)
 
 
 def main():
