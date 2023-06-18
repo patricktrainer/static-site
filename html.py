@@ -1,6 +1,5 @@
 import hashlib
 import os
-import requests
 from jinja2 import Template
 import markdown
 
