@@ -1,0 +1,59 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Extract HubSpot data for analytics Fivetran implem dc96b0ca057e4fd2aba3148d47038dc7</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1>Extract HubSpot data for analytics | Fivetran implementation</h1>
+<p>Created: Apr 18, 2020 6:11 PM
+URL: https://fivetran.com/docs/applications/hubspot</p>
+<p><a href="http://www.hubspot.com/">HubSpot</a> is an inbound marketing and sales software that helps companies attract visitors, convert leads, and close customers.</p>
+<h2>Features</h2>
+<p><a href="Extract%20HubSpot%20data%20for%20analytics%20Fivetran%20implem%20dc96b0ca057e4fd2aba3148d47038dc7/Untitled%20Database%207be40f436c274368ad68374244c8515b.csv">Untitled</a></p>
+<h2>Setup guide</h2>
+<p>Follow our <a href="https://fivetran.com/docs/applications/hubspot/setup-guide">step-by-step HubSpot setup guide</a> to connect HubSpot with your destination using Fivetran connectors.</p>
+<h2>Schema information</h2>
+<p>This schemas applies to all HubSpot connections.</p>
+<h3>HubSpot Marketing Schema</h3>
+<h3>HubSpot Sales/CRM Schema</h3>
+<h2>Deleted Rows</h2>
+<p>The HubSpot API doesn't make deleted records available so Fivetran can't mark deleted records in the destination warehouse. Deleted records will remain marked <code>false</code> where <code>is_deleted</code> or <code>_fivetran_deleted</code> columns exist except for the tables listed in the Update Frequency section below.</p>
+<h2>Update Frequency</h2>
+<p>Because the HubSpot API does not offer a mechanism to capture deletes, Fivetran infers deletes for the tables listed below. We perform a full import of these tables once a day, compare them to the previous version, and mark deletes using the <code>_fivetran_deleted</code> system column:</p>
+<ul>
+<li><code>CONTACT_LIST</code></li>
+<li><code>CONTACT_LIST_MEMBER</code></li>
+<li><code>DEAL_PIPELINE</code></li>
+<li><code>DEAL_PIPELINE_STAGE</code></li>
+<li><code>FORM</code></li>
+</ul>
+<h2>HubSpot Developer Preview API</h2>
+<p>We maintain the following tables using the HubSpot developer preview API, so there are sometimes structural changes in these tables. Fivetran automatically handles structural changes, which might lead to some schema breaking changes. If that happens, we need to re-sync the affected tables. You can read more in the <a href="https://developers.hubspot.com/docs/preview/preview-overview">HubSpot Developer Preview API documentation</a>.</p>
+<ul>
+<li><code>LINE_ITEM</code></li>
+<li><code>LINE_ITEM_PROPERTY_HISTORY</code></li>
+<li><code>PRODUCT</code></li>
+<li><code>PRODUCT_PROPERTY_HISTORY</code></li>
+</ul>
+<h2>Negative Timestamps from HubSpot</h2>
+<p>We automatically convert negative timestamps received from HubSpot to EPOCH, for example, 1st January 1970 00:00:00 UTC.</p>
+<h2>Questions?</h2>
+<p>We're always happy to help with any other questions you might have! <a href="mailto:sales@fivetran.com?Subject=Questions">Send us an email.</a></p>
+        </body>
+    </html>
+    

@@ -19,41 +19,45 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-overview--simpy-402dev1g2973dbe-documentation" class="anchor" aria-hidden="true" href="#overview--simpy-402dev1g2973dbe-documentation"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview — SimPy 4.0.2.dev1+g2973dbe documentation</h1>
+            <h1>Overview — SimPy 4.0.2.dev1+g2973dbe documentation</h1>
 <p>Created: Jun 19, 2020 11:21 AM
-URL: <a href="https://simpy.readthedocs.io/en/latest/" rel="nofollow">https://simpy.readthedocs.io/en/latest/</a></p>
-<p>learn the basics of SimPy in just a couple of minutes for a complete overview</p>
+URL: https://simpy.readthedocs.io/en/latest/</p>
+<p>learn the basics of SimPy in just a couple of minutes for a complete overview </p>
 <p>SimPy is a process-based discrete-event simulation framework based on standard Python.</p>
-<p>Processes in SimPy are defined by Python <a href="http://docs.python.org/3/glossary.html#term-generator" rel="nofollow">generator functions</a> and may, for example, be used to model active components like customers, vehicles or agents. SimPy also provides various types of <a href="https://simpy.readthedocs.io/en/latest/topical_guides/resources.html" rel="nofollow">shared resources</a> to model limited capacity congestion points (like servers, checkout counters and tunnels).</p>
-<p>Simulations can be performed <a href="https://simpy.readthedocs.io/en/latest/topical_guides/environments.html" rel="nofollow">“as fast as possible”</a>, in <a href="https://simpy.readthedocs.io/en/latest/topical_guides/real-time-simulations.html" rel="nofollow">real time</a> (wall clock time) or by manually <a href="https://simpy.readthedocs.io/en/latest/topical_guides/environments.html" rel="nofollow">stepping</a> through the events.</p>
+<p>Processes in SimPy are defined by Python <a href="http://docs.python.org/3/glossary.html#term-generator">generator functions</a> and may, for example, be used to model active components like customers, vehicles or agents. SimPy also provides various types of <a href="https://simpy.readthedocs.io/en/latest/topical_guides/resources.html">shared resources</a> to model limited capacity congestion points (like servers, checkout counters and tunnels).</p>
+<p>Simulations can be performed <a href="https://simpy.readthedocs.io/en/latest/topical_guides/environments.html">“as fast as possible”</a>, in <a href="https://simpy.readthedocs.io/en/latest/topical_guides/real-time-simulations.html">real time</a> (wall clock time) or by manually <a href="https://simpy.readthedocs.io/en/latest/topical_guides/environments.html">stepping</a> through the events.</p>
 <p>Though it is theoretically possible to do continuous simulations with SimPy, it has no features that help you with that. On the other hand, SimPy is overkill for simulations with a fixed step size where your processes don’t interact with each other or with shared resources.</p>
 <p>A short example simulating two clocks ticking in different time intervals looks like this:</p>
-<pre><code>&gt;&gt;&gt; import simpy
-&gt;&gt;&gt;
-&gt;&gt;&gt; def clock(env, name, tick):
+<p>```</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import simpy</p>
+<p>def clock(env, name, tick):
 ...     while True:
 ...         print(name, env.now)
 ...         yield env.timeout(tick)
 ...
-&gt;&gt;&gt; env = simpy.Environment()
-&gt;&gt;&gt; env.process(clock(env, 'fast', 0.5))
-&lt;Process(clock) object at 0x...&gt;
-&gt;&gt;&gt; env.process(clock(env, 'slow', 1))
-&lt;Process(clock) object at 0x...&gt;
-&gt;&gt;&gt; env.run(until=2)
+env = simpy.Environment()
+env.process(clock(env, 'fast', 0.5))
+<Process(clock) object at 0x...>
+env.process(clock(env, 'slow', 1))
+<Process(clock) object at 0x...>
+env.run(until=2)
 fast 0
 slow 0
 fast 0.5
 slow 1
 fast 1.0
-fast 1.5
-
-</code></pre>
-<p>The documentation contains a <a href="https://simpy.readthedocs.io/en/latest/simpy_intro/index.html" rel="nofollow">tutorial</a>, <a href="https://simpy.readthedocs.io/en/latest/topical_guides/index.html" rel="nofollow">several guides</a> explaining key concepts, a number of <a href="https://simpy.readthedocs.io/en/latest/examples/index.html" rel="nofollow">examples</a> and the <a href="https://simpy.readthedocs.io/en/latest/api_reference/index.html" rel="nofollow">API reference</a>.</p>
-<p>SimPy is released under the MIT License. Simulation model developers are encouraged to share their SimPy modeling techniques with the SimPy community. Please post a message to the <a href="https://groups.google.com/forum/#!forum/python-simpy" rel="nofollow">SimPy mailing list</a>.</p>
-<p>There is an introductory talk that explains SimPy’s concepts and provides some examples: <a href="https://www.youtube.com/watch?v=Bk91DoAEcjY" rel="nofollow">watch the video</a> or <a href="http://stefan.sofa-rockers.org/downloads/simpy-ep14.pdf" rel="nofollow">get the slides</a>.</p>
-<p>SimPy has also been reimplemented in other programming languages. See the <a href="https://simpy.readthedocs.io/en/latest/about/ports.html" rel="nofollow">list of ports</a> for more details.</p>
-
+fast 1.5</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>```</p>
+<p>The documentation contains a <a href="https://simpy.readthedocs.io/en/latest/simpy_intro/index.html">tutorial</a>, <a href="https://simpy.readthedocs.io/en/latest/topical_guides/index.html">several guides</a> explaining key concepts, a number of <a href="https://simpy.readthedocs.io/en/latest/examples/index.html">examples</a> and the <a href="https://simpy.readthedocs.io/en/latest/api_reference/index.html">API reference</a>.</p>
+<p>SimPy is released under the MIT License. Simulation model developers are encouraged to share their SimPy modeling techniques with the SimPy community. Please post a message to the <a href="https://groups.google.com/forum/#!forum/python-simpy">SimPy mailing list</a>.</p>
+<p>There is an introductory talk that explains SimPy’s concepts and provides some examples: <a href="https://www.youtube.com/watch?v=Bk91DoAEcjY">watch the video</a> or <a href="http://stefan.sofa-rockers.org/downloads/simpy-ep14.pdf">get the slides</a>.</p>
+<p>SimPy has also been reimplemented in other programming languages. See the <a href="https://simpy.readthedocs.io/en/latest/about/ports.html">list of ports</a> for more details.</p>
         </body>
     </html>
     

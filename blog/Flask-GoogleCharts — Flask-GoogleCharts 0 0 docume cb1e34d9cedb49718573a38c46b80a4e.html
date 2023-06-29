@@ -1,0 +1,77 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Flask-GoogleCharts — Flask-GoogleCharts 0 0 docume cb1e34d9cedb49718573a38c46b80a4e</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1>Flask-GoogleCharts — Flask-GoogleCharts 0.0 documentation</h1>
+<p>Created: Mar 24, 2020 11:56 AM
+URL: https://pythonhosted.org/Flask-GoogleCharts/</p>
+<h2>Set Up</h2>
+<p>Google charts are controlled through a <code>GoogleCharts</code> instance:</p>
+<p>```
+from flask import Flask
+from flask_googlecharts import GoogleCharts</p>
+<p>app = Flask(<strong>name</strong>)
+charts = GoogleCharts(app)
+```</p>
+<p>You may also set up the <code>GoogleCharts</code> instance later using the <strong>init_app</strong> method:</p>
+<p>```
+charts = GoogleCharts()</p>
+<p>app = Flask(<strong>name</strong>)
+charts.init_app(app)
+```</p>
+<h2>Creating Charts</h2>
+<p>Import a chart type and declare it in your view, and give it a name at a minimum:</p>
+<p>```
+from flask_googlecharts import BarChart</p>
+<p>my_chart = BarChart("my_chart")
+```</p>
+<p>The name you declare will be used to access your chart in the template, and also to name the resulting JavaScript variables and HTML tags, so it must start with a letter and not contain any spaces.</p>
+<p>You can customize your chart by setting the <code>options</code> argument:</p>
+<p><code>my_chart = BarChart("my_chart", options={'title': 'My Chart'})</code></p>
+<h2>Adding Data to a Chart</h2>
+<p>If you will be pulling JSON data from another endpoint in your application, just specify the url in the <code>data_url</code> argument:</p>
+<p><code>my_chart = BarChart("my_chart", options={'title': 'My Chart'}, data_url=url_for('data'))</code></p>
+<p>You can also populate the chart using the <code>addColumn</code> and <code>addRows</code> methods on the chart:</p>
+<p><code>hot_dog_chart.add_column("string", "Competitor")
+hot_dog_chart.add_column("number", "Hot Dogs")
+hot_dog_chart.add_rows([["Matthew Stonie", 62],
+                        ["Joey Chestnut", 60],
+                        ["Eater X", 35.5],
+                        ["Erik Denmark", 33],
+                        ["Adrian Morgan", 31]])</code></p>
+<h2>Including Charts in Templates</h2>
+<p>First, add the chart javascript to your template:</p>
+<p><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Flask-GoogleCharts Example&lt;/title&gt;
+    &lt;script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+    {{ charts_init }}
+&lt;/head&gt;</code></p>
+<p>You must always include the Google Charts API loader on any pages that include charts. If you will be populating your charts with JSON data from another endpoint, you must also include jQuery. When the application is running in debug mode, <code>GoogleCharts</code> will log a warning if these dependencies are not met.</p>
+<p>Add the chart HTML to your template:</p>
+<p>```</p>
+<body>
+{{ charts.my_chart }}
+</body>
+<p>```</p>
+        </body>
+    </html>
+    

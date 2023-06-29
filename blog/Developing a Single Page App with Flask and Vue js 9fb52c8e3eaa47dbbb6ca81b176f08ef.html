@@ -19,15 +19,15 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-developing-a-single-page-app-with-flask-and-vuejs--testdrivenio" class="anchor" aria-hidden="true" href="#developing-a-single-page-app-with-flask-and-vuejs--testdrivenio"><span aria-hidden="true" class="octicon octicon-link"></span></a>Developing a Single Page App with Flask and Vue.js | TestDriven.io</h1>
+            <h1>Developing a Single Page App with Flask and Vue.js | TestDriven.io</h1>
 <p>Created: Dec 16, 2019 5:13 PM
 Tags: How To
-URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/a" rel="nofollow">https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/a</a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/developing_spa_flask_vue.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/developing_spa_flask_vue.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/developing_spa_flask_vue.png" style="max-width: 100%;"></a></p>
-<h2><a id="user-content-developing-a-single-page-app-with-flask-and-vuejs" class="anchor" aria-hidden="true" href="#developing-a-single-page-app-with-flask-and-vuejs"><span aria-hidden="true" class="octicon octicon-link"></span></a>Developing a Single Page App with Flask and Vue.js</h2>
+URL: https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/a</p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/developing_spa_flask_vue.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/developing_spa_flask_vue.png" /></p>
+<h2>Developing a Single Page App with Flask and Vue.js</h2>
 <p>The following is a step-by-step walkthrough of how to set up a basic CRUD app with Vue and Flask. We'll start by scaffolding a new Vue application with the Vue CLI and then move on to performing the basic CRUD operations through a back-end RESTful API powered by Python and Flask.</p>
 <p><em>Final app</em>:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/final.gif"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/final.gif" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/final.gif" style="max-width: 100%;"></a></p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/final.gif" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/final.gif" /></p>
 <p>Main dependencies:</p>
 <ul>
 <li>Vue v2.6.10</li>
@@ -37,7 +37,7 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <li>Flask v1.0.2</li>
 <li>Python v3.7.3</li>
 </ul>
-<h2><a id="user-content-objectives" class="anchor" aria-hidden="true" href="#objectives"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objectives</h2>
+<h2>Objectives</h2>
 <p>By the end of this tutorial, you will be able to:</p>
 <ol>
 <li>Explain what Flask is</li>
@@ -50,30 +50,30 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <li>Style Vue Components with Bootstrap</li>
 <li>Use the Vue Router to create routes and render components</li>
 </ol>
-<h2><a id="user-content-what-is-flask" class="anchor" aria-hidden="true" href="#what-is-flask"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is Flask?</h2>
-<p><a href="http://flask.pocoo.org/" rel="nofollow">Flask</a> is a simple, yet powerful micro web framework for Python, perfect for building RESTful APIs. Like <a href="http://sinatrarb.com/" rel="nofollow">Sinatra</a> (Ruby) and <a href="https://expressjs.com/" rel="nofollow">Express</a> (Node), it's minimal and flexible, so you can start small and build up to a more complex app as needed.</p>
+<h2>What is Flask?</h2>
+<p><a href="http://flask.pocoo.org/">Flask</a> is a simple, yet powerful micro web framework for Python, perfect for building RESTful APIs. Like <a href="http://sinatrarb.com/">Sinatra</a> (Ruby) and <a href="https://expressjs.com/">Express</a> (Node), it's minimal and flexible, so you can start small and build up to a more complex app as needed.</p>
 <p>First time with Flask? Check out the following two resources:</p>
-<h2><a id="user-content-what-is-vue" class="anchor" aria-hidden="true" href="#what-is-vue"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is Vue?</h2>
-<p><a href="https://vuejs.org/" rel="nofollow">Vue</a> is an open-source JavaScript framework used for building user interfaces. It adopted some of the best practices from React and Angular. That said, compared to React and Angular, it's much more approachable, so beginners can get up and running quickly. It's also just as powerful, so it provides all the features you'll need to create modern front-end applications.</p>
+<h2>What is Vue?</h2>
+<p><a href="https://vuejs.org/">Vue</a> is an open-source JavaScript framework used for building user interfaces. It adopted some of the best practices from React and Angular. That said, compared to React and Angular, it's much more approachable, so beginners can get up and running quickly. It's also just as powerful, so it provides all the features you'll need to create modern front-end applications.</p>
 <p>For more on Vue, along with the pros and cons of using it vs. React and Angular, review the following articles:</p>
-<p>First time with Vue? Take a moment to read through the <a href="https://vuejs.org/v2/guide/index.html" rel="nofollow">Introduction</a> from the official Vue guide.</p>
-<h2><a id="user-content-flask-setup" class="anchor" aria-hidden="true" href="#flask-setup"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flask Setup</h2>
+<p>First time with Vue? Take a moment to read through the <a href="https://vuejs.org/v2/guide/index.html">Introduction</a> from the official Vue guide.</p>
+<h2>Flask Setup</h2>
 <p>Begin by creating a new project directory:</p>
 <p>Within "flask-vue-crud", create a new directory called "server". Then, create and activate a virtual environment inside the "server" directory:</p>
 <blockquote>
 <p>The above commands may differ depending on your environment.</p>
 </blockquote>
-<p>Install Flask along with the <a href="https://flask-cors.readthedocs.io/" rel="nofollow">Flask-CORS</a> extension:</p>
+<p>Install Flask along with the <a href="https://flask-cors.readthedocs.io/">Flask-CORS</a> extension:</p>
 <p>Add an <em>app.py</em> file to the newly created "server" directory:</p>
-<p>Why do we need Flask-CORS? In order to make cross-origin requests -- e.g., requests that originate from a different protocol, IP address, domain name, or port -- you need to enable <a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing" rel="nofollow">Cross Origin Resource Sharing</a> (CORS). Flask-CORS handles this for us.</p>
+<p>Why do we need Flask-CORS? In order to make cross-origin requests -- e.g., requests that originate from a different protocol, IP address, domain name, or port -- you need to enable <a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS). Flask-CORS handles this for us.</p>
 <blockquote>
 <p>It's worth noting that the above setup allows cross-origin requests on all routes, from any domain, protocol, or port. In a production environment, you should only allow cross-origin requests from the domain where the front-end application is hosted. Refer to the Flask-CORS documentation for more info on this.</p>
 </blockquote>
 <p>Run the app:</p>
-<p>To test, point your browser at <a href="http://localhost:5000/ping" rel="nofollow">http://localhost:5000/ping</a>. You should see:</p>
+<p>To test, point your browser at <a href="http://localhost:5000/ping">http://localhost:5000/ping</a>. You should see:</p>
 <p>Back in the terminal, press Ctrl+C to kill the server and then navigate back to the project root. With that, let's turn our attention to the front-end and get Vue set up.</p>
-<h2><a id="user-content-vue-setup" class="anchor" aria-hidden="true" href="#vue-setup"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vue Setup</h2>
-<p>We'll be using the powerful <a href="https://cli.vuejs.org/" rel="nofollow">Vue CLI</a> to generate a customized project boilerplate.</p>
+<h2>Vue Setup</h2>
+<p>We'll be using the powerful <a href="https://cli.vuejs.org/">Vue CLI</a> to generate a customized project boilerplate.</p>
 <p>Install it globally:</p>
 <blockquote>
 <p>First time with npm? Review the official About npm guide.</p>
@@ -88,27 +88,24 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <p>Turn your attention to the folders inside the "src" folder:</p>
 <p>Breakdown:</p>
 <p><a href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/Untitled%20Database%20d26b4f84df54484390e9c439d0ebc7dd.csv">Untitled</a></p>
-<p>Review the <em>client/src/components/HelloWorld.vue</em> file. This is a <a href="https://vuejs.org/v2/guide/single-file-components.html" rel="nofollow">Single File</a> component, which is broken up into three different sections:</p>
+<p>Review the <em>client/src/components/HelloWorld.vue</em> file. This is a <a href="https://vuejs.org/v2/guide/single-file-components.html">Single File</a> component, which is broken up into three different sections:</p>
 <ol>
-<li>
-<em>template</em>: for component-specific HTML</li>
-<li>
-<em>script</em>: where the component logic is implemented via JavaScript</li>
-<li>
-<em>style</em>: for CSS styles</li>
+<li><em>template</em>: for component-specific HTML</li>
+<li><em>script</em>: where the component logic is implemented via JavaScript</li>
+<li><em>style</em>: for CSS styles</li>
 </ol>
 <p>Fire up the development server:</p>
-<p>Navigate to <a href="http://localhost:8080/" rel="nofollow">http://localhost:8080</a> in the browser of your choice. You should see the following:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/default-vue-app.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/default-vue-app.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/default-vue-app.png" style="max-width: 100%;"></a></p>
+<p>Navigate to <a href="http://localhost:8080/">http://localhost:8080</a> in the browser of your choice. You should see the following:</p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/default-vue-app.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/default-vue-app.png" /></p>
 <p>To simplify things, remove the "views" folder. Then, add a new component to the "client/src/components" folder called Ping.vue:</p>
 <p>Update <em>client/src/router.js</em> to map '/ping' to the <code>Ping</code> component like so:</p>
 <p>Finally, within <em>client/src/App.vue</em>, remove the navigation:</p>
-<p>You should now see <code>Hello!</code> in the browser at <a href="http://localhost:8080/ping" rel="nofollow">http://localhost:8080/ping</a>.</p>
+<p>You should now see <code>Hello!</code> in the browser at <a href="http://localhost:8080/ping">http://localhost:8080/ping</a>.</p>
 <p>To connect the client-side Vue app with the back-end Flask app, we can use the <a href="https://github.com/axios/axios">axios</a> library to send AJAX requests.</p>
 <p>Start by installing it:</p>
 <p>Update the <code>script</code> section of the component, in <em>Ping.vue</em>, like so:</p>
 <p>Fire up the Flask app in a new terminal window. You should see <code>pong!</code> in the browser. Essentially, when a response is returned from the back-end, we set <code>msg</code> to the value of <code>data</code> from the response object.</p>
-<h2><a id="user-content-bootstrap-setup" class="anchor" aria-hidden="true" href="#bootstrap-setup"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bootstrap Setup</h2>
+<h2>Bootstrap Setup</h2>
 <p>Next, let's add Bootstrap, a popular CSS framework, to the app so we can quickly add some style.</p>
 <p>Install:</p>
 <blockquote>
@@ -116,75 +113,72 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 </blockquote>
 <p>Import the Bootstrap styles to <em>client/src/main.js</em>:</p>
 <p>Update the <code>style</code> section in <em>client/src/App.vue</em>:</p>
-<p>Ensure Bootstrap is wired up correctly by using a <a href="https://getbootstrap.com/docs/4.0/components/buttons/" rel="nofollow">Button</a> and <a href="https://getbootstrap.com/docs/4.0/layout/overview/#containers" rel="nofollow">Container</a> in the <code>Ping</code> component:</p>
+<p>Ensure Bootstrap is wired up correctly by using a <a href="https://getbootstrap.com/docs/4.0/components/buttons/">Button</a> and <a href="https://getbootstrap.com/docs/4.0/layout/overview/#containers">Container</a> in the <code>Ping</code> component:</p>
 <p>Run the dev server:</p>
 <p>You should see:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/bootstrap.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/bootstrap.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/bootstrap.png" style="max-width: 100%;"></a></p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/bootstrap.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/bootstrap.png" /></p>
 <p>Next, add a new component called <code>Books</code> in a new file called <em>Books.vue</em>:</p>
 <p>Update the router:</p>
 <p>Test:</p>
 <ol>
-<li><a href="http://localhost:8080/ping" rel="nofollow">http://localhost:8080/ping</a></li>
+<li><a href="http://localhost:8080/ping">http://localhost:8080/ping</a></li>
 </ol>
 <p>Finally, let's add a quick, Bootstrap-styled table to the <code>Books</code> component:</p>
 <p>You should now see:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-1.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-1.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-1.png" style="max-width: 100%;"></a></p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-1.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-1.png" /></p>
 <p>Now we can start building out the functionality of our CRUD app.</p>
-<h2><a id="user-content-what-are-we-building" class="anchor" aria-hidden="true" href="#what-are-we-building"><span aria-hidden="true" class="octicon octicon-link"></span></a>What are we building?</h2>
+<h2>What are we building?</h2>
 <p>Our goal is to design a back-end RESTful API, powered by Python and Flask, for a single resource -- books. The API itself should follow RESTful design principles, using the basic HTTP verbs: GET, POST, PUT, and DELETE.</p>
 <p>We'll also set up a front-end application with Vue that consumes the back-end API:</p>
 <blockquote>
 <p>This tutorial only deals with the happy path. Handling errors is a separate exercise. Check your understanding and add proper error handling on both the front and back-end.</p>
 </blockquote>
-<h2><a id="user-content-get-route" class="anchor" aria-hidden="true" href="#get-route"><span aria-hidden="true" class="octicon octicon-link"></span></a>GET Route</h2>
-<h3><a id="user-content-server" class="anchor" aria-hidden="true" href="#server"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server</h3>
+<h2>GET Route</h2>
+<h3>Server</h3>
 <p>Add a list of books to <em>server/app.py</em>:</p>
 <p>Add the route handler:</p>
-<p>Run the Flask app, if it's not already running, and then manually test out the route at <a href="http://localhost:5000/books" rel="nofollow">http://localhost:5000/books</a>.</p>
+<p>Run the Flask app, if it's not already running, and then manually test out the route at <a href="http://localhost:5000/books">http://localhost:5000/books</a>.</p>
 <blockquote>
 <p>Looking for an extra challenge? Write an automated test for this. Review this resource for more info on testing a Flask app.</p>
 </blockquote>
-<h3><a id="user-content-client" class="anchor" aria-hidden="true" href="#client"><span aria-hidden="true" class="octicon octicon-link"></span></a>Client</h3>
+<h3>Client</h3>
 <p>Update the component:</p>
-<p>After the component is initialized, the <code>getBooks()</code> method is called via the <a href="https://vuejs.org/v2/api/#created" rel="nofollow">created</a> lifecycle hook, which fetches the books from the back-end endpoint we just set up.</p>
+<p>After the component is initialized, the <code>getBooks()</code> method is called via the <a href="https://vuejs.org/v2/api/#created">created</a> lifecycle hook, which fetches the books from the back-end endpoint we just set up.</p>
 <blockquote>
 <p>Review Instance Lifecycle Hooks for more on the component lifecycle and the available methods.</p>
 </blockquote>
-<p>In the template, we iterated through the list of books via the <a href="https://vuejs.org/v2/guide/list.html" rel="nofollow">v-for</a> directive, creating a new table row on each iteration. The index value is used as the <a href="https://vuejs.org/v2/guide/list.html#key" rel="nofollow">key</a>. Finally, <a href="https://vuejs.org/v2/guide/conditional.html#v-if" rel="nofollow">v-if</a> is then used to render either <code>Yes</code> or <code>No</code>, indicating whether the user has read the book or not.</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-2.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-2.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-2.png" style="max-width: 100%;"></a></p>
-<h2><a id="user-content-bootstrap-vue" class="anchor" aria-hidden="true" href="#bootstrap-vue"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bootstrap Vue</h2>
-<p>In the next section, we'll use a modal to add a new book. We'll add on the <a href="https://bootstrap-vue.js.org/" rel="nofollow">Bootstrap Vue</a> library for this, which provides a set of Vue components styled with Bootstrap-based HTML and CSS.</p>
+<p>In the template, we iterated through the list of books via the <a href="https://vuejs.org/v2/guide/list.html">v-for</a> directive, creating a new table row on each iteration. The index value is used as the <a href="https://vuejs.org/v2/guide/list.html#key">key</a>. Finally, <a href="https://vuejs.org/v2/guide/conditional.html#v-if">v-if</a> is then used to render either <code>Yes</code> or <code>No</code>, indicating whether the user has read the book or not.</p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-2.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/books-component-2.png" /></p>
+<h2>Bootstrap Vue</h2>
+<p>In the next section, we'll use a modal to add a new book. We'll add on the <a href="https://bootstrap-vue.js.org/">Bootstrap Vue</a> library for this, which provides a set of Vue components styled with Bootstrap-based HTML and CSS.</p>
 <blockquote>
 <p>Why Bootstrap Vue? Bootstrap's Modal component uses jQuery, which you should avoid using with Vue together in the same project since Vue uses the Virtual Dom to update the DOM. In other words, if you did use jQuery to manipulate the DOM, Vue would not know about it. At the very least, if you absolutely need to use jQuery, do not use Vue and jQuery together on the same DOM elements.</p>
 </blockquote>
 <p>Install:</p>
 <p>Enable the Bootstrap Vue library in <em>client/src/main.js</em>:</p>
-<h2><a id="user-content-post-route" class="anchor" aria-hidden="true" href="#post-route"><span aria-hidden="true" class="octicon octicon-link"></span></a>POST Route</h2>
-<h3><a id="user-content-server-1" class="anchor" aria-hidden="true" href="#server-1"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server</h3>
+<h2>POST Route</h2>
+<h3>Server</h3>
 <p>Update the existing route handler to handle POST requests for adding a new book:</p>
 <p>Update the imports:</p>
 <p>With the Flask server running, you can test the POST route in a new terminal tab:</p>
 <p>You should see:</p>
-<p>You should also see the new book in the response from the <a href="http://localhost:5000/books" rel="nofollow">http://localhost:5000/books</a> endpoint.</p>
+<p>You should also see the new book in the response from the <a href="http://localhost:5000/books">http://localhost:5000/books</a> endpoint.</p>
 <blockquote>
 <p>What if the title already exists? Or what if a title has more than one author? Check your understanding by handling these cases. Also, how would you handle an invalid payload where the title, author, and/or read is missing?</p>
 </blockquote>
-<h3><a id="user-content-client-1" class="anchor" aria-hidden="true" href="#client-1"><span aria-hidden="true" class="octicon octicon-link"></span></a>Client</h3>
+<h3>Client</h3>
 <p>On the client-side, let's add that modal now for adding a new book to the <code>Books</code> component, starting with the HTML:</p>
-<p>Add this just before the closing <code>div</code> tag. Take a quick look at the code. <code>v-model</code> is a directive used to <a href="https://vuejs.org/v2/guide/forms.html" rel="nofollow">bind</a> input values back to the state. You'll see this in action shortly.</p>
+<p>Add this just before the closing <code>div</code> tag. Take a quick look at the code. <code>v-model</code> is a directive used to <a href="https://vuejs.org/v2/guide/forms.html">bind</a> input values back to the state. You'll see this in action shortly.</p>
 <blockquote>
 <p>What does hide-footer do? Review this on your own in the Bootstrap Vue docs.</p>
 </blockquote>
 <p>Update the <code>script</code> section:</p>
 <p>What's happening here?</p>
 <ol>
-<li>
-<code>addBookForm</code> is <a href="https://vuejs.org/v2/guide/forms.html#Basic-Usage" rel="nofollow">bound</a> to the form inputs via, again, <code>v-model</code>. When one is updated, the other will be updated as well, in other words. This is called two-way binding. Take a moment to read about it <a href="https://stackoverflow.com/questions/13504906/what-is-two-way-binding" rel="nofollow">here</a>. Think about the ramifications of this. Do you think this makes state management easier or harder? How do React and Angular handle this? In my opinion, two-way binding (along with mutability) makes Vue much more approachable than React, but less scaleable in the long run.</li>
-<li>
-<code>onSubmit</code> is fired when the user submits the form successfully. On submit, we prevent the normal browser behavior (<code>evt.preventDefault()</code>), close the modal (<code>this.$refs.addBookModal.hide()</code>), fire the <code>addBook</code> method, and clear the form (<code>initForm()</code>).</li>
-<li>
-<code>addBook</code> sends a POST request to <code>/books</code> to add a new book.</li>
-<li>Review the rest of the changes on your own, referencing the Vue <a href="https://vuejs.org/v2/guide/" rel="nofollow">docs</a> as necessary.</li>
+<li><code>addBookForm</code> is <a href="https://vuejs.org/v2/guide/forms.html#Basic-Usage">bound</a> to the form inputs via, again, <code>v-model</code>. When one is updated, the other will be updated as well, in other words. This is called two-way binding. Take a moment to read about it <a href="https://stackoverflow.com/questions/13504906/what-is-two-way-binding">here</a>. Think about the ramifications of this. Do you think this makes state management easier or harder? How do React and Angular handle this? In my opinion, two-way binding (along with mutability) makes Vue much more approachable than React, but less scaleable in the long run.</li>
+<li><code>onSubmit</code> is fired when the user submits the form successfully. On submit, we prevent the normal browser behavior (<code>evt.preventDefault()</code>), close the modal (<code>this.$refs.addBookModal.hide()</code>), fire the <code>addBook</code> method, and clear the form (<code>initForm()</code>).</li>
+<li><code>addBook</code> sends a POST request to <code>/books</code> to add a new book.</li>
+<li>Review the rest of the changes on your own, referencing the Vue <a href="https://vuejs.org/v2/guide/">docs</a> as necessary.</li>
 </ol>
 <blockquote>
 <p>Can you think of any potential errors on the client or server? Handle these on your own to improve user experience.</p>
@@ -192,35 +186,35 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <p>Finally, update the "Add Book" button in the template so that the modal is displayed when the button is clicked:</p>
 <p>The component should now look like this:</p>
 <p>Test it out! Try adding a book:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book.gif"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book.gif" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book.gif" style="max-width: 100%;"></a></p>
-<h2><a id="user-content-alert-component" class="anchor" aria-hidden="true" href="#alert-component"><span aria-hidden="true" class="octicon octicon-link"></span></a>Alert Component</h2>
-<p>Next, let's add an <a href="https://bootstrap-vue.js.org/docs/components/alert/" rel="nofollow">Alert</a> component to display a message to the end user after a new book is added. We'll create a new component for this since it's likely that you'll use the functionality in a number of components.</p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book.gif" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book.gif" /></p>
+<h2>Alert Component</h2>
+<p>Next, let's add an <a href="https://bootstrap-vue.js.org/docs/components/alert/">Alert</a> component to display a message to the end user after a new book is added. We'll create a new component for this since it's likely that you'll use the functionality in a number of components.</p>
 <p>Add a new file called <em>Alert.vue</em> to "client/src/components":</p>
 <p>Then, import it into the <code>script</code> section of the <code>Books</code> component and register the component:</p>
 <p>Now, we can reference the new component in the <code>template</code> section:</p>
 <p>Refresh the browser. You should now see:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert.png" style="max-width: 100%;"></a></p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert.png" /></p>
 <blockquote>
 <p>Review Composing with Components from the official Vue docs for more info on working with components in other components.</p>
 </blockquote>
-<p>Next, let's add the actual <a href="https://bootstrap-vue.js.org/docs/components/alert/" rel="nofollow">b-alert</a> component to the template:</p>
-<p>Take note of the <a href="https://vuejs.org/v2/guide/components-props.html" rel="nofollow">props</a> option in the <code>script</code> section. We can pass a message down from the parent component (<code>Books</code>) like so:</p>
+<p>Next, let's add the actual <a href="https://bootstrap-vue.js.org/docs/components/alert/">b-alert</a> component to the template:</p>
+<p>Take note of the <a href="https://vuejs.org/v2/guide/components-props.html">props</a> option in the <code>script</code> section. We can pass a message down from the parent component (<code>Books</code>) like so:</p>
 <p>Try this out:</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert-2.png"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert-2.png" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert-2.png" style="max-width: 100%;"></a></p>
-<p>To make it dynamic, so that a custom message is passed down, use a <a href="https://vuejs.org/v2/guide/syntax.html#v-bind-Shorthand" rel="nofollow">binding expression</a> in <em>Books.vue</em>:</p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert-2.png" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/alert-2.png" /></p>
+<p>To make it dynamic, so that a custom message is passed down, use a <a href="https://vuejs.org/v2/guide/syntax.html#v-bind-Shorthand">binding expression</a> in <em>Books.vue</em>:</p>
 <p>Add the <code>message</code> to the <code>data</code> options, in <em>Books.vue</em> as well:</p>
 <p>Then, within <code>addBook</code>, update the message:</p>
 <p>Finally, add a <code>v-if</code>, so the alert is only displayed if <code>showMessage</code> is true:</p>
 <p>Add <code>showMessage</code> to the <code>data</code>:</p>
 <p>Update <code>addBook</code> again, setting <code>showMessage</code> to <code>true</code>:</p>
 <p>Test it out!</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book-2.gif"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book-2.gif" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book-2.gif" style="max-width: 100%;"></a></p>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book-2.gif" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/add-new-book-2.gif" /></p>
 <blockquote>
 <p>Challenges:  Think about where showMessage should be set to false. Update your code. Try using the Alert component to display errors. Refactor the alert to be dismissible.</p>
 </blockquote>
-<h2><a id="user-content-put-route" class="anchor" aria-hidden="true" href="#put-route"><span aria-hidden="true" class="octicon octicon-link"></span></a>PUT Route</h2>
-<h3><a id="user-content-server-2" class="anchor" aria-hidden="true" href="#server-2"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server</h3>
-<p>For updates, we'll need to use a unique identifier since we can't depend on the title to be unique. We can use <code>uuid</code> from the Python <a href="https://docs.python.org/3/library/uuid.html" rel="nofollow">standard library</a>.</p>
+<h2>PUT Route</h2>
+<h3>Server</h3>
+<p>For updates, we'll need to use a unique identifier since we can't depend on the title to be unique. We can use <code>uuid</code> from the Python <a href="https://docs.python.org/3/library/uuid.html">standard library</a>.</p>
 <p>Update <code>BOOKS</code> in <em>server/app.py</em>:</p>
 <p>Don't forget the import:</p>
 <p>Refactor <code>all_books</code> to account for the unique id when a new book is added:</p>
@@ -229,7 +223,7 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <blockquote>
 <p>Take a moment to think about how you would handle the case of an id not existing. What if the payload is not correct? Refactor the for loop in the helper as well so that it's more Pythonic.</p>
 </blockquote>
-<h3><a id="user-content-client-2" class="anchor" aria-hidden="true" href="#client-2"><span aria-hidden="true" class="octicon octicon-link"></span></a>Client</h3>
+<h3>Client</h3>
 <p>Steps:</p>
 <ol>
 <li>Add modal and form</li>
@@ -238,43 +232,42 @@ URL: <a href="https://testdriven.io/blog/developing-a-single-page-app-with-flask
 <li>Alert user</li>
 <li>Handle cancel button click</li>
 </ol>
-<h3><a id="user-content-1-add-modal-and-form" class="anchor" aria-hidden="true" href="#1-add-modal-and-form"><span aria-hidden="true" class="octicon octicon-link"></span></a>(1) Add modal and form</h3>
+<h3>(1) Add modal and form</h3>
 <p>First, add a new modal to the template, just below the first modal:</p>
 <p>Add the form state to the <code>data</code> part of the <code>script</code> section:</p>
 <blockquote>
 <p>Challenge: Instead of using a new modal, try using the same modal for handling both POST and PUT requests.</p>
 </blockquote>
-<h3><a id="user-content-2-handle-update-button-click" class="anchor" aria-hidden="true" href="#2-handle-update-button-click"><span aria-hidden="true" class="octicon octicon-link"></span></a>(2) Handle update button click</h3>
+<h3>(2) Handle update button click</h3>
 <p>Update the "update" button in the table:</p>
 <p>Add a new method to update the values in <code>editForm</code>:</p>
 <p>Then, add a method to handle the form submit:</p>
-<h3><a id="user-content-3-wire-up-ajax-request" class="anchor" aria-hidden="true" href="#3-wire-up-ajax-request"><span aria-hidden="true" class="octicon octicon-link"></span></a>(3) Wire up AJAX request</h3>
-<h3><a id="user-content-4-alert-user" class="anchor" aria-hidden="true" href="#4-alert-user"><span aria-hidden="true" class="octicon octicon-link"></span></a>(4) Alert user</h3>
+<h3>(3) Wire up AJAX request</h3>
+<h3>(4) Alert user</h3>
 <p>Update <code>updateBook</code>:</p>
-<h3><a id="user-content-5-handle-cancel-button-click" class="anchor" aria-hidden="true" href="#5-handle-cancel-button-click"><span aria-hidden="true" class="octicon octicon-link"></span></a>(5) Handle cancel button click</h3>
+<h3>(5) Handle cancel button click</h3>
 <p>Add method:</p>
 <p>Update <code>initForm</code>:</p>
 <p>Make sure to review the code before moving on. Once done, test out the application. Ensure the modal is displayed on the button click and that the input values are populated correctly.</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/update-book.gif"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/update-book.gif" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/update-book.gif" style="max-width: 100%;"></a></p>
-<h2><a id="user-content-delete-route" class="anchor" aria-hidden="true" href="#delete-route"><span aria-hidden="true" class="octicon octicon-link"></span></a>DELETE Route</h2>
-<h3><a id="user-content-server-3" class="anchor" aria-hidden="true" href="#server-3"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server</h3>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/update-book.gif" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/update-book.gif" /></p>
+<h2>DELETE Route</h2>
+<h3>Server</h3>
 <p>Update the route handler:</p>
-<h3><a id="user-content-client-3" class="anchor" aria-hidden="true" href="#client-3"><span aria-hidden="true" class="octicon octicon-link"></span></a>Client</h3>
+<h3>Client</h3>
 <p>Update the "delete" button like so:</p>
 <p>Add the methods to handle the button click and then remove the book:</p>
 <p>Now, when the user clicks the delete button, the <code>onDeleteBook</code> method is fired, which, in turn, fires the <code>removeBook</code> method. This method sends the DELETE request to the back-end. When the response comes back, the alert message is displayed and <code>getBooks</code> is ran.</p>
 <blockquote>
 <p>Challenges:  Instead of deleting on the button click, add a confirmation alert. Display a message saying, like "No books! Please add one.", when no books are present.</p>
 </blockquote>
-<p><a target="_blank" rel="noopener noreferrer" href="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/delete-book.gif"><img src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/delete-book.gif" alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/delete-book.gif" style="max-width: 100%;"></a></p>
-<h2><a id="user-content-conclusion" class="anchor" aria-hidden="true" href="#conclusion"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h2>
+<p><img alt="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/delete-book.gif" src="Developing%20a%20Single%20Page%20App%20with%20Flask%20and%20Vue%20js%209fb52c8e3eaa47dbbb6ca81b176f08ef/delete-book.gif" /></p>
+<h2>Conclusion</h2>
 <p>This post covered the basics of setting up a CRUD app with Vue and Flask.</p>
 <p>Check your understanding by reviewing the objectives from the beginning of this post and going through each of the challenges.</p>
 <p>You can find the source code in the <a href="https://github.com/testdrivenio/flask-vue-crud">flask-vue-crud</a> repo. Thanks for reading.</p>
 <blockquote>
 <p>Looking for more?  Check out the Accepting Payments with Stripe, Vue.js, and Flask blog post, which starts from where this post leaves off. Want to learn how to deploy this app to Heroku? Check out Deploying a Flask and Vue App to Heroku with Docker and Gitlab CI.</p>
 </blockquote>
-
         </body>
     </html>
     

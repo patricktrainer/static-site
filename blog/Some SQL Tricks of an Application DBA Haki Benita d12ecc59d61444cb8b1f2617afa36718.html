@@ -1,0 +1,282 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Some SQL Tricks of an Application DBA Haki Benita d12ecc59d61444cb8b1f2617afa36718</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1>Some SQL Tricks of an Application DBA | Haki Benita</h1>
+<p>Created: Jul 29, 2020 5:43 PM
+Tags: Data, Data engineering, SQL
+URL: https://hakibenita.com/sql-tricks-application-dba</p>
+<p>When I started my career in development, my first job was a DBA. Back then, before AWS RDS, Azure, Google Cloud and the rest of them cloud services, there were two types of DBAs:</p>
+<p><strong>The Infrastructure DBA</strong> was in charge of setting up the database, configuring the storage and taking care of backups and replication. After setting up the database, the infrastructure DBA would pop up from time to time and do some "instance tuning", things like sizing caches.</p>
+<p><strong>The Application DBA</strong> got a clean database from the infrastructure DBA, and was in charge of schema design: creating tables, indexes, constraints, and tuning SQL. The application DBA was also the one who implemented ETL processes and data migrations. In teams that used stored procedures, the application DBA would maintain those as well.</p>
+<p>Application DBAs were usually part of the development team. They would possess deep domain knowledge so normally they would work on just one or two projects. Infrastructure DBAs would usually be part of some IT team, and would work on many projects simultaneously.</p>
+<p><strong>I'm an Application DBA</strong></p>
+<p>I never had any desire to fiddle with backups or tune storage (I'm sure it's fascinating!). Until this day I like to say I'm a DBA that knows how to develop applications, and not a developer that knows his way around the database.</p>
+<p><strong>In this article I share some non-trivial tips about database development I gathered along the way.</strong></p>
+<p><img alt="Some%20SQL%20Tricks%20of%20an%20Application%20DBA%20Haki%20Benita%20d12ecc59d61444cb8b1f2617afa36718/00-sql-tricks-dba.jpg" src="Some%20SQL%20Tricks%20of%20an%20Application%20DBA%20Haki%20Benita%20d12ecc59d61444cb8b1f2617afa36718/00-sql-tricks-dba.jpg" /></p>
+<p>Be that guy...Image by <a href="https://www.commitstrip.com/en/2014/08/01/when-i-help-a-rookie-coder-fix-his-queries">CommitStrip</a></p>
+<p><code>UPDATE</code> is a relatively expensive operation. To speed up an <code>UPDATE</code> command it's best to make sure you only update what needs updating.</p>
+<p>Take this query for example that normalizes an email column:</p>
+<p>```
+db=# UPDATE users SET email = lower(email);
+UPDATE 1010000
+Time: 1583.935 ms (00:01.584)</p>
+<p>```</p>
+<p>Looks innocent, right? the query updated emails of 1,010,000 users. But, did all rows really needed to update?</p>
+<p>```
+db=# UPDATE users SET email = lower(email)
+db-# WHERE email != lower(email);
+UPDATE 10000
+Time: 299.470 ms</p>
+<p>```</p>
+<p>Only 10,000 rows needed to update. By reducing the amount of affected rows, the execution time went down from 1.5 seconds to just less than 300ms. Updating fewer rows also saves the database maintenance later on.</p>
+<p>This type of large updates are very common in data migration scripts. So the next time you write a migration script, make sure to only update what needs updating.</p>
+<p>Constraints are an important part of relational databases: they keep the data consistent and reliable. Their benefits come at a cost though, and it's most noticeable when loading or updating a lot of rows.</p>
+<p>To demonstrate, set up a small schema for a store:</p>
+<p>```
+DROP TABLE IF EXISTS product CASCADE;
+CREATE TABLE product (
+    id serial PRIMARY KEY,
+    name TEXT NOT NULL,
+    price INT NOT NULL
+);
+INSERT INTO product (name, price)
+    SELECT random()::text, (random() * 1000)::int
+    FROM generate_series(0, 10000);</p>
+<p>DROP TABLE IF EXISTS customer CASCADE;
+CREATE TABLE customer (
+    id serial PRIMARY KEY,
+    name TEXT NOT NULL
+);
+INSERT INTO customer (name)
+    SELECT random()::text
+    FROM generate_series(0, 100000);</p>
+<p>DROP TABLE IF EXISTS sale;
+CREATE TABLE sale (
+    id serial PRIMARY KEY,
+    created timestamptz NOT NULL,
+    product_id int NOT NULL,
+    customer_id int NOT NULL
+);</p>
+<p>```</p>
+<p>The schema defines different types of constraints such as "not null" and unique constraints.</p>
+<p>To set a baseline, start by adding foreign keys to the <code>sale</code> table, and then load some data into it:</p>
+<p>```
+db=# ALTER TABLE sale ADD CONSTRAINT sale_product_fk
+db-# FOREIGN KEY (product_id) REFERENCES product(id);
+ALTER TABLE
+Time: 18.413 ms</p>
+<p>db=# ALTER TABLE sale ADD CONSTRAINT sale_customer_fk
+db-# FOREIGN KEY (customer_id) REFERENCES customer(id);
+ALTER TABLE
+Time: 5.464 ms</p>
+<p>db=# CREATE INDEX sale_created_ix ON sale(created);
+CREATE INDEX
+Time: 12.605 ms</p>
+<p>db=# INSERT INTO SALE (created, product_id, customer_id)
+db-# SELECT
+db-#    now() - interval '1 hour' * random() * 1000,
+db-#    (random() * 10000)::int + 1,
+db-#    (random() * 100000)::int + 1
+db-# FROM generate_series(1, 1000000);
+INSERT 0 1000000
+Time: 15410.234 ms (00:15.410)</p>
+<p>```</p>
+<p>After defining constraints and indexes, loading a million rows to the table took ~15.4s.</p>
+<p>Next, try to load the data into the table first, and only then add constraints and indexes:</p>
+<p>Loading data into a table without indexes and constraints was much faster, 2.27s compared to 15.4s before. Creating the indexes and constraints after the data was loaded into the table took a bit longer, but overall the entire process was much faster, 3.1s compared to 15.4s.</p>
+<p>Unfortunately, for indexes PostgreSQL does not provide an easy way of doing this other than dropping and re-creating the indexes. In other databases such as Oracle, you can <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/ALTER-INDEX.html#GUID-D8F648E7-8C07-4C89-BB71-862512536558">disable and enable indexes</a> without having to re-create them.</p>
+<p>When you modify data in PostgreSQL, the changes are written to the <a href="https://www.postgresql.org/docs/current/wal-intro.html">write ahead log (WAL)</a>. The WAL is used to maintain integrity, to fast forward the database during recovery and to maintain replication.</p>
+<p>Writing to the WAL is often needed, but there are some circumstances where you might be willing to give up some of its uses to make things a bit faster. One example is intermediate tables.</p>
+<p>Intermediate tables are disposable tables that stores temporary data used to implement some process. For example, a very common pattern in ETL processes is to load data from a CSV file to an intermediate table, clean the data, and then load it to the target table. In this use-case, the intermediate table is disposable and there is no use for it in backups or replicas.</p>
+<p>Intermediate tables that don't need to be restored in case of disaster, and are not needed in replicas, can be set as <a href="https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-UNLOGGED">UNLOGGED</a>:</p>
+<p><strong>BEWARE</strong>: Before using <code>UNLOGGED</code> make sure you understand its full implications.</p>
+<p>Say you have a users table, and you find that you have some duplicates in the table:</p>
+<p>The user <em>haki benita</em> registered twice, once with the email <code>ME@hakibenita.com</code> and again with <code>me@hakibenita.com</code>. Because we didn't normalize the emails when we inserted them into the table, we now have to deal with duplication.</p>
+<p>To consolidate the duplicate users, we want to:</p>
+<ol>
+<li>Identify duplicate users by lower case email</li>
+<li>Update orders to reference one of the duplicate users</li>
+<li>Remove the duplicate users from the users table</li>
+</ol>
+<p>One way to consolidate duplicate users is to use an intermediate table:</p>
+<p>The intermediate table holds a mapping of duplicate users. For each user that appears more than once with the same normalized email address, we define the user with the min ID as the user we convert all duplicates to. The other users are kept in an array column, and all the references to these users will be updated.</p>
+<p>Using the intermediate table, we update references of duplicate users in the <code>orders</code> table:</p>
+<p>Now that there are no more references, we can safely delete the duplicate users from the <code>users</code> table:</p>
+<p>Notice that we used the function <code>[unnest](https://www.postgresql.org/docs/current/functions-array.html#ARRAY-FUNCTIONS-TABLE)</code> to "transpose" the array, that is, turn each array element into a row.</p>
+<p>This is the result:</p>
+<p>Nice, all occurrences of user 3 (ME@hakibenita.com) are converted to user 2 (me@hakibenita.com).</p>
+<p>We can also verify that the duplicate users were deleted from the <code>users</code> table:</p>
+<p>Now we can get rid of the intermediate table:</p>
+<p>This is fine, but very long and needs cleaning up! Is there a better way?</p>
+<p><strong>Using Common Table Expressions (CTE)</strong></p>
+<p>Using <a href="https://www.postgresql.org/docs/current/queries-with.html">Common Table Expressions</a>, also known as the <code>WITH</code> clause, we can perform the entire process with just one SQL statement:</p>
+<p>Instead of creating the intermediate table, we create a common table expression and reuse it multiple times.</p>
+<p><strong>Returning Results From CTE</strong></p>
+<p>A nice feature of executing DML inside a <code>WITH</code> clause, is that you can return data from it using the <code>[RETURNING</code> keyword](https://www.postgresql.org/docs/current/dml-returning.html). For example, let's report the number of updated and deleted rows:</p>
+<p>This is the result:</p>
+<p>The main appeal of this approach is that the entire process is executed in a single command, so no need to manage a transaction or worry about cleaning up the intermediate table if the process fails.</p>
+<p>Say you have a registration process where users sign up with an email address. To activate the account, they have to verify their email. Your table can look like this:</p>
+<p>Most of your users are good citizens, they sign up with a valid email and immediately activate the account. Let's populate the table with user data, where roughly 90% of the users are activated:</p>
+<p>To query for activated and unactivated users, you might be tempted to create an index on the column <code>activated</code>:</p>
+<p>When you try to query <em>unactivated users</em>, the database is using the index:</p>
+<p>The database estimated that the filter will result in 102,567 which are roughly 10% of the table. This is consistent with the data we populated, so the database has a good sense of the data.</p>
+<p>However, when you try to query for <em>activated users</em> you find that the database decided <em>not to use the index</em>:</p>
+<p>Many developers are often baffled when they the database is not using an index. One way of explaining why an index is not always the best choice is this: <strong>if you had to read the entire table, would you use the index?</strong></p>
+<p>The answer is probably no, because why would you? Reading from disk is expensive and you want to read as little as possible. If for example, a table is 10MB and the index is 1MB, to read the entire table you would have to read 10MB from disk. To read the table using the index you would have to read 11MB from disk. This is wasteful.</p>
+<p>With this understanding, let's have a look at the statistics PostgreSQL gather on the table:</p>
+<p>When PostgreSQL analyzed the table it found that the column <code>activated</code> has two distinct values. The value <code>t</code> in the <code>most_common_vals</code> column corresponds to the frequency <code>0.89743334</code> in the column <code>most_common_freqs</code>, and the value <code>f</code> corresponds to the frequency <code>0.10256667</code>. This means that after analyzing the table, the database estimates that 89.74% of the table are activated users, and the rest 10.26% are unactivated users.</p>
+<p>With these stats, PostgreSQL decided it's best to scan the entire table if it expects 90% of the rows to satisfy the condition. The threshold after which the database may decide to use or not to use the index depends on many factors, and there is no rule of thumb you can use.</p>
+<p>In the previous section we created an index on a boolean column where ~90% of the of the values were true (activated user). When we tried to query for active users, the database did not use the index. However, when we queried unactivated users the database did use the index.</p>
+<p>This brings us to the next question.... if the database is not going to use the index to filter active users, why should we index them in the first place?</p>
+<p>Before we answer this question let's look at how much the full index on the <code>activated</code> column weighs:</p>
+<p>The index is 21MB. Just for reference, the <code>users</code> table is 65MB. This means the index weighs ~32% the size of the table. We also know that ~90% of the index is likely not going to be used.</p>
+<p>In PostgreSQL, there is a way to create an index on only a part of the table, using whats called a <a href="https://www.postgresql.org/docs/current/indexes-partial.html">partial index</a>:</p>
+<p>Using a <code>WHERE</code> clause, we restrict the rows indexed by the index. Let's first make sure it works:</p>
+<p>Amazing, the database was smart enough to understand that the predicate we used in the query can be satisfied by the partial index.</p>
+<p>There is another benefit to using partial indexes:</p>
+<p>The partial index weighs only 2.2MB. The full index on the column weighed 21MB. The partial index is exactly 10% the size of the full index, which matches the ratio of inactive users in the table.</p>
+<p>This is one of the things I comment most about in code reviews. It's not as intuitive as the other tips and it can have a huge impact on performance.</p>
+<p>Say you have a large sales fact table:</p>
+<p>Every night, during some ETL process, you load data into the table:</p>
+<p>To fake a loading process we used random data. We inserted 100K rows with random username, and sale dates from 2020-01-01 to two years forward.</p>
+<p>The table is used mostly to produce summary sales reports. Most reports filter by date to get the sales at a specific period. To speed up range scans you create an index on <code>sold_at</code>:</p>
+<p>Let's look at the execution plan of a query to fetch all sales made in June 2020:</p>
+<p>After executing the query several times to warm up the cache, the timing settled at ~6ms.</p>
+<p><strong>Bitmap Scan</strong></p>
+<p>Looking at the execution plan, we can see that the database used a bitmap scan. A bitmap scan works in two stages:</p>
+<ul>
+<li><code>Bitmap Index Scan</code>: Go through the entire index <code>sale_fact_sold_at_ix</code> and map all the table pages that contain relevant rows.</li>
+<li><code>Bitmap Heap Scan</code>: Read the pages that contain relevant rows, and find the rows inside these pages that satisfy the condition.</li>
+</ul>
+<p>Pages can contain multiple rows. The first step uses the index to find <em>pages</em>. The second step check for <em>rows</em> inside these pages, hence the "Recheck Cond" operation in the execution plan.</p>
+<p>At this point many DBAs and developers will call it a day and move on to the next query. BUT, there's a way to make this query better.</p>
+<p><strong>Index Scan</strong></p>
+<p>To make things better, we'll make a small change in how we load the data.</p>
+<p>This time, we loaded the data sorted by the <code>sold_at</code>.</p>
+<p>Let's see what the execution plan for the exact same query looks like now:</p>
+<p>After running the query several times we get a stable timing at round 2.3ms. Compared to the previous query that took ~6ms, we get a consistent saving of ~60%.</p>
+<p>Another thing we can see right away, is that the database did not use a bitmap scan this time, but a "regular" index scan. Why is that?</p>
+<p><strong>Correlation</strong></p>
+<p>When the database is analyzing a table it collects all sort of statistics. One of those statistics is <strong><a href="https://www.postgresql.org/docs/current/view-pg-stats.html">correlation</a></strong>:</p>
+<blockquote>
+<p>Statistical correlation between physical row ordering and logical ordering of the column values. This ranges from -1 to +1. When the value is near -1 or +1, an index scan on the column will be estimated to be cheaper than when it is near zero, due to reduction of random access to the disk.</p>
+</blockquote>
+<p>As the official documentation explains, the correlation measures how "sorted" values of a specific column are on disk.</p>
+<p>When the correlation is 1, or close to 1, it means the pages in the tables are stored on disk in roughly the same order as the rows in the table. This is actually very common. For example, auto incrementing ID's will usually have a correlation close to 1. Date and timestamp columns that keeps track of when rows were created will also usually have a correlation close to 1.</p>
+<p>When the correlation is -1, the pages of the table are sorted in reverse order relative to the column.</p>
+<p>When the correlation is close to 0, it mean the values in the column have no or very little correlation to how the pages of the table are stored.</p>
+<p>Going back to our <code>sale_fact</code> table, when we loaded the data into the table without sorting it first, these were the correlations:</p>
+<p>The auto generated column <code>id</code> has a correlation of 1. The <code>sold_at</code> column has a very low correlation: consecutive values are scattered across the entire table.</p>
+<p>When we loaded sorted data into the table, these were the correlations calculated by the database:</p>
+<p>The correlation for <code>sold_at</code> is now 1.</p>
+<p>So why did the database use a bitmap scan when the correlation was low, and an index scan when the correlation was close to 1?</p>
+<ul>
+<li>When the correlation was 1, the database estimated that rows in the requested range are likely to be in consecutive pages. In this case, an index scan is likely to read very few pages.</li>
+<li>When the correlation was close to 0, the database estimated that rows in the requested range are likely to be scattered across the entire table. In this case, it makes sense to use a bitmap scan to map the table pages in which rows exist, and only then fetch them and apply the condition.</li>
+</ul>
+<p>The next time you load data into a table, think about how the data is going to be queried, and make sure you sort it in a way that indexes used for range scan can benefit from.</p>
+<p><strong><code>CLUSTER</code> Command</strong></p>
+<p>Another way of "sorting a table on disk" by a specific index is to use the <code>[CLUSTER</code> command](https://www.postgresql.org/docs/current/sql-cluster.html).</p>
+<p>For example:</p>
+<p>We loaded data into the table in random order and as a result the correlation of <code>sold_at</code> is close to zero.</p>
+<p>To "rearrange" the table by <code>sold_at</code>, we used the <code>CLUSTER</code> command to sort the table on disk according to the index <code>sale_fact_sold_at_ix</code>:</p>
+<p>After the table was clustered we can see that the correlation for <code>sold_at</code> is 1.</p>
+<p>Some things to note about the <code>CLUSTER</code> command:</p>
+<ul>
+<li>Clustering the table by a specific column may affect the correlation of other column. See for example the correlation of the column <code>id</code> after we clustered the table by <code>sold_at</code>.</li>
+<li><code>CLUSTER</code> is a heavy, blocking operation, so make sure you don't execute it on a live table.</li>
+</ul>
+<p>For these two reason it's best to insert the data sorted and not rely on <code>CLUSTER</code>.</p>
+<p>When talking about indexes, most developers will think about B-Tree indexes. But, PostgreSQL provides other types of indexes such as <a href="https://www.postgresql.org/docs/current/brin.html">BRIN</a>:</p>
+<blockquote>
+<p>BRIN is designed for handling very large tables in which certain columns have some natural correlation with their physical location within the table</p>
+</blockquote>
+<p>BRIN stands for Block Range Index. According to the documentation, a BRIN index works best for columns with high correlation. As we've already seen in previous sections, some fields such as auto incrementing IDs and timestamps are naturally correlated with the physical structure of the table, hence they are good candidates for a BRIN index.</p>
+<p>Under some circumstances, a BRIN index can provide a better "value for money" in terms of size and performance compared to a similar B-Tree index.</p>
+<p>A BRIN index works by keeping the range of values within a number of adjacent pages in the table. Say we have these values in a column, each is single table page:</p>
+<p>A BRIN index works on ranges of adjacent pages in the table. If the number of adjacent pages is set to 3, the index will divide the table into the following ranges:</p>
+<p>For each range, the BRIN index <strong>keeps the minimum and maximum value</strong>:</p>
+<p>Using the index above, try to search for the value 5:</p>
+<ul>
+<li><code>[1–3]</code> - Definitely not here</li>
+<li><code>[4–6]</code> - Might be here</li>
+<li><code>[7–9]</code> - Definitely not here</li>
+</ul>
+<p>Using the BRIN index we managed to limit our search to blocks 4–6.</p>
+<p>Let's take another example, this time the values in the column will have a correlation close to zero, meaning they are <em>not</em> sorted:</p>
+<p>Indexing 3 adjacent blocks produces the following ranges:</p>
+<p>Let's try to search for the value 5:</p>
+<ul>
+<li><code>[2–9]</code> - Might be here</li>
+<li><code>[1–7]</code> - Might be here</li>
+<li><code>[3–8]</code> - Might be here</li>
+</ul>
+<p>In this case the index is not limiting the search <em>at all</em>, hence it is useless.</p>
+<p><strong>Understanding <code>pages_per_range</code></strong></p>
+<p>The number of adjacent pages is determined by the parameter <code>pages_per_range</code>. The number of pages per range effects the size and accuracy of the BRIN index:</p>
+<ul>
+<li>A large <code>pages_per_range</code> will produce a small and less accurate index</li>
+<li>A small <code>pages_per_range</code> will produce a bigger and more accurate index</li>
+</ul>
+<p>The default <code>pages_per_range</code> is 128.</p>
+<p>To demonstrate, let's create a BRIN index on ranges of 2 adjacent pages and search for the value 5:</p>
+<ul>
+<li><code>[1–2]</code> - Definitely not here</li>
+<li><code>[3–4]</code> - Definitely not here</li>
+<li><code>[5–6]</code> - Might be here</li>
+<li><code>[7–8]</code> - Definitely not here</li>
+<li><code>[9]</code> - Definitely not here</li>
+</ul>
+<p>Using the index with 2 pages per range we were able to limit the search to blocks 5 and 6. When the range was 3 pages, the index limited the search to blocks 4,5 and 6.</p>
+<p>Another difference between the two indexes is that when the range was 3 we only had to keep 3 ranges. When the range was 2 we had to keep 5 ranges so the index was bigger.</p>
+<p><strong>Creating a BRIN Index</strong></p>
+<p>Using the <code>sales_fact</code> from before, let's create a BRIN index on the column <code>sold_at</code>:</p>
+<p>This creates a BRIN index with the default <code>pages_per_range = 128</code>.</p>
+<p>Let's try to query for a range of sale dates:</p>
+<p>The database used our BRIN index to get a range of sale dates, but that's not the interesting part...</p>
+<p><strong>Optimizing <code>pages_per_range</code></strong></p>
+<p>According to the execution plan, the database removed 23,130 rows from the pages it found using the index. This may indicate that the range we set for the index it too large for this particular query. Let's try to create an index with less pages per range:</p>
+<p>With 64 pages per range the database removed less rows from the pages it found using the the index, only 9,434 were removed compared with 23,130 when the the range was 128 pages. This means the database had to do less IO and the query was slightly faster, ~5.5ms compared to ~8.9ms.</p>
+<p>Testing the index with different values for <code>pages_per_range</code> produced the following results:</p>
+<p>We can see that as we decrease <code>pages_per_range</code>, the index is more accurate and less rows are removed from the pages found using the index.</p>
+<p>Note that we optimized the query for a very specific query. This is fine for demonstration purposes, but in real life it's best to use values that meet the needs of most queries.</p>
+<p><strong>Evaluating Index Size</strong></p>
+<p>Another big selling point for BRIN indexes is their size. In previous sections we created a B-Tree index on the <code>sold_at</code> field. The size of the index was 2224kB. The size a BRIN index with <code>pages_per_range=128</code> is only 48kb. That's 46 times smaller than the B-Tree index.</p>
+<p>The size of a BRIN index is also affected by <code>pages_per_range</code>. For example, a BRIN index with <code>pages_per_range=2</code> weighs 56kb, which is only slightly bigger than 48kb.</p>
+<p>PostgreSQL has a nice feature called <a href="https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis#Transactional_DDL">transactional DDL</a>. After years of using Oracle, I got used to DDL commands such as <code>CREATE</code>, <code>DROP</code> and <code>ALTER</code> ending a transaction. However, in PostgreSQL you can perform DDL commands inside a transaction, and changes will take effect only when the transaction is committed.</p>
+<p>As I <a href="https://twitter.com/be_haki/status/1282585977668751360?s=20">recently discovered</a>, using transactional DDL you can make indexes invisible! This comes in handy when you want to see what an execution plan looks like without some index.</p>
+<p>For example, in the <code>sale_fact</code> table from the previous section we created an index on <code>sold_at</code>. The execution plan for fetching sales made in July looked like this:</p>
+<p>To see what the execution plan would be if the index <code>sale_fact_sold_at_ix</code> did not exist, we can drop the index inside a transaction and immediately rollback:</p>
+<p>We first start a transaction using <code>BEGIN</code>. Then we drop the index and generate an execution plan. Notice that the execution plan now uses a full table scan, as if the index does not exist. At this point the transaction is still in progress, so the index is not dropped yet. To finish the transaction without dropping the index we rollback the transaction using the <code>ROLLBACK</code> command.</p>
+<p>Now, make sure the index still exists:</p>
+<p>Other database that don't support transactional DDL provide other ways to achieve the same goal. For example, Oracle let's you mark an index as <a href="https://docs.oracle.com/cd/B28359_01/server.111/b28310/indexes003.htm#ADMIN12317">invisible</a>, which will cause the optimizer to ignore it.</p>
+<p><strong>CAUTION</strong>: Dropping an index inside a transaction will lock out concurrent selects, inserts, updates, and deletes on the table while the transaction is active. Use with caution in test environments, and avoid on production databases.</p>
+<p>It's a known fact among investors that weird things can happen when a stock's price reaches a nice round number such as 10$, 100$, 1000$. As <a href="https://www.investopedia.com/trading/support-and-resistance-basics/#mntl-sc-block_1-0-38">the following article</a> explains:</p>
+<blockquote>
+<p>[...] asset's price may have a difficult time moving beyond a round number, such as $50 or $100 per share. Most inexperienced traders tend to buy or sell assets when the price is at a whole number because they are more likely to feel that a stock is fairly valued at such levels.</p>
+</blockquote>
+<p>Developers in this sense are not all that different than the investors. When they need to schedule a long running process, they will usually schedule it at a round hour.</p>
+<p>This tendency to schedule tasks at round hours can cause some unusual loads during these times. So, if you need to schedule some long running process, you have a better chance of finding a system at rest if you schedule at another time.</p>
+<p>Another good idea is to apply a random delay to the task's schedule, so it doesn't run at the same time every time. This way, even if another task is scheduled to run at the same time, it won't be a big problem. If you use <code>systemd</code> timer units to schedule your tasks, you can use the <a href="https://www.freedesktop.org/software/systemd/man/systemd.timer.html#RandomizedDelaySec=">RandomizedDelaySec</a> option for this.</p>
+<p>This article covers some trivial and non-trivial tips from my own experience. Some of these tips are easy to implement, and some require a deeper understanding of how the database works. Databases are the backbone of most modern systems, so taking some time to understand how they work is a good investment for any developer!</p>
+        </body>
+    </html>
+    

@@ -19,58 +19,54 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-the-most-underutilized-function-in-sql" class="anchor" aria-hidden="true" href="#the-most-underutilized-function-in-sql"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Most Underutilized Function in SQL</h1>
+            <h1>The Most Underutilized Function in SQL</h1>
 <p>Created: Jan 13, 2020 7:53 PM
 Tags: Data, SQL
-URL: <a href="https://blog.getdbt.com/the-most-underutilized-function-in-sql/" rel="nofollow">https://blog.getdbt.com/the-most-underutilized-function-in-sql/</a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="The%20Most%20Underutilized%20Function%20in%20SQL%2022cff19f0f604259b2c9d30f0cd257b0/jeshoots-com-VdOO4_HFTWM-unsplash.jpg"><img src="The%20Most%20Underutilized%20Function%20in%20SQL%2022cff19f0f604259b2c9d30f0cd257b0/jeshoots-com-VdOO4_HFTWM-unsplash.jpg" alt="The%20Most%20Underutilized%20Function%20in%20SQL%2022cff19f0f604259b2c9d30f0cd257b0/jeshoots-com-VdOO4_HFTWM-unsplash.jpg" style="max-width: 100%;"></a></p>
+URL: https://blog.getdbt.com/the-most-underutilized-function-in-sql/</p>
+<p><img alt="The%20Most%20Underutilized%20Function%20in%20SQL%2022cff19f0f604259b2c9d30f0cd257b0/jeshoots-com-VdOO4_HFTWM-unsplash.jpg" src="The%20Most%20Underutilized%20Function%20in%20SQL%2022cff19f0f604259b2c9d30f0cd257b0/jeshoots-com-VdOO4_HFTWM-unsplash.jpg" /></p>
 <p>Over the past nine months I’ve worked with over a dozen venture-funded startups to build out their internal analytics. In doing so, there’s a single SQL function that I have come to use surprisingly often. At first it wasn’t at all clear to me why I would want to use this function, but as time goes on I have found ever more uses for it.</p>
 <p>What is it? <strong>md5()</strong>. If you’re not familiar, here’s an example snippet from the Redshift docs:</p>
-<pre><code>select md5('Amazon Redshift');
-
-md5
-----------------------------------
-f7415e33f972c03abd4f3fed36748f7a
+<p>```
+select md5('Amazon Redshift');</p>
+<h2>md5</h2>
+<p>f7415e33f972c03abd4f3fed36748f7a
 (1 row)
-</code></pre>
-<p>Give md5() a varchar and it returns its <a href="https://en.wikipedia.org/wiki/MD5" rel="nofollow">MD5 hash</a>. Simple…but seemingly pointless. <em>Why exactly would I want to use that?!</em></p>
+```</p>
+<p>Give md5() a varchar and it returns its <a href="https://en.wikipedia.org/wiki/MD5">MD5 hash</a>. Simple…but seemingly pointless. <em>Why exactly would I want to use that?!</em></p>
 <p>Great question. In this post I’m going to show you two uses for md5() that make it one of the most powerful tools in my SQL kit.</p>
-<h2><a id="user-content-1-building-yourself-a-unique-id" class="anchor" aria-hidden="true" href="#1-building-yourself-a-unique-id"><span aria-hidden="true" class="octicon octicon-link"></span></a>#1: Building Yourself a Unique ID</h2>
-<p>I’m going to make a really strong statement here, but it’s one that I really believe in: <strong>every single <a href="http://dbt.readthedocs.io/en/docs-0.6.0/guide/building-models/" rel="nofollow">data model</a> in your warehouse should have a rock solid unique ID</strong>.</p>
-<p>It’s extremely common for this not to be the case. One reason is that your source data doesn’t have a unique key—if you’re syncing advertising performance data from Facebook Ads via <a href="http://stitchdata.com/" rel="nofollow">Stitch</a> or <a href="http://fivetran.com/" rel="nofollow">Fivetran</a>, the source data in your ad_insights table doesn’t have a unique key you can rely on. Instead, you have a combination of fields that is reliably unique (in this case date and ad_id). Using that knowledge, you can build yourself a unique id using md5():</p>
-<pre><code>select 
+<h2>#1: Building Yourself a Unique ID</h2>
+<p>I’m going to make a really strong statement here, but it’s one that I really believe in: <strong>every single <a href="http://dbt.readthedocs.io/en/docs-0.6.0/guide/building-models/">data model</a> in your warehouse should have a rock solid unique ID</strong>.</p>
+<p>It’s extremely common for this not to be the case. One reason is that your source data doesn’t have a unique key—if you’re syncing advertising performance data from Facebook Ads via <a href="http://stitchdata.com/">Stitch</a> or <a href="http://fivetran.com/">Fivetran</a>, the source data in your ad_insights table doesn’t have a unique key you can rely on. Instead, you have a combination of fields that is reliably unique (in this case date and ad_id). Using that knowledge, you can build yourself a unique id using md5():</p>
+<p>```
+select 
     md5(date_start::varchar || ad_id::varchar) as insight_id
 from 
     stitch_fb_ads.facebook_ads_insights
-limit 5;
-
-insight_id
-----------------------------------
-6d475ea96f23b097b51ed500116d8c5e     822c9429eabb28ccbcd7286836d7cd60     8b7fcd2aff879772ccac4f0f8bcb6a45     8a2cfd7eb1a723c49db47232e73ca29c     10338719dfadb3d4c9d44c608063998a
+limit 5;</p>
+<h2>insight_id</h2>
+<p>6d475ea96f23b097b51ed500116d8c5e     822c9429eabb28ccbcd7286836d7cd60     8b7fcd2aff879772ccac4f0f8bcb6a45     8a2cfd7eb1a723c49db47232e73ca29c     10338719dfadb3d4c9d44c608063998a
 (5 rows)
-</code></pre>
+```</p>
 <p>The resulting hash is a meaningless string of alphanumeric text that functions as a unique identifier for your record. Of course, you could just as easily just create a single concatenated varchar field that performed the same function, but <em>it’s actually important to obfuscate the underlying logic behind the hash</em>: you will innately treat the field differently if it looks like an id versus if it looks like a jumble of human-readable text.</p>
 <p>There are a couple of reasons why creating a unique id is an important practice:</p>
 <ol>
 <li>One of the most common causes of error is duplicate values in a key that an analyst was expecting to be unique. Joins on that field will “fan out” a result set in unexpected ways and can cause significant error that is difficult to troubleshoot. To avoid this, only join on fields where you’ve validated the cardinality and constructed a unique key where necessary.</li>
-<li>Some BI tools require you to have a unique key in order to provide certain functionality. For instance, Looker <a href="https://discourse.looker.com/t/symmetric-aggregates/261" rel="nofollow">symmetric aggregates</a> require a unique key in order to function.</li>
+<li>Some BI tools require you to have a unique key in order to provide certain functionality. For instance, Looker <a href="https://discourse.looker.com/t/symmetric-aggregates/261">symmetric aggregates</a> require a unique key in order to function.</li>
 </ol>
-<p>We create unique keys for every table and then test uniqueness on this key using <a href="http://dbt.readthedocs.io/en/master/guide/testing/" rel="nofollow">dbt schema tests</a>. We run these tests multiple times per day on <a href="http://sinterdata.com/" rel="nofollow">Sinter</a> and get notifications for any failures. This allows us to be completely confident of the analytics we implement on top of these data models.</p>
-<h2><a id="user-content-2-simplifying-complex-joins" class="anchor" aria-hidden="true" href="#2-simplifying-complex-joins"><span aria-hidden="true" class="octicon octicon-link"></span></a>#2: Simplifying Complex Joins</h2>
-<p>This case is similar to #1 in its execution but it solves a very different puzzle. Imagine the following case. You have the same Facebook Ads dataset as referenced earlier but this time you have a new challenge: join that data to data in your web analytics sessions table so that you can calculate Facebook <a href="http://www.verticalrail.com/kb/calculate-roas/" rel="nofollow">ROAS</a>.</p>
-<p>In this case, your available join keys are the date and your <a href="https://en.wikipedia.org/wiki/UTM_parameters" rel="nofollow">UTM parameters</a> (utm_medium, source, campaign, etc). Seems easy, right? Just do a join on all 6 fields and call it a day.</p>
+<p>We create unique keys for every table and then test uniqueness on this key using <a href="http://dbt.readthedocs.io/en/master/guide/testing/">dbt schema tests</a>. We run these tests multiple times per day on <a href="http://sinterdata.com/">Sinter</a> and get notifications for any failures. This allows us to be completely confident of the analytics we implement on top of these data models.</p>
+<h2>#2: Simplifying Complex Joins</h2>
+<p>This case is similar to #1 in its execution but it solves a very different puzzle. Imagine the following case. You have the same Facebook Ads dataset as referenced earlier but this time you have a new challenge: join that data to data in your web analytics sessions table so that you can calculate Facebook <a href="http://www.verticalrail.com/kb/calculate-roas/">ROAS</a>.</p>
+<p>In this case, your available join keys are the date and your <a href="https://en.wikipedia.org/wiki/UTM_parameters">UTM parameters</a> (utm_medium, source, campaign, etc). Seems easy, right? Just do a join on all 6 fields and call it a day.</p>
 <p>Unfortunately that doesn’t work, for a really simple reason: it’s extremely common for some subset of those fields to be null, and a null doesn’t join to another null. So, that 6-field join is a dead end. You can hack together something incredibly complicated using a bunch of conditional logic, but that code is hideous and performs terribly (I’ve tried it).</p>
 <p>Instead, use md5(). In both datasets, you can take the 6 fields we mentioned and concatenate them together into a single string, and then call md5() on the entire string. Here’s a code snippet from a client project where we did exactly this:</p>
 <p>You can see that this code is actually building the id on top of even more fields: in this example we’re actually unioning together advertising spend data from 7 different ad channels, and the data from Bing and Adwords is identified by ad_group_id and keyword_id instead of by UTM parameters. The approach extends cleanly.</p>
 <p>In the sessions table, you then create the exact same hashed id field. <strong>The resulting join is simple, readable, and easy to use for downstream analysis</strong>:</p>
-<h2><a id="user-content-resources" class="anchor" aria-hidden="true" href="#resources"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources</h2>
+<h2>Resources</h2>
 <p>Interested in implementing something like this yourself? Here are a few resources:</p>
 <ul>
-<li>
-<a href="https://github.com/fishtown-analytics/dbt">dbt</a>(the open source tool we build and use to do all of our data modeling)</li>
+<li><a href="https://github.com/fishtown-analytics/dbt">dbt</a>(the open source tool we build and use to do all of our data modeling)</li>
 </ul>
 <p>Thanks for reading! I’m definitely curious to hear if anyone has any additional clever uses for md5().</p>
-
         </body>
     </html>
     

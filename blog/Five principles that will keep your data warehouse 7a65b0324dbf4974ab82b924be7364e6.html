@@ -19,12 +19,12 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-five-principles-that-will-keep-your-data-warehouse-organized" class="anchor" aria-hidden="true" href="#five-principles-that-will-keep-your-data-warehouse-organized"><span aria-hidden="true" class="octicon octicon-link"></span></a>Five principles that will keep your data warehouse organized</h1>
+            <h1>Five principles that will keep your data warehouse organized</h1>
 <p>Created: Dec 4, 2019 11:53 AM
 Tags: Data, Productivity
-URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-warehouse-organized/" rel="nofollow">https://blog.getdbt.com/five-principles-that-will-keep-your-data-warehouse-organized/</a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="Five%20principles%20that%20will%20keep%20your%20data%20warehouse%207a65b0324dbf4974ab82b924be7364e6/chuttersnap-kyCNGGKCvyw-unsplash.jpg"><img src="Five%20principles%20that%20will%20keep%20your%20data%20warehouse%207a65b0324dbf4974ab82b924be7364e6/chuttersnap-kyCNGGKCvyw-unsplash.jpg" alt="Five%20principles%20that%20will%20keep%20your%20data%20warehouse%207a65b0324dbf4974ab82b924be7364e6/chuttersnap-kyCNGGKCvyw-unsplash.jpg" style="max-width: 100%;"></a></p>
-<p>The natural state of the universe is chaos: entropy tends to increase in closed systems, and <a href="https://www.multivax.com/last_question.html" rel="nofollow">there’s really nothing that we can do about that</a>. So too is the nature of data warehouses: unless action is taken to maintain <code>order</code>in your data warehouse, it will inevitably spiral into a hard to navigate, hard to operate collection of objects that you’re too afraid to delete. While maintaining databases was once the job of dedicated Database Administrators, these days it’s common for no one (or rather, everyone) to be directly responsible for maintaining order in the database.</p>
+URL: https://blog.getdbt.com/five-principles-that-will-keep-your-data-warehouse-organized/</p>
+<p><img alt="Five%20principles%20that%20will%20keep%20your%20data%20warehouse%207a65b0324dbf4974ab82b924be7364e6/chuttersnap-kyCNGGKCvyw-unsplash.jpg" src="Five%20principles%20that%20will%20keep%20your%20data%20warehouse%207a65b0324dbf4974ab82b924be7364e6/chuttersnap-kyCNGGKCvyw-unsplash.jpg" /></p>
+<p>The natural state of the universe is chaos: entropy tends to increase in closed systems, and <a href="https://www.multivax.com/last_question.html">there’s really nothing that we can do about that</a>. So too is the nature of data warehouses: unless action is taken to maintain <code>order</code>in your data warehouse, it will inevitably spiral into a hard to navigate, hard to operate collection of objects that you’re too afraid to delete. While maintaining databases was once the job of dedicated Database Administrators, these days it’s common for no one (or rather, everyone) to be directly responsible for maintaining order in the database.</p>
 <p>An actively maintained warehouse is a critical component of the highest functioning data teams. In a poorly maintained warehouse:</p>
 <ul>
 <li>Columns, tables, schemas and databases have inconsistent and possibly confusing names.</li>
@@ -40,7 +40,7 @@ URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-w
 <li>Who ran that expensive query?</li>
 <li>What should I name this new user/schema/table/column?</li>
 </ul>
-<p>A well maintained warehouse makes is easy for users to find relevant datasets and answers their own questions. While there’s no replacement for<a href="https://docs.getdbt.com/docs/documentation-website" rel="nofollow">really good data documentation</a>, the application of consistent conventions goes a long way towards empowering end-users.</p>
+<p>A well maintained warehouse makes is easy for users to find relevant datasets and answers their own questions. While there’s no replacement for<a href="https://docs.getdbt.com/docs/documentation-website">really good data documentation</a>, the application of consistent conventions goes a long way towards empowering end-users.</p>
 <p>This post reflects our best-practices for maintaining analytical data warehouses based on years of experience working with data across many organizations and data stacks. We’ve distilled our experiences into five principles that we feel to be true in any well maintained warehouse:</p>
 <ol>
 <li>Use schemas to logically group together objects;</li>
@@ -50,7 +50,7 @@ URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-w
 <li>Limit access to superuser privileges.</li>
 </ol>
 <p>For each principle, we’ve also shared our practices that help us implement these principles. Like much of what we write, these practices are opinionated, and won’t be right for every organization! We think they’re a great starting point for anyone who has suddenly found themselves in charge of administering a warehouse without having solved these problems before.</p>
-<h1><a id="user-content-use-schemas-to-logically-group-together-objects" class="anchor" aria-hidden="true" href="#use-schemas-to-logically-group-together-objects"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use schemas to logically group together objects</h1>
+<h1>Use schemas to logically group together objects</h1>
 <p>Schemas should be used to logically group together objects, similar to using directories when organizing files. Within a single schema:</p>
 <ul>
 <li>All relations (i.e. tables, views) should be created by the same process.</li>
@@ -59,16 +59,12 @@ URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-w
 </ul>
 <p>We tend to:</p>
 <ul>
-<li>
-<strong>Not</strong> use the public schema.</li>
-<li>
-<strong>For data sources:</strong> Use one meaningfully-named schema per data source (for example <code>stripe</code> or <code>zendesk</code>). On Snowflake we often group these together in a raw database, while on Redshift, we might prefix all the data source schemas with “raw”, e.g. <code>raw_stripe</code>.</li>
-<li>
-<strong>For production transformations</strong> that should be queried by a BI tool: group models together by business area, for example, <code>core</code> (for shared data models), <code>marketing</code>, or <code>finance</code>.</li>
-<li>
-<strong>For dev transformations</strong>: Group models together based on their owner, for example in a schema named <code>dbt_claire</code>.</li>
+<li><strong>Not</strong> use the public schema.</li>
+<li><strong>For data sources:</strong> Use one meaningfully-named schema per data source (for example <code>stripe</code> or <code>zendesk</code>). On Snowflake we often group these together in a raw database, while on Redshift, we might prefix all the data source schemas with “raw”, e.g. <code>raw_stripe</code>.</li>
+<li><strong>For production transformations</strong> that should be queried by a BI tool: group models together by business area, for example, <code>core</code> (for shared data models), <code>marketing</code>, or <code>finance</code>.</li>
+<li><strong>For dev transformations</strong>: Group models together based on their owner, for example in a schema named <code>dbt_claire</code>.</li>
 </ul>
-<h1><a id="user-content-use-consistent-and-meaningful-names-for-objects-in-a-warehouse" class="anchor" aria-hidden="true" href="#use-consistent-and-meaningful-names-for-objects-in-a-warehouse"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>Use consistent and meaningful names for objects in a warehouse</strong></h1>
+<h1><strong>Use consistent and meaningful names for objects in a warehouse</strong></h1>
 <p>It’s been said many times over: <em>naming things is hard</em>.</p>
 <p>In a data warehouse, you have a lot of objects to name — databases, schemas, relations, columns, users, and shared roles. On Snowflake you have even more things to name— warehouses (i.e. compute resources), stages, and pipes, for instance.</p>
 <p>Using consistent naming patterns helps reduce the number of decisions to be made when creating objects, and can make it easier for a user to understand the structure of your warehouse. That being said, they can go too far! I’ve seen some warehouses that implement so many conventions that they become <em>harder</em> to navigate unless you know the rules (for example, <code>d_account_v.f_active</code> instead of <code>accounts.is_active</code>). As such, it’s also important to consider whether your names are meaningful!</p>
@@ -79,18 +75,16 @@ URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-w
 <li>Only using <code>snake_case</code> for names.</li>
 </ul>
 <p>Once you’ve settled on your naming practices, we recommend codifying them into conventions, and sharing them with anyone using your warehouse. We’ve written down our specific naming conventions in our <a href="https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#naming-and-field-conventions">dbt coding conventions</a>.</p>
-<h1><a id="user-content-use-a-separate-user-for-each-human-being-and-application-connecting-to-your-data-warehouse" class="anchor" aria-hidden="true" href="#use-a-separate-user-for-each-human-being-and-application-connecting-to-your-data-warehouse"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use a separate user for each human being and application connecting to your data warehouse</h1>
-<p>Before we dive into this, it’s worth noting that different data warehouses treat users, groups, and roles in very different ways (for anyone else that wants to fall down this rabbit hole, I wrote my findings up on <a href="https://discourse.getdbt.com/t/the-difference-between-users-groups-and-roles-on-each-data-warehouse/429" rel="nofollow">Discourse</a>).</p>
+<h1>Use a separate user for each human being and application connecting to your data warehouse</h1>
+<p>Before we dive into this, it’s worth noting that different data warehouses treat users, groups, and roles in very different ways (for anyone else that wants to fall down this rabbit hole, I wrote my findings up on <a href="https://discourse.getdbt.com/t/the-difference-between-users-groups-and-roles-on-each-data-warehouse/429">Discourse</a>).</p>
 <p>As such, it’s pretty hard to give advice here that isn’t tied to one specific data warehouse! For the remainder of this article, I’m going to abstract users, groups and roles into two entities:</p>
 <ul>
-<li>
-<strong>User</strong>: a single set of login credentials.</li>
-<li>
-<strong>Shared role</strong>: A group (on Redshift) or role (on Postgres or Snowflake) that a user can be a member of.</li>
+<li><strong>User</strong>: a single set of login credentials.</li>
+<li><strong>Shared role</strong>: A group (on Redshift) or role (on Postgres or Snowflake) that a user can be a member of.</li>
 </ul>
 <p>We always use a separate user for each human being and application connecting to a warehouse. We name these users in a way that makes sense, with names like <code>claire</code>, <code>drew</code>, <code>stitch</code>, <code>fivetran</code>, and <code>looker</code>. This makes it easier to manage access, debug when something goes wrong, and understand data lineage. Credentials should be securely stored, and only admins should have access to the passwords for application users.</p>
 <p>With so many users, it can become difficult to manage privileges. Instead, we grant privileges to shared roles (more on this below), with users inheriting their privileges via their role membership. We tend to create a small number of shared roles, named <code>loader</code>, <code>transformer</code> and <code>reporter</code> — even if your data warehouse allows them, multi-level hierarchies for shared roles should be avoided, as they often become confusing to manage.</p>
-<h1><a id="user-content-grant-privileges-systematically" class="anchor" aria-hidden="true" href="#grant-privileges-systematically"><span aria-hidden="true" class="octicon octicon-link"></span></a>Grant privileges systematically</h1>
+<h1>Grant privileges systematically</h1>
 <p>Data warehouses provide fine-grained privileges —you can grant any combination of the following privileges to a user or a shared role (in fact, these are just a subset of your options!):</p>
 <ul>
 <li>On a database: usage, create</li>
@@ -102,50 +96,39 @@ URL: <a href="https://blog.getdbt.com/five-principles-that-will-keep-your-data-w
 <p>At the same time, you should consider the complexity of your privilege scheme — complex schemes can be difficult to maintain. With too much complexity, it becomes unclear who has access to what, and which grant statements should be run when a new user or schema is added.</p>
 <p>We’ve found that a simplified privilege structure applied to shared roles provides a balanced level of control and is easy to maintain. In our data warehouses, we implement two privilege styles:</p>
 <ul>
-<li>
-<code>read-schema</code>: Ability to select from a schema and all relations within it.</li>
-<li>
-<code>create-schema</code>: Ability to create a schema in a database, and therefore create relations within it and have all privileges on those relations.</li>
+<li><code>read-schema</code>: Ability to select from a schema and all relations within it.</li>
+<li><code>create-schema</code>: Ability to create a schema in a database, and therefore create relations within it and have all privileges on those relations.</li>
 </ul>
 <p>We then grant the following privileges to each of the shared roles in our warehouse:</p>
 <ul>
-<li>
-<strong>loader</strong>: <code>create-schema</code>
-</li>
-<li>
-<strong>transformer:</strong> <code>read-schema</code>, <code>create-schema</code>
-</li>
-<li>
-<strong>reporter:</strong> <code>read-schema</code> (limited to transformed schemas)</li>
+<li><strong>loader</strong>: <code>create-schema</code></li>
+<li><strong>transformer:</strong> <code>read-schema</code>, <code>create-schema</code></li>
+<li><strong>reporter:</strong> <code>read-schema</code> (limited to transformed schemas)</li>
 </ul>
-<p>I’ve done a very implementation-focused writeup of the exact statements involved in setting up a warehouse in this way over on <a href="https://discourse.getdbt.com/t/the-exact-grant-statements-we-use-in-a-dbt-project/430" rel="nofollow">Discourse</a>.</p>
+<p>I’ve done a very implementation-focused writeup of the exact statements involved in setting up a warehouse in this way over on <a href="https://discourse.getdbt.com/t/the-exact-grant-statements-we-use-in-a-dbt-project/430">Discourse</a>.</p>
 <p>Users should inherit their privileges via their memberships of these shared roles. This scheme is extremely easy to maintain — when a new user is added to our data warehouse, we only need to ensure they are members of the appropriate shared roles. Similarly, when a new schema is added to our data warehouse, we only need to grant privileges to the correct shared roles.</p>
-<h1><a id="user-content-limit-access-to-superuser-privileges" class="anchor" aria-hidden="true" href="#limit-access-to-superuser-privileges"><span aria-hidden="true" class="octicon octicon-link"></span></a>Limit access to superuser privileges</h1>
+<h1>Limit access to superuser privileges</h1>
 <p>Superuser privileges (for example, the ability to create users, or drop relations that do not belong to you), should be limited. Unless running a command that specifically requires these elevated privileges, users should use a user/role that does <em>not</em> have these privileges.</p>
 <p>First, we limit access to the root user on Postgres and Redshift, or the AccountAdmin role on Snowflake. We only share this password on a need-to-know basis (but make sure it won’t be lost if someone leaves the organization!).</p>
 <p>Further, we ensure users use a non-superuser as their default. The implementation of this varies across data warehouses based on how the warehouse handles inheritance:</p>
 <ul>
-<li>
-<strong>Postgres</strong>: Create a separate role with superuser privileges, and grant the role to individual users as required. Ensure this role does <em>not</em> have inheritance, so that users have to explicitly set their role to use their elevated privileges.</li>
-<li>
-<strong>Redshift</strong>: Create a separate user, <code>&lt;user_name&gt;_super</code> (e.g. <code>claire_super</code>) for each user that requires superuser privileges (superuser privileges can only be given to users, not groups). By default, users should connect to the warehouse with their non-super user credentials.</li>
-<li>
-<strong>Snowflake</strong>: Create a separate role with superuser privileges and grant it to the required users. Set each user’s default role to a role <em>other</em> than the superuser role.</li>
+<li><strong>Postgres</strong>: Create a separate role with superuser privileges, and grant the role to individual users as required. Ensure this role does <em>not</em> have inheritance, so that users have to explicitly set their role to use their elevated privileges.</li>
+<li><strong>Redshift</strong>: Create a separate user, <code>&lt;user_name&gt;_super</code> (e.g. <code>claire_super</code>) for each user that requires superuser privileges (superuser privileges can only be given to users, not groups). By default, users should connect to the warehouse with their non-super user credentials.</li>
+<li><strong>Snowflake</strong>: Create a separate role with superuser privileges and grant it to the required users. Set each user’s default role to a role <em>other</em> than the superuser role.</li>
 </ul>
-<h1><a id="user-content-additional-configuration" class="anchor" aria-hidden="true" href="#additional-configuration"><span aria-hidden="true" class="octicon octicon-link"></span></a>Additional configuration</h1>
+<h1>Additional configuration</h1>
 <ul>
 <li>On most warehouses you can implement IP whitelisting. We recommend doing this when possible.</li>
-<li>If you happen to be setting up a Snowflake warehouse, my colleague <a href="https://blog.fishtownanalytics.com/u/d1fca11d4b17?source=post_page---------------------------" rel="nofollow">Jeremy Cohen</a> has written a <a href="https://blog.fishtownanalytics.com/how-we-configure-snowflake-fc13f1eb36c4" rel="nofollow">fantastic guide</a> on the topic.</li>
+<li>If you happen to be setting up a Snowflake warehouse, my colleague <a href="https://blog.fishtownanalytics.com/u/d1fca11d4b17?source=post_page---------------------------">Jeremy Cohen</a> has written a <a href="https://blog.fishtownanalytics.com/how-we-configure-snowflake-fc13f1eb36c4">fantastic guide</a> on the topic.</li>
 <li>On Postgres and Redshift, there is much more that can be said about performance tuning — I’ll leave that for a separate article!</li>
 </ul>
-<h1><a id="user-content-final-thoughts" class="anchor" aria-hidden="true" href="#final-thoughts"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final thoughts</h1>
+<h1>Final thoughts</h1>
 <p>In short, good database administration can be summarized by two key themes:</p>
 <ol>
 <li><strong>Keep it simple</strong></li>
 <li><strong>Keep it consistent</strong></li>
 </ol>
-<p>If you’re getting started with a data warehouse, spending some time upfront thinking about database administration will pay huge dividends for the future. If you’re trying to reverse the direction of entropy in an existing data warehouse, then there’s one last question: where are you going start? Let us hear it <a href="http://slack.getdbt.com/" rel="nofollow">on Slack</a>!</p>
-
+<p>If you’re getting started with a data warehouse, spending some time upfront thinking about database administration will pay huge dividends for the future. If you’re trying to reverse the direction of entropy in an existing data warehouse, then there’s one last question: where are you going start? Let us hear it <a href="http://slack.getdbt.com/">on Slack</a>!</p>
         </body>
     </html>
     

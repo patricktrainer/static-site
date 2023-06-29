@@ -19,31 +19,30 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-3-ways-to-change-a-users-default-shell-in-linux" class="anchor" aria-hidden="true" href="#3-ways-to-change-a-users-default-shell-in-linux"><span aria-hidden="true" class="octicon octicon-link"></span></a>3 Ways to Change a Users Default Shell in Linux</h1>
+            <h1>3 Ways to Change a Users Default Shell in Linux</h1>
 <p>Created: Apr 26, 2020 11:45 PM
-URL: <a href="https://www.tecmint.com/change-a-users-default-shell-in-linux/" rel="nofollow">https://www.tecmint.com/change-a-users-default-shell-in-linux/</a></p>
+URL: https://www.tecmint.com/change-a-users-default-shell-in-linux/</p>
 <p>In this article, we will describe how to change a user’s shell in Linux. The shell is a program that accepts and interprets commands; there are several shells such as bash, sh, ksh, zsh, fish and many other lesser known shells available on Linux.</p>
 <p><strong>Bash</strong> (<strong>/bin/bash</strong>) is a popular shell on most if not all Linux systems, and it’s normally the default shell for user accounts.</p>
-<p><strong>Read Also</strong>: <a href="https://www.tecmint.com/different-types-of-linux-shells/" rel="nofollow">5 Most Frequently Used Open Source Shells for Linux</a></p>
+<p><strong>Read Also</strong>: <a href="https://www.tecmint.com/different-types-of-linux-shells/">5 Most Frequently Used Open Source Shells for Linux</a></p>
 <p>There are several reasons for changing a user’s shell in Linux including the following:</p>
 <ol>
-<li>To <a href="https://www.tecmint.com/block-or-disable-normal-user-logins-in-linux/" rel="nofollow">block or disable normal user logins</a> in Linux using a nologin shell.</li>
+<li>To <a href="https://www.tecmint.com/block-or-disable-normal-user-logins-in-linux/">block or disable normal user logins</a> in Linux using a nologin shell.</li>
 <li>Use a shell wrapper script or program to login user commands before they are sent to a shell for execution. Here, you specify the shell wrapper as a user’s login shell.</li>
 <li>To meet a user’s demands (wants to use a specific shell), especially those with administrative rights.</li>
 </ol>
-<p>When creating user accounts with the <a href="https://www.tecmint.com/add-users-in-linux/" rel="nofollow">useradd or adduser</a> utilities, the <code>--shell</code> flag can be used to specify the name of a user’s login shell other than that specified in the respective configuration files.</p>
+<p>When creating user accounts with the <a href="https://www.tecmint.com/add-users-in-linux/">useradd or adduser</a> utilities, the <code>--shell</code> flag can be used to specify the name of a user’s login shell other than that specified in the respective configuration files.</p>
 <p>A login shell can be accessed from a text based interface or via a SSH from remote Linux machine. However, if you login via a graphical user interface (GUI), you can access the shell from a terminal emulators like <strong>xterm</strong>, <strong>konsole</strong> and many more.</p>
 <p>Let’s first list all available shells on your Linux system, type.</p>
-<pre><code># cat /etc/shells
-
-/bin/sh
+<p>```</p>
+<h1>cat /etc/shells</h1>
+<p>/bin/sh
 /bin/bash
 /sbin/nologin
 /bin/tcsh
 /bin/csh
-/bin/dash
-
-</code></pre>
+/bin/dash</p>
+<p>```</p>
 <p>Before you proceed any further, note that:</p>
 <ul>
 <li>A user can change their own shell to any thing: which, however must be listed in the <strong>/etc/shells</strong> file.</li>
@@ -51,37 +50,36 @@ URL: <a href="https://www.tecmint.com/change-a-users-default-shell-in-linux/" re
 <li>If an account has a restricted login shell, then only root can change that user’s shell.</li>
 </ul>
 <p>Now let’s discuss three different ways to change Linux user shell.</p>
-<h3><a id="user-content-1-usermod-utility" class="anchor" aria-hidden="true" href="#1-usermod-utility"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. usermod Utility</h3>
-<p><a href="https://www.tecmint.com/usermod-command-examples/" rel="nofollow">usermod</a> is a utility for modifying a user’s account details, stored in the <strong>/etc/passwd</strong> file and the <code>-s</code> or <code>--shell</code> option is used to change the user’s login shell.</p>
+<h3>1. usermod Utility</h3>
+<p><a href="https://www.tecmint.com/usermod-command-examples/">usermod</a> is a utility for modifying a user’s account details, stored in the <strong>/etc/passwd</strong> file and the <code>-s</code> or <code>--shell</code> option is used to change the user’s login shell.</p>
 <p>In this example, we’ll first check user tecmint’s account information to view his default login shell and then change its login shell from <strong>/bin/sh</strong> to <strong>/bin/bash</strong> as follows.</p>
-<pre><code># grep tecmint /etc/passwd
-# usermod --shell /bin/bash tecmint
-# grep tecmint /etc/passwd
-
-</code></pre>
-<p><a target="_blank" rel="noopener noreferrer" href="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-using-Usermod.png"><img src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-using-Usermod.png" alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-using-Usermod.png" style="max-width: 100%;"></a></p>
+<p>```</p>
+<h1>grep tecmint /etc/passwd</h1>
+<h1>usermod --shell /bin/bash tecmint</h1>
+<h1>grep tecmint /etc/passwd</h1>
+<p>```</p>
+<p><img alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-using-Usermod.png" src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-using-Usermod.png" /></p>
 <p>Change User Shell using Usermod</p>
-<h3><a id="user-content-2-chsh-utility" class="anchor" aria-hidden="true" href="#2-chsh-utility"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. chsh Utility</h3>
+<h3>2. chsh Utility</h3>
 <p><strong>chsh</strong> is a command line utility for changing a login shell with the <code>-s</code> or <strong>–shell</strong> option like this.</p>
-<pre><code># grep tecmint /etc/passwd
-# chsh --shell /bin/sh tecmint
-# grep tecmint /etc/passwd
-
-</code></pre>
-<p><a target="_blank" rel="noopener noreferrer" href="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-Using-chsh.png"><img src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-Using-chsh.png" alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-Using-chsh.png" style="max-width: 100%;"></a></p>
+<p>```</p>
+<h1>grep tecmint /etc/passwd</h1>
+<h1>chsh --shell /bin/sh tecmint</h1>
+<h1>grep tecmint /etc/passwd</h1>
+<p>```</p>
+<p><img alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-Using-chsh.png" src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-Using-chsh.png" /></p>
 <p>Change User Shell Using chsh</p>
 <p>The two methods above all modify the shell specified in <strong>/etc/passwd</strong> file which you can edit manually as in the third method below.</p>
-<h3><a id="user-content-3-change-user-shell-in-etcpasswd-file" class="anchor" aria-hidden="true" href="#3-change-user-shell-in-etcpasswd-file"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Change User Shell in /etc/passwd File</h3>
+<h3>3. Change User Shell in /etc/passwd File</h3>
 <p>In this method, simply open the <strong>/etc/passwd</strong> file using any of your favorite command line text editors and change a specific users shell.</p>
-<pre><code># vi /etc/passwd
-
-</code></pre>
-<p><a target="_blank" rel="noopener noreferrer" href="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-in-Passwd-File.png"><img src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-in-Passwd-File.png" alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-in-Passwd-File.png" style="max-width: 100%;"></a></p>
+<p>```</p>
+<h1>vi /etc/passwd</h1>
+<p>```</p>
+<p><img alt="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-in-Passwd-File.png" src="3%20Ways%20to%20Change%20a%20Users%20Default%20Shell%20in%20Linux%20c3f576444eb04f17bfd3f97a35be9aab/Change-User-Shell-in-Passwd-File.png" /></p>
 <p>Change User Shell in Passwd File</p>
 <p>When your done editing, save and close the file.</p>
 <p>Do not forget to read these related topics:</p>
 <p>In this article, we described various ways of changing a user’s shell in Linux. To share any thoughts with us, use the comment section below.</p>
-
         </body>
     </html>
     

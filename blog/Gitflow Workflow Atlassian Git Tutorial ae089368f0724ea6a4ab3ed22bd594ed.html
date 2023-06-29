@@ -19,24 +19,23 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-gitflow-workflow--atlassian-git-tutorial" class="anchor" aria-hidden="true" href="#gitflow-workflow--atlassian-git-tutorial"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gitflow Workflow | Atlassian Git Tutorial</h1>
+            <h1>Gitflow Workflow | Atlassian Git Tutorial</h1>
 <p>Created: Feb 21, 2020 12:02 PM
-URL: <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow" rel="nofollow">https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow</a></p>
-<p>Gitflow Workflow is a Git workflow design that was first published and made popular by <a href="http://nvie.com/posts/a-successful-git-branching-model/" rel="nofollow">Vincent Driessen at nvie</a>. The Gitflow Workflow defines a strict branching model designed around the project release. This provides a robust framework for managing larger projects.</p>
-<p>Gitflow is ideally suited for projects that have a scheduled release cycle. This workflow doesn’t add any new concepts or commands beyond what’s required for the <a href="http://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow" rel="nofollow">Feature Branch Workflow</a>. Instead, it assigns very specific roles to different branches and defines how and when they should interact. In addition to <code>feature</code> branches, it uses individual branches for preparing, maintaining, and recording releases. Of course, you also get to leverage all the benefits of the Feature Branch Workflow: pull requests, isolated experiments, and more efficient collaboration.</p>
-<h2><a id="user-content-getting-started" class="anchor" aria-hidden="true" href="#getting-started"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
-<p>Gitflow is really just an abstract idea of a Git workflow. This means it dictates what kind of branches to set up and how to merge them together. We will touch on the purposes of the branches below. The git-flow toolset is an actual command line tool that has an installation process. The installation process for git-flow is straightforward. Packages for git-flow are available on multiple operating systems. On OSX systems, you can execute <code>brew install git-flow</code>. On windows you will need to <a href="https://git-scm.com/download/win" rel="nofollow">download and install git-flow</a>. After installing git-flow you can use it in your project by executing <code>git flow init</code>. Git-flow is a wrapper around Git. The <code>git flow init</code> command is an extension of the default <code>[git init](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-init)</code> command and doesn't change anything in your repository other than creating branches for you.</p>
-<h2><a id="user-content-how-it-works" class="anchor" aria-hidden="true" href="#how-it-works"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h2>
-<p><a target="_blank" rel="noopener noreferrer" href="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0220(2).svg"><img src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0220(2).svg" alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0220(2).svg" style="max-width: 100%;"></a></p>
-<h3><a id="user-content-develop-and-master-branches" class="anchor" aria-hidden="true" href="#develop-and-master-branches"><span aria-hidden="true" class="octicon octicon-link"></span></a>Develop and Master Branches</h3>
+URL: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow</p>
+<p>Gitflow Workflow is a Git workflow design that was first published and made popular by <a href="http://nvie.com/posts/a-successful-git-branching-model/">Vincent Driessen at nvie</a>. The Gitflow Workflow defines a strict branching model designed around the project release. This provides a robust framework for managing larger projects.</p>
+<p>Gitflow is ideally suited for projects that have a scheduled release cycle. This workflow doesn’t add any new concepts or commands beyond what’s required for the <a href="http://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow">Feature Branch Workflow</a>. Instead, it assigns very specific roles to different branches and defines how and when they should interact. In addition to <code>feature</code> branches, it uses individual branches for preparing, maintaining, and recording releases. Of course, you also get to leverage all the benefits of the Feature Branch Workflow: pull requests, isolated experiments, and more efficient collaboration.</p>
+<h2>Getting Started</h2>
+<p>Gitflow is really just an abstract idea of a Git workflow. This means it dictates what kind of branches to set up and how to merge them together. We will touch on the purposes of the branches below. The git-flow toolset is an actual command line tool that has an installation process. The installation process for git-flow is straightforward. Packages for git-flow are available on multiple operating systems. On OSX systems, you can execute <code>brew install git-flow</code>. On windows you will need to <a href="https://git-scm.com/download/win">download and install git-flow</a>. After installing git-flow you can use it in your project by executing <code>git flow init</code>. Git-flow is a wrapper around Git. The <code>git flow init</code> command is an extension of the default <code>[git init](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-init)</code> command and doesn't change anything in your repository other than creating branches for you.</p>
+<h2>How it works</h2>
+<p><img alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0220(2).svg" src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0220(2).svg" /></p>
+<h3>Develop and Master Branches</h3>
 <p>Instead of a single <code>master</code> branch, this workflow uses two branches to record the history of the project. The <code>master</code> branch stores the official release history, and the <code>develop</code> branch serves as an integration branch for features. It's also convenient to tag all commits in the <code>master</code> branch with a version number.</p>
 <p>The first step is to complement the default <code>master</code> with a <code>develop</code> branch. A simple way to do this is for one developer to create an empty <code>develop</code> branch locally and push it to the server:</p>
-<pre><code>git branch develop
-git push -u origin develop
-</code></pre>
+<p><code>git branch develop
+git push -u origin develop</code></p>
 <p>This branch will contain the complete history of the project, whereas <code>master</code> will contain an abridged version. Other developers should now clone the central repository and create a tracking branch for <code>develop.</code></p>
 <p>When using the git-flow extension library, executing <code>git flow init</code> on an existing repo will create the <code>develop</code> branch:</p>
-<pre><code>$ git flow init
+<p><code>$ git flow init
 Initialized empty Git repository in ~/project/.git/
 No branches exist yet. Base branches must be created now.
 Branch name for production releases: [master]
@@ -49,88 +48,75 @@ Support branches? [support/]
 Version tag prefix? []
 $ git branch
 * develop
- master
-</code></pre>
-<h2><a id="user-content-feature-branches" class="anchor" aria-hidden="true" href="#feature-branches"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature Branches</h2>
-<p>Each new feature should reside in its own branch, which can be <a href="https://www.atlassian.com/git/tutorials/syncing/git-push" rel="nofollow">pushed to the central repository</a> for backup/collaboration. But, instead of branching off of <code>master</code>, <code>feature</code> branches use <code>develop</code> as their parent branch. When a feature is complete, it gets <a href="https://www.atlassian.com/git/tutorials/using-branches/git-merge" rel="nofollow">merged back into develop</a>. Features should never interact directly with <code>master</code>.</p>
-<p><a target="_blank" rel="noopener noreferrer" href="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0320(2).svg"><img src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0320(2).svg" alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0320(2).svg" style="max-width: 100%;"></a></p>
+ master</code></p>
+<h2>Feature Branches</h2>
+<p>Each new feature should reside in its own branch, which can be <a href="https://www.atlassian.com/git/tutorials/syncing/git-push">pushed to the central repository</a> for backup/collaboration. But, instead of branching off of <code>master</code>, <code>feature</code> branches use <code>develop</code> as their parent branch. When a feature is complete, it gets <a href="https://www.atlassian.com/git/tutorials/using-branches/git-merge">merged back into develop</a>. Features should never interact directly with <code>master</code>.</p>
+<p><img alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0320(2).svg" src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0320(2).svg" /></p>
 <p>Note that <code>feature</code> branches combined with the <code>develop</code> branch is, for all intents and purposes, the Feature Branch Workflow. But, the Gitflow Workflow doesn’t stop there.</p>
 <p><code>Feature</code> branches are generally created off to the latest <code>develop</code> branch.</p>
-<h3><a id="user-content-creating-a-feature-branch" class="anchor" aria-hidden="true" href="#creating-a-feature-branch"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating a feature branch</h3>
+<h3>Creating a feature branch</h3>
 <p>Without the git-flow extensions:</p>
-<pre><code>git checkout develop
-git checkout -b feature_branch
-</code></pre>
+<p><code>git checkout develop
+git checkout -b feature_branch</code></p>
 <p>When using the git-flow extension:</p>
-<pre><code>git flow feature start feature_branch
-</code></pre>
+<p><code>git flow feature start feature_branch</code></p>
 <p>Continue your work and use Git like you normally would.</p>
-<h3><a id="user-content-finishing-a-feature-branch" class="anchor" aria-hidden="true" href="#finishing-a-feature-branch"><span aria-hidden="true" class="octicon octicon-link"></span></a>Finishing a feature branch</h3>
+<h3>Finishing a feature branch</h3>
 <p>When you’re done with the development work on the feature, the next step is to merge the <code>feature_branch</code> into <code>develop</code>.</p>
 <p>Without the git-flow extensions:</p>
-<pre><code>git checkout develop
-git merge feature_branch
-</code></pre>
+<p><code>git checkout develop
+git merge feature_branch</code></p>
 <p>Using the git-flow extensions:</p>
-<pre><code>git flow feature finish feature_branch
-</code></pre>
-<h2><a id="user-content-release-branches" class="anchor" aria-hidden="true" href="#release-branches"><span aria-hidden="true" class="octicon octicon-link"></span></a>Release Branches</h2>
-<p><a target="_blank" rel="noopener noreferrer" href="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0420(1).svg"><img src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0420(1).svg" alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0420(1).svg" style="max-width: 100%;"></a></p>
+<p><code>git flow feature finish feature_branch</code></p>
+<h2>Release Branches</h2>
+<p><img alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0420(1).svg" src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0420(1).svg" /></p>
 <p>Once <code>develop</code> has acquired enough features for a release (or a predetermined release date is approaching), you fork a <code>release</code> branch off of <code>develop</code>. Creating this branch starts the next release cycle, so no new features can be added after this point—only bug fixes, documentation generation, and other release-oriented tasks should go in this branch. Once it's ready to ship, the <code>release</code> branch gets merged into <code>master</code> and tagged with a version number. In addition, it should be merged back into <code>develop</code>, which may have progressed since the release was initiated.</p>
 <p>Using a dedicated branch to prepare releases makes it possible for one team to polish the current release while another team continues working on features for the next release. It also creates well-defined phases of development (e.g., it's easy to say, “This week we're preparing for version 4.0,” and to actually see it in the structure of the repository).</p>
 <p>Making <code>release</code> branches is another straightforward branching operation. Like <code>feature</code> branches, <code>release</code> branches are based on the <code>develop</code> branch. A new <code>release</code> branch can be created using the following methods.</p>
 <p>Without the git-flow extensions:</p>
-<pre><code>git checkout develop
-git checkout -b release/0.1.0
-</code></pre>
+<p><code>git checkout develop
+git checkout -b release/0.1.0</code></p>
 <p>When using the git-flow extensions:</p>
-<pre><code>$ git flow release start 0.1.0
-Switched to a new branch 'release/0.1.0'
-</code></pre>
+<p><code>$ git flow release start 0.1.0
+Switched to a new branch 'release/0.1.0'</code></p>
 <p>Once the release is ready to ship, it will get merged it into <code>master</code> and <code>develop</code>, then the <code>release</code> branch will be deleted. It’s important to merge back into <code>develop</code> because critical updates may have been added to the <code>release</code> branch and they need to be accessible to new features. If your organization stresses code review, this would be an ideal place for a pull request.</p>
 <p>To finish a <code>release</code> branch, use the following methods:</p>
 <p>Without the git-flow extensions:</p>
-<pre><code>git checkout master
-git merge release/0.1.0
-</code></pre>
+<p><code>git checkout master
+git merge release/0.1.0</code></p>
 <p>Or with the git-flow extension:</p>
-<pre><code>git flow release finish '0.1.0'
-</code></pre>
-<h2><a id="user-content-hotfix-branches" class="anchor" aria-hidden="true" href="#hotfix-branches"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hotfix Branches</h2>
-<p><a target="_blank" rel="noopener noreferrer" href="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0520(2).svg"><img src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0520(2).svg" alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0520(2).svg" style="max-width: 100%;"></a></p>
+<p><code>git flow release finish '0.1.0'</code></p>
+<h2>Hotfix Branches</h2>
+<p><img alt="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0520(2).svg" src="Gitflow%20Workflow%20Atlassian%20Git%20Tutorial%20ae089368f0724ea6a4ab3ed22bd594ed/0520(2).svg" /></p>
 <p>Maintenance or <code>“hotfix”</code> branches are used to quickly patch production releases. <code>Hotfix</code> branches are a lot like <code>release</code> branches and <code>feature</code> branches except they're based on <code>master</code> instead of <code>develop</code>. This is the only branch that should fork directly off of <code>master</code>. As soon as the fix is complete, it should be merged into both <code>master</code> and <code>develop</code> (or the current <code>release</code> branch), and <code>master</code> should be tagged with an updated version number.</p>
 <p>Having a dedicated line of development for bug fixes lets your team address issues without interrupting the rest of the workflow or waiting for the next release cycle. You can think of maintenance branches as ad hoc <code>release</code> branches that work directly with <code>master</code>. A <code>hotfix</code> branch can be created using the following methods:</p>
 <p>Without the git-flow extensions:</p>
-<pre><code>git checkout master
-git checkout -b hotfix_branch
-</code></pre>
+<p><code>git checkout master
+git checkout -b hotfix_branch</code></p>
 <p>When using the git-flow extensions:</p>
-<pre><code>$ git flow hotfix start hotfix_branch
-</code></pre>
+<p><code>$ git flow hotfix start hotfix_branch</code></p>
 <p>Similar to finishing a <code>release</code> branch, a <code>hotfix</code> branch gets merged into both <code>master</code> and <code>develop.</code></p>
-<pre><code>git checkout master
+<p><code>git checkout master
 git merge hotfix_branch
 git checkout develop
 git merge hotfix_branch
-git branch -D hotfix_branch
-</code></pre>
-<pre><code>$ git flow hotfix finish hotfix_branch
-</code></pre>
-<h2><a id="user-content-example" class="anchor" aria-hidden="true" href="#example"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h2>
+git branch -D hotfix_branch</code></p>
+<p><code>$ git flow hotfix finish hotfix_branch</code></p>
+<h2>Example</h2>
 <p>A complete example demonstrating a Feature Branch Flow is as follows. Assuming we have a repo setup with a <code>master</code> branch.</p>
-<pre><code>git checkout mastergit checkout -b developgit checkout -b feature_branch# work happens on feature branchgit checkout developgit merge feature_branchgit checkout mastergit merge developgit branch -d feature_branch
-</code></pre>
+<p><code>git checkout mastergit checkout -b developgit checkout -b feature_branch# work happens on feature branchgit checkout developgit merge feature_branchgit checkout mastergit merge developgit branch -d feature_branch</code></p>
 <p>In addition to the <code>feature</code> and <code>release</code> flow, a <code>hotfix</code> example is as follows:</p>
-<pre><code>git checkout master
-git checkout -b hotfix_branch
-# work is done commits are added to the hotfix_branch
-git checkout develop
+<p>```
+git checkout master
+git checkout -b hotfix_branch</p>
+<h1>work is done commits are added to the hotfix_branch</h1>
+<p>git checkout develop
 git merge hotfix_branch
 git checkout master
 git merge hotfix_branch
-</code></pre>
-<h2><a id="user-content-summary" class="anchor" aria-hidden="true" href="#summary"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h2>
-<p>Here we discussed the Gitflow Workflow. Gitflow is one of many styles of <a href="https://www.atlassian.com/git/tutorials/comparing-workflows" rel="nofollow">Git workflows</a> you and your team can utilize.</p>
+```</p>
+<h2>Summary</h2>
+<p>Here we discussed the Gitflow Workflow. Gitflow is one of many styles of <a href="https://www.atlassian.com/git/tutorials/comparing-workflows">Git workflows</a> you and your team can utilize.</p>
 <p>Some key takeaways to know about Gitflow are:</p>
 <ul>
 <li>The workflow is great for a release-based software workflow.</li>
@@ -138,25 +124,17 @@ git merge hotfix_branch
 </ul>
 <p>The overall flow of Gitflow is:</p>
 <ol>
-<li>A <code>develop</code> branch is created from <code>master</code>
-</li>
-<li>A <code>release</code> branch is created from <code>develop</code>
-</li>
-<li>
-<code>Feature</code> branches are created from <code>develop</code>
-</li>
+<li>A <code>develop</code> branch is created from <code>master</code></li>
+<li>A <code>release</code> branch is created from <code>develop</code></li>
+<li><code>Feature</code> branches are created from <code>develop</code></li>
 <li>When a <code>feature</code> is complete it is merged into the <code>develop</code> branch</li>
-<li>When the <code>release</code> branch is done it is merged into <code>develop</code> and <code>master</code>
-</li>
-<li>If an issue in <code>master</code> is detected a <code>hotfix</code> branch is created from <code>master</code>
-</li>
-<li>Once the <code>hotfix</code> is complete it is merged to both <code>develop</code> and <code>master</code>
-</li>
+<li>When the <code>release</code> branch is done it is merged into <code>develop</code> and <code>master</code></li>
+<li>If an issue in <code>master</code> is detected a <code>hotfix</code> branch is created from <code>master</code></li>
+<li>Once the <code>hotfix</code> is complete it is merged to both <code>develop</code> and <code>master</code></li>
 </ol>
-<p>Next, learn about the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow" rel="nofollow">Forking Workflow</a> or visit our <a href="https://www.atlassian.com/git/tutorials/comparing-workflows" rel="nofollow">workflow comparison page</a>.</p>
-<p><a href="https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud" rel="nofollow">Get started now</a></p>
-<p><a href="https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud" rel="nofollow">Get started now</a></p>
-
+<p>Next, learn about the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow">Forking Workflow</a> or visit our <a href="https://www.atlassian.com/git/tutorials/comparing-workflows">workflow comparison page</a>.</p>
+<p><a href="https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud">Get started now</a></p>
+<p><a href="https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud">Get started now</a></p>
         </body>
     </html>
     

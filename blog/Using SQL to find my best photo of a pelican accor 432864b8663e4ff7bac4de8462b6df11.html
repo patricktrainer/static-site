@@ -1,0 +1,151 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>Using SQL to find my best photo of a pelican accor 432864b8663e4ff7bac4de8462b6df11</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1>Using SQL to find my best photo of a pelican according to Apple Photos</h1>
+<p>Created: May 22, 2020 8:02 PM
+URL: https://simonwillison.net/2020/May/21/dogsheep-photos/</p>
+<p>According to the Apple Photos internal SQLite database, this is the most aesthetically pleasing photograph I have ever taken of a pelican:</p>
+<p><img alt="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/cbfe463f1a67e37a1d36c5db44f0159ef6f86a0d64a987b129b63b52e555f1af.jpeg" src="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/cbfe463f1a67e37a1d36c5db44f0159ef6f86a0d64a987b129b63b52e555f1af.jpeg" /></p>
+<p>Here’s the SQL query that found me my best ten pelican photos:</p>
+<p><code>select
+  sha256,
+  ext,
+  uuid,
+  date,
+  ZOVERALLAESTHETICSCORE
+from
+  photos_with_apple_metadata
+where
+  uuid in (
+    select
+      uuid
+    from
+      labels
+    where
+      normalized_string = 'pelican'
+  )
+order by
+  ZOVERALLAESTHETICSCORE desc
+limit
+  10</code></p>
+<p>You can <a href="https://dogsheep-photos.dogsheep.net/public?sql=select%0D%0A++json_object%28%0D%0A++++%27img_src%27%2C%0D%0A++++%27https%3A%2F%2Fphotos.simonwillison.net%2Fi%2F%27+%7C%7C+sha256+%7C%7C+%27.%27+%7C%7C+ext+%7C%7C+%27%3Fw%3D600%27%0D%0A++%29+as+photo%2C%0D%0A++sha256%2C%0D%0A++ext%2C%0D%0A++uuid%2C%0D%0A++date%2C%0D%0A++ZOVERALLAESTHETICSCORE%0D%0Afrom%0D%0A++photos_with_apple_metadata%0D%0Awhere%0D%0A++uuid+in+%28%0D%0A++++select%0D%0A++++++uuid%0D%0A++++from%0D%0A++++++labels%0D%0A++++where%0D%0A++++++normalized_string+%3D+%3Alabel%0D%0A++%29%0D%0Aorder+by%0D%0A++ZOVERALLAESTHETICSCORE+desc%0D%0Alimit%0D%0A++10&amp;label=pelican">try it out here</a> (with some extra <a href="https://github.com/simonw/datasette-json-html/blob/master/README.md#images">datasette-json-html</a> magic to display the actual photos). Or try <a href="https://dogsheep-photos.dogsheep.net/public?sql=select%0D%0A++json_object%28%0D%0A++++%27img_src%27%2C%0D%0A++++%27https%3A%2F%2Fphotos.simonwillison.net%2Fi%2F%27+%7C%7C+sha256+%7C%7C+%27.%27+%7C%7C+ext+%7C%7C+%27%3Fw%3D600%27%0D%0A++%29+as+photo%2C%0D%0A++sha256%2C%0D%0A++ext%2C%0D%0A++uuid%2C%0D%0A++date%2C%0D%0A++ZOVERALLAESTHETICSCORE%0D%0Afrom%0D%0A++photos_with_apple_metadata%0D%0Awhere%0D%0A++uuid+in+%28%0D%0A++++select%0D%0A++++++uuid%0D%0A++++from%0D%0A++++++labels%0D%0A++++where%0D%0A++++++normalized_string+%3D+%3Alabel%0D%0A++%29%0D%0Aorder+by%0D%0A++ZOVERALLAESTHETICSCORE+desc%0D%0Alimit%0D%0A++10&amp;label=lemur">lemur</a> or <a href="https://dogsheep-photos.dogsheep.net/public?sql=select%0D%0A++json_object%28%0D%0A++++%27img_src%27%2C%0D%0A++++%27https%3A%2F%2Fphotos.simonwillison.net%2Fi%2F%27+%7C%7C+sha256+%7C%7C+%27.%27+%7C%7C+ext+%7C%7C+%27%3Fw%3D600%27%0D%0A++%29+as+photo%2C%0D%0A++sha256%2C%0D%0A++ext%2C%0D%0A++uuid%2C%0D%0A++date%2C%0D%0A++ZOVERALLAESTHETICSCORE%0D%0Afrom%0D%0A++photos_with_apple_metadata%0D%0Awhere%0D%0A++uuid+in+%28%0D%0A++++select%0D%0A++++++uuid%0D%0A++++from%0D%0A++++++labels%0D%0A++++where%0D%0A++++++normalized_string+%3D+%3Alabel%0D%0A++%29%0D%0Aorder+by%0D%0A++ZOVERALLAESTHETICSCORE+desc%0D%0Alimit%0D%0A++10&amp;label=seal">seal</a>.</p>
+<p>I actually think this is my best pelican photo, but Apple Photos rated it fifth:</p>
+<p><img alt="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/a444857c4ac71ceae6af5192c8acc5ac35934ed589259136df0ed11295dbb085.jpeg" src="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/a444857c4ac71ceae6af5192c8acc5ac35934ed589259136df0ed11295dbb085.jpeg" /></p>
+<h3>How this works</h3>
+<p>Apple Photos keeps photo metadata in a SQLite database. It runs machine learning models to identify the contents of every photo, and separate machine learning models to calculate quality scores for those photographs. All of this data lives in SQLite files on my laptop. The trick is knowing where to look.</p>
+<p>I’m not running queries directly against the Apple Photos SQLite file—it’s a little hard to work with, and the label metadata is stored in a separate database file. Instead, this query runs against a combined database created by my new <a href="https://github.com/dogsheep/dogsheep-photos">dogsheep-photos</a> tool.</p>
+<h3>An aside: Why I love Apple Photos</h3>
+<p>The Apple Photos app—on both macOS and iOS—is in my opinion Apple’s most underappreciated piece of software. In my experience most people who use it are missing some of the most valuable features. A few highlights:</p>
+<ul>
+<li>It can show you ALL of your photos on a map. On iOS go to the “Albums” tab, scroll half way down and then click on “Places” (no wonder people miss this feature!)—on macOS Photos it’s the “Library -&gt; Places” sidebar item. It still baffles me that Google Photos doesn’t do this (I have <a href="https://twitter.com/simonw/status/1227060020694503425">conspiracy theories</a> about it). This is my most common way for finding a photo I’ve taken—I remember where it was, then zoom in on that area of the map.</li>
+<li>It runs machine learning models <em>on your phone</em> (or laptop) to identify the subject of your photos, and makes them searchable. Try searching for “dog” and you’ll see all of the photos you’ve taken of dogs! I love that this runs on-device: it’s much less creepy than uploading your photos to the cloud in order to do this.</li>
+<li>It has a really great faceted search implementation—particularly in the phone app. Try searching for “dog”, then add “selfie” and the name of a city to see all of the selfies you’ve taken with dogs in that place!</li>
+<li>It has facial recognition, again running on device, which you can use to teach it who your friends are (autocompleting against your contacts). A little bit of effort spent training this and you can see photos you’ve taken of specific friends in specific places and with specific animals!</li>
+</ul>
+<p>As with most Apple software, Photos uses SQLite under the hood. The underlying database is undocumented and clearly not intended as a public API, but it exists. And I’ve wanted to gain access to what’s in it for years.</p>
+<h3>Querying the Apple Photos SQLite database</h3>
+<p>If you run Apple Photos on a Mac (which will synchronize with your phone via iCloud) then most of your photo metadata can be found in a database file that lives here:</p>
+<p><code>~/Pictures/Photos\ Library.photoslibrary/database/Photos.sqlite</code></p>
+<p>Mine is 752MB, for aroud 40,000 photos. There’s a lot of detailed metadata in there!</p>
+<p>Querying the database isn’t straight-forward. Firstly it’s almost always locked by some other process—the workaround for that is to create a copy of the file. Secondly, it uses some custom undocumented Apple SQLite extensions. I’ve not figured out a way to load these, and without them a lot of my queries ended up throwing errors.</p>
+<p><a href="https://github.com/RhetTbull/osxphotos">osxphotos</a> to the rescue! I ran a GitHub code search for one of the tables in that database (searching for <a href="https://github.com/search?l=Python&amp;q=RKPerson&amp;type=Code">RKPerson in Python code</a>) and was delighted to stumble across the <code>osxphotos</code> project by Rhet Turnbull. It’s a well designed and extremely actively maintained Python tool for accessing the Apple Photos database, including code to handle several iterations of the underlying database structure.</p>
+<p>Thanks to <code>osxphotos</code> the first iteration of my own code for accessing the Apple Photos metadata was <a href="https://github.com/dogsheep/dogsheep-photos/commit/b3c20e08b1a99c8898f13cc0266e1c5c012cf23c">less than 100 lines of code</a>. This gave me locations, people, albums and places (human names of geographical areas) almost for free!</p>
+<h3>Quality scores</h3>
+<p>Apple Photos has a fascinating database table called <code>ZCOMPUTEDASSETATTRIBUTES</code>, with a bewildering collection of columns. Each one is a floating point number calculated presumably by some kind of machine learning model. Here’s a full list, each one linking to my public photos sorted by that score:</p>
+<ul>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZBEHAVIORALSCORE">ZBEHAVIORALSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZFAILURESCORE">ZFAILURESCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZHARMONIOUSCOLORSCORE">ZHARMONIOUSCOLORSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZIMMERSIVENESSSCORE">ZIMMERSIVENESSSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZINTERACTIONSCORE">ZINTERACTIONSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZINTERESTINGSUBJECTSCORE">ZINTERESTINGSUBJECTSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZINTRUSIVEOBJECTPRESENCESCORE">ZINTRUSIVEOBJECTPRESENCESCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZLIVELYCOLORSCORE">ZLIVELYCOLORSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZLOWLIGHT">ZLOWLIGHT</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZNOISESCORE">ZNOISESCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTCAMERATILTSCORE">ZPLEASANTCAMERATILTSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTCOMPOSITIONSCORE">ZPLEASANTCOMPOSITIONSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTLIGHTINGSCORE">ZPLEASANTLIGHTINGSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTPATTERNSCORE">ZPLEASANTPATTERNSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTPERSPECTIVESCORE">ZPLEASANTPERSPECTIVESCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTPOSTPROCESSINGSCORE">ZPLEASANTPOSTPROCESSINGSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTREFLECTIONSSCORE">ZPLEASANTREFLECTIONSSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZPLEASANTSYMMETRYSCORE">ZPLEASANTSYMMETRYSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZSHARPLYFOCUSEDSUBJECTSCORE">ZSHARPLYFOCUSEDSUBJECTSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZTASTEFULLYBLURREDSCORE">ZTASTEFULLYBLURREDSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZWELLCHOSENSUBJECTSCORE">ZWELLCHOSENSUBJECTSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZWELLFRAMEDSUBJECTSCORE">ZWELLFRAMEDSUBJECTSCORE</a></li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_sort_desc=ZWELLTIMEDSHOTSCORE">ZWELLTIMEDSHOTSCORE</a></li>
+</ul>
+<p>I’m not enormously impressed with the results I get from these. They’re clearly not intended for end-user visibility, and sorting them might not even be something that makes sense.</p>
+<p>The <code>ZGENERICASSET</code> table provides four more scores, which seem to provide much more useful results:</p>
+<p>My guess is that these overall scores are derived from the <code>ZCOMPUTEDASSETATTRIBUTES</code> ones. I’ve seen the best results from <code>ZOVERALLAESTHETICSCORE</code>, so that’s the one I used in my “show me my best photo of a pelican” query.</p>
+<h3>A note about the demo</h3>
+<p>The demo I’m running at <a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata">dogsheep-photos.dogsheep.net</a> currently only contains 496 photos. My private instance of this has over 40,000, but I decided to just publish a subset of that in the demo so I wouldn’t have to carefully filter out private screenshots and photos with sensitive locations and suchlike. Details of how the demo work (using the <code>dogsheep-photos create-subset</code> command to create a subset database containing just photos in my Public album) can be found <a href="https://github.com/dogsheep/dogsheep-photos/issues/25">in this issue</a>.</p>
+<h3>Automatic labelling of photo contents</h3>
+<p>Even more impressive than the quality scores are the machine learning labels.</p>
+<p>Automatically labelling the content of a photo is surprisingly easy these days, thanks to <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">convolutional neural networks</a>. I wrote a bit about these in <a href="https://simonwillison.net/2018/Oct/29/transfer-learning/">Automatically playing science communication games with transfer learning and fastai</a>.</p>
+<p>Apple download a machine learning model to your device and do the label classification there. After quite a bit of hunting (I ended up using Activity Monitor’s Inspect -&gt; Open Files and Ports option against the <code>photoanalysisd</code> process) I finally figured out where the results go: the <code>~/Pictures/Photos\ Library.photoslibrary/search/psi.sqlite</code> database file.</p>
+<p>(Inspecting <code>photoanalysisd</code> also lead me to the <code>/System/Library/Frameworks/Vision.framework/Versions/A/Resources/</code> folder, which solved another mystery: where do Apple keep the models? There are <a href="https://gist.github.com/simonw/6ce25981931e3c99f51f2ff0c8bcb0b1">some fascinating files</a> in there.)</p>
+<p>It took <a href="https://github.com/dogsheep/dogsheep-photos/issues/16">some work</a> to figure out how to match those labels with their corresponding photos, mainly because the <code>psi.sqlite</code> database stores photo UUIDs as a pair of signed integers whereas the <code>Photos.sqlite</code> database stores a UUID string.</p>
+<p>I’m now pulling the labels out into a separate <code>labels</code> table. You can <a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category">browse that in the demo</a> to see how it is structured. Labels belong to numeric categories—here are some of my guesses as to what those mean:</p>
+<ul>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=2024">Category 2024</a> appears to be actual content labels—Seal, Water Body, Pelican etc.</li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=2027">Category 2027</a> is more contextual: Entertainment, Trip, Travel, Museum, Beach Activity etc.</li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=1014">Category 1014</a> is simply the month the photo was taken. <a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=1015">1015</a> is the year, and <a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=2030">2030</a> is the season.</li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=2056">Category 2056</a> is the original filename.</li>
+<li><a href="https://dogsheep-photos.dogsheep.net/public/labels?_facet=category&amp;category=12">Category 12</a> is the country the photo was taken in.</li>
+</ul>
+<h3>Geography</h3>
+<p>Photos taken on an iPhone have embedded latitudes and longitudes... which means I can <a href="https://dogsheep.simonwillison.net/photos/photos_on_a_map">display them on a map</a>!</p>
+<p><img alt="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/photos-on-a-map.png" src="Using%20SQL%20to%20find%20my%20best%20photo%20of%20a%20pelican%20accor%20432864b8663e4ff7bac4de8462b6df11/photos-on-a-map.png" /></p>
+<p>Apple also perform reverse-geocoding on those photos, resolving them to cities, regions and countries. This is great for faceted browse: here are my photos</p>
+<p><a href="https://dogsheep-photos.dogsheep.net/public/photos_with_apple_metadata?_facet=place_state_province&amp;_facet=place_country&amp;_facet=place_city">faceted by country, city and state/province</a>.</p>
+<h3>Hosting and serving the images</h3>
+<p>My least favourite thing about Apple Photos is how hard it is to get images from it onto the internet. If you enable iCloud sharing your images are accessible through <a href="https://www.icloud.com/">icloud.com</a>—but they aren’t given publicly accessible URLs, so you can’t embed them in blog entries or do other webby things with them.</p>
+<p>I also really want to “own” my images. I want them in a place that I control.</p>
+<p>Amazon S3 is ideal for image storage. It’s incredibly inexpensive and essentially infinite.</p>
+<p>The <code>dogsheep-photos upload</code> command takes ANY directory as input, scans through that directory for image files and then uploads them to the configured S3 bucket.</p>
+<p>I designed this to work independently of Apple Photos, mainly to preserve my ability to switch to alternative image solutions in the future.</p>
+<p>I’m using the <a href="https://en.wikipedia.org/wiki/Content-addressable_storage">content addressable storage</a> pattern to store the images. Their filename is the sha256 hash of the file contents. The idea is that since sensible photo management software leaves the original files unmodified I should be able to de-duplicate my photo files no matter where they are from and store everything in the one bucket.</p>
+<p>Original image files come with privacy concerns: they embed accurate latitude and longitude data in the EXIF data, so they can be used to reconstruct your exact location history and even figure out your address. This is why systems like Google Photos <a href="https://issuetracker.google.com/issues/80379228">make it difficult</a> to export images with location data intact.</p>
+<p>I’ve addressed this by making the content in my S3 bucket private. Access to the images takes place through <a href="https://github.com/simonw/s3-image-proxy">s3-image-proxy</a>—a proxy server I wrote and deployed on <a href="https://vercel.com/">Vercel</a> (previously Zeit Now). The proxy strips EXIF data and can optionally resize images based on querystring parameters. It also serves them with far-future cache expire headers, which means they sit in Vercel’s CDN cache rather than being resized every time they are accessed.</p>
+<p>iPhones default to saving photos in HEIC format, which fails to display using with the <code>&lt;img src=""&gt;</code> tag in the browsers I tested. The proxy uses <a href="https://pypi.org/project/pyheif/">pyheif</a> to convert those into JPEGs.</p>
+<p>Here’s an example HEIC image, resized by the proxy and converted to JPEG: <a href="https://photos.simonwillison.net/i/59854a70f125154cdf8dad89a4c730e6afde06466d4a6de24689439539c2d863.heic?w=600">https://photos.simonwillison.net/i/59854a70f125154cdf8dad89a4c730e6afde06466d4a6de24689439539c2d863.heic?w=600</a></p>
+<h3>Next steps</h3>
+<p>This project is a little daunting in that there are so many possibilities for where to take it next!</p>
+<p>In the short term:</p>
+<ul>
+<li><a href="https://github.com/dogsheep/dogsheep-photos/issues/3">Import EXIF data</a> from the images into a table. The Apple Photos tables give me some of this already (particularly GPS data) but I want things like ISO, aperture, what lens I used.</li>
+<li>Load the labels into SQLite full-text search.</li>
+<li>I’d like other people to be able to play with this easily. Getting it all up and running right now is a fair amount of work—I think I can improve this with usability improvements and better documentation.</li>
+<li>The system only handles static images at the moment. I’d like to <a href="https://github.com/dogsheep/dogsheep-photos/issues/13">get my movies</a> and more importantly my live photos in there as well.</li>
+</ul>
+<p>And in the longer term:</p>
+<ul>
+<li>Only iPhone photos have that data at the moment—I’d like to derive approximate latitude/longitude points for my DSLR images by matching against images from my phone based on date.</li>
+<li>Running my photos through other computer vision systems likeGoogle’s Cloud Vision APIs <a href="https://github.com/dogsheep/dogsheep-photos/issues/14">could be really interesting</a>.</li>
+<li>For better spotting of duplicate images I’m interested in exploring <a href="https://github.com/dogsheep/dogsheep-photos/issues/7">image content hashing</a>.</li>
+<li>The UI for all of this right now is just regular Datasette. Building a custom UI (running against the Datasette JSON API) could be a lot of fun.</li>
+</ul>
+        </body>
+    </html>
+    

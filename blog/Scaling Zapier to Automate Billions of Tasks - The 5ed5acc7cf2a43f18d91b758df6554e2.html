@@ -19,17 +19,17 @@
                     <a href="https://github.com/patricktrainer">GitHub</a> / 
                 </nav>
             </header>
-            <h1><a id="user-content-scaling-zapier-to-automate-billions-of-tasks---the-zapier-engineering-blog--zapier" class="anchor" aria-hidden="true" href="#scaling-zapier-to-automate-billions-of-tasks---the-zapier-engineering-blog--zapier"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scaling Zapier to Automate Billions of Tasks - The Zapier Engineering Blog | Zapier</h1>
+            <h1>Scaling Zapier to Automate Billions of Tasks - The Zapier Engineering Blog | Zapier</h1>
 <p>Created: Jun 18, 2020 3:54 AM
-URL: <a href="https://zapier.com/engineering/automating-billions-of-tasks/" rel="nofollow">https://zapier.com/engineering/automating-billions-of-tasks/</a></p>
-<p><a target="_blank" rel="noopener noreferrer" href="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/ee035dbb65f3bad0efdedee7cef53a02.png"><img src="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/ee035dbb65f3bad0efdedee7cef53a02.png" alt="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/ee035dbb65f3bad0efdedee7cef53a02.png" style="max-width: 100%;"></a></p>
+URL: https://zapier.com/engineering/automating-billions-of-tasks/</p>
+<p><img alt="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/ee035dbb65f3bad0efdedee7cef53a02.png" src="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/ee035dbb65f3bad0efdedee7cef53a02.png" /></p>
 <blockquote>
 <p>This post is about a year old now, and most of these numbers are about double/triple (either in number of instances or instance sizing). We're actively investigating and rolling out Kubernetes for container orchestration and working on some performance improvements to reduce grief and cost of the infrastructure (which might mean looking into async languages like Golang over Python where appropriate)! ~Bryan, July 25th, 2017</p>
 </blockquote>
 <p>Zapier is a web service that automates data flow between over 500 web apps, including MailChimp, Salesforce, GitHub, and Trello.</p>
-<p>Imagine <a href="https://zapier.com/learn/getting-started-guide/multi-step-zaps/" rel="nofollow">building a workflow</a> (or a "Zap" as we call it) that triggers when a user fills out your Typeform form, then automatically creates an event on your Google Calendar, sends a Slack notification and finishes up by adding a row to a Google Sheets spreadsheet. That's Zapier. Building Zaps like this is very easy, even for non-technical users, and is infinitely customizable.</p>
+<p>Imagine <a href="https://zapier.com/learn/getting-started-guide/multi-step-zaps/">building a workflow</a> (or a "Zap" as we call it) that triggers when a user fills out your Typeform form, then automatically creates an event on your Google Calendar, sends a Slack notification and finishes up by adding a row to a Google Sheets spreadsheet. That's Zapier. Building Zaps like this is very easy, even for non-technical users, and is infinitely customizable.</p>
 <p>As CTO and co-founder, I built much of the original core system, and today lead the engineering team. I'd like to take you on a journey through our stack, how we built it and how we're still improving it today!</p>
-<h2><a id="user-content-the-teams-behind-the-curtains" class="anchor" aria-hidden="true" href="#the-teams-behind-the-curtains"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Teams Behind the Curtains</h2>
+<h2>The Teams Behind the Curtains</h2>
 <p>It takes a lot to make Zapier tick, so we have four distinct teams in engineering:</p>
 <ul>
 <li>The <strong>frontend team</strong> works on the very powerful workflow editor.</li>
@@ -38,20 +38,20 @@ URL: <a href="https://zapier.com/engineering/automating-billions-of-tasks/" rel=
 <li>The <strong>platform team</strong> helps with QA, and onboards partners to our developer platform.</li>
 </ul>
 <p>All told, this involves about 15 engineers (and growing!).</p>
-<h2><a id="user-content-the-architecture" class="anchor" aria-hidden="true" href="#the-architecture"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Architecture</h2>
+<h2>The Architecture</h2>
 <p>Our stack isn't going to win any novelty awards—we're using some pretty standard (but awesome) tools to power Zapier. What's more interesting is the ways we're using them to solve our particular brand of problems.</p>
 <p>Let's get the basics out of the way first.</p>
-<h3><a id="user-content-frontend" class="anchor" aria-hidden="true" href="#frontend"><span aria-hidden="true" class="octicon octicon-link"></span></a>Frontend</h3>
+<h3>Frontend</h3>
 <p>We're smack in the middle of transitioning from Backbone to React. We use Babel for ES6 and Webpack + Gulp to compile the frontend. We rely heavily on CodeMirror for some of the more complex input widgets we need, and use React + Redux to do much of the heavy lifting for the uber-powerful Zap editor.</p>
-<h3><a id="user-content-backend" class="anchor" aria-hidden="true" href="#backend"><span aria-hidden="true" class="octicon octicon-link"></span></a>Backend</h3>
+<h3>Backend</h3>
 <p>Python powers a large majority of our backend. Django is the framework of choice for the HTTP side of things. Celery is a <em>massive</em> part of our distributed workflow engine. Most of the routine API work is done with the epic <code>requests</code> library (with a bunch of custom adapters and abstractions).</p>
-<h3><a id="user-content-data" class="anchor" aria-hidden="true" href="#data"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
+<h3>Data</h3>
 <p>MySQL is our primary relational data store—you'll find our users, Zaps and more inside MySQL. Memcached and McRouter make an appearance as the ubiquitous caching layer. Other types of data go into other data stores that make more sense for them. For example, in-flight task counts for billing and throttling find themselves in Redis, and Elasticsearch stores historical activity feeds for Zaps. For data analysis we love us some AWS Redshift.</p>
-<h3><a id="user-content-platform" class="anchor" aria-hidden="true" href="#platform"><span aria-hidden="true" class="octicon octicon-link"></span></a>Platform</h3>
+<h3>Platform</h3>
 <p>Most of our platform is nestled inside our fairly monolithic core Python codebase, but there are lots of interesting offshoots that offer specialized functionality. The best example might be how we utilize AWS Lambda to run partner/user provided code to customize app behavior and API communication.</p>
-<h3><a id="user-content-infrastructure" class="anchor" aria-hidden="true" href="#infrastructure"><span aria-hidden="true" class="octicon octicon-link"></span></a>Infrastructure</h3>
+<h3>Infrastructure</h3>
 <p>Since Zapier runs on AWS, we have quite a bit of power at our fingertips. EC2 and VPC are the centerpiece there, though we do use RDS where possible along with copious numbers of autoscaling groups to ensure the pool of servers are in tip-top shape. Jenkins, Terraform, Puppet and Ansible are all daily tools for the devops team. For monitoring, we can't rave enough about Statsd, Graylog, and Sentry (they're <em>so good</em>).</p>
-<h2><a id="user-content-some-rough-numbers" class="anchor" aria-hidden="true" href="#some-rough-numbers"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Rough Numbers</h2>
+<h2>Some Rough Numbers</h2>
 <p>These numbers represent a rough minimum to help the reader gauge the general size and dimensions of Zapier's architecture:</p>
 <ul>
 <li>over 8m tasks automated daily</li>
@@ -69,16 +69,16 @@ URL: <a href="https://zapier.com/engineering/automating-billions-of-tasks/" rel=
 <li>a handful of supporting RDS MySQL instance (more details below)</li>
 <li>…and tons of microservices and miscellaneous specialty services</li>
 </ul>
-<h2><a id="user-content-improving-the-architecture" class="anchor" aria-hidden="true" href="#improving-the-architecture"><span aria-hidden="true" class="octicon octicon-link"></span></a>Improving the Architecture</h2>
+<h2>Improving the Architecture</h2>
 <p>While the broad strokes of the architecture remain the same—we've only performed a few massive migrations—a lot of work has been done to grow the product in two categories:</p>
 <ol>
 <li>Supporting big new product features</li>
 <li>Scaling the application for more users</li>
 </ol>
 <p>Let's dive into some examples of each, with as many nitty-gritty details as possible without getting bogged down!</p>
-<h3><a id="user-content-big-features-like-multi-step-zaps" class="anchor" aria-hidden="true" href="#big-features-like-multi-step-zaps"><span aria-hidden="true" class="octicon octicon-link"></span></a>Big Features like Multi-Step Zaps</h3>
-<p><a target="_blank" rel="noopener noreferrer" href="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/5bebb901b550aad87f841a04fc81cca7.png"><img src="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/5bebb901b550aad87f841a04fc81cca7.png" alt="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/5bebb901b550aad87f841a04fc81cca7.png" style="max-width: 100%;"></a></p>
-<p>When we started Zapier (fun fact: it was first called Snapier!) at a <a href="http://www.columbiastartupweekend.com/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier" rel="nofollow">Startup Weekend</a>, we laid out the basic architecture in less than 54 hours (fueled by lots of coffee and more than a few beers). Overall, it was decent. We kept the design really, really simple, which was the right call at the time.</p>
+<h3>Big Features like Multi-Step Zaps</h3>
+<p><img alt="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/5bebb901b550aad87f841a04fc81cca7.png" src="Scaling%20Zapier%20to%20Automate%20Billions%20of%20Tasks%20-%20The%205ed5acc7cf2a43f18d91b758df6554e2/5bebb901b550aad87f841a04fc81cca7.png" /></p>
+<p>When we started Zapier (fun fact: it was first called Snapier!) at a <a href="http://www.columbiastartupweekend.com/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier">Startup Weekend</a>, we laid out the basic architecture in less than 54 hours (fueled by lots of coffee and more than a few beers). Overall, it was decent. We kept the design really, really simple, which was the right call at the time.</p>
 <p>Except where it was <em>too</em> simple. Specifically, we made Zaps two-stepped: a trigger paired with an action, full stop.</p>
 <p>It didn't take long for us to realize the missed opportunity, but the transition was going to be pretty complex. We had to implement a directed rooted tree with support for an arbitrary numbers of steps (nodes), but maintain 1-to-1 support for existing Zaps (of which there were already hundreds of thousands). And we had to do that while preserving support for hundreds of independent partner APIs.</p>
 <p>Starting at the data model, we built a very simple directed rooted tree implementation in MySQL. Just imagine a table where every row has a self-referencing <code>parent_id</code> foreign key, plus an extra <code>root_id</code> foreign key to simplify queries, and you pretty much got it. We discussed switching to a proper graph database (like neo4j) but decided against it because the sorts of queries we make are simple and over isolated graphs of smaller sizes (roughly ~2-50 nodes).</p>
@@ -88,9 +88,9 @@ URL: <a href="https://zapier.com/engineering/automating-billions-of-tasks/" rel=
 <p>First, you make sure you have some <em>amazing</em> designers and JavaScript engineers on the team. Then you wrestle with nested Backbone views for a while before moving onto React. :-) In all seriousness: React is a godsend for the sorts of complex interfaces we are building.</p>
 <p>One of the unique things about React is the performance characteristics are developer friendly, but only as long as you have your data figured out. If you aren't using immutable data structures, you should use some structural sharing library to do all mutations, along with deep <code>Object.freeze()</code> in development to catch spots where you attempt mutation directly.</p>
 <p>There are tons of challenges in building such a complex UI, much of it around testing and feedback, but a huge amount of time was spent just getting the long-tailed data from different APIs to fit elegantly into the same places. Just about every weird shape of data has to be accounted for.</p>
-<p>Finally, we were tasked with getting the new editor in front of users for alpha and beta testing. To do this we shipped both versions of the editor simultaneously and used feature switches to opt users in. We did months and months of testing and tweaking before we were happy with the result—you can check out the <a href="https://zapier.com/learn/getting-started-guide/multi-step-zaps/" rel="nofollow">Multi-Step Zap launch page</a> to get an idea of where it ended up.</p>
-<p><strong>Related:</strong> Product designer Stephanie Briones details our behind-the-scenes design work in a guest post for the InVision blog, "<a href="http://blog.invisionapp.com/redesigning-interactive-editor/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier" rel="nofollow">Redesigning an Interactive Editor</a>.</p>
-<h3><a id="user-content-scaling-the-application" class="anchor" aria-hidden="true" href="#scaling-the-application"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scaling the Application</h3>
+<p>Finally, we were tasked with getting the new editor in front of users for alpha and beta testing. To do this we shipped both versions of the editor simultaneously and used feature switches to opt users in. We did months and months of testing and tweaking before we were happy with the result—you can check out the <a href="https://zapier.com/learn/getting-started-guide/multi-step-zaps/">Multi-Step Zap launch page</a> to get an idea of where it ended up.</p>
+<p><strong>Related:</strong> Product designer Stephanie Briones details our behind-the-scenes design work in a guest post for the InVision blog, "<a href="http://blog.invisionapp.com/redesigning-interactive-editor/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier">Redesigning an Interactive Editor</a>.</p>
+<h3>Scaling the Application</h3>
 <p>It would all be for nought if the service isn't up and running reliably. As such, much of our attention is focused jointly on application design to support horizontal scalability <em>and</em> redundant infrastructure to ensure availability.</p>
 <p>Some of the wiser decisions we've made so far is to double down on tech we're comfortable with and spin out isolated functionality when we hit a bottleneck. The key is to reuse the exact same solution and move it to another box where it is free to roam fresh pastures of CPU and RAM.</p>
 <p>For example, over the last year or so we noticed session data had eaten up a ton of our primary database's IO and storage. Since session data is effectively a key/value arrangement with softer consistency requirements, we heavily debated options like Cassandra or Riak (or even Redis!), but ultimately decided to stand up a dedicated MySQL instance with a single sessions table.</p>
@@ -98,19 +98,18 @@ URL: <a href="https://zapier.com/engineering/automating-billions-of-tasks/" rel=
 <p>Further, careful design of the application can make horizontal scaling equally simple. Long running background tasks (like our Multi-Step Zaps) aren't bound by strict consistency requirements due to their light write pattern, so it is trivial (and safe!) to use MySQL read-only replicas as the <em>primary</em> touch point. Even if we occasionally get horrible replica lag measured in the minutes, 99.9% of Zaps aren't changing—and certainly aren't changing soon—so they continue to hum along.</p>
 <p>Another good practice is to assume the worst. Design for failure from the beginning. While usually this is easier said than done, nowadays it is actually surprisingly easy to do. For starters: use auto scaling groups with auto-replacement. A common misconception is that ASGs are only for scaling to accommodate fluctuating load. <strong>Wrong!</strong> The ASG + ELB combo can be your backbone of reliability, one that enables you to randomly kill instances without worry since they get replaced in quick order.</p>
 <p>Somehow we keep re-learning that the simpler the system is, the better you'll sleep.</p>
-<h2><a id="user-content-the-day-to-day" class="anchor" aria-hidden="true" href="#the-day-to-day"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Day-To-Day</h2>
+<h2>The Day-To-Day</h2>
 <p>Locally, our engineers enjoy a fully functioning environment courtesy of Docker. <code>docker-machine</code> and <code>docker-compose</code> together stand up proper versions of MySQL, Memcached, Redis, Elasticsearch as well as all the web and background workers. We generally recommend running <code>npm</code> and even <code>runserver</code> locally, as file watching is kind of broken with VirtualBox.</p>
 <p>The canonical GitHub "pull request model" drives most of our projects that are engineering focused, where day-to-day work is logged and final code review happens before merging. Hackpad houses the majority of our documentation, including copious onboarding documentation.</p>
-<p>A big thing at Zapier is <a href="https://zapier.com/learn/customer-support/everyone-on-support/" rel="nofollow">all hands support</a>. Every four or five weeks, every engineer spends a full week in support helping debug and fix difficult customer issues. This is hugely important to us as it provides a baseline for understanding customers' pain (plus, you might have to deal with the bug you shipped!).</p>
+<p>A big thing at Zapier is <a href="https://zapier.com/learn/customer-support/everyone-on-support/">all hands support</a>. Every four or five weeks, every engineer spends a full week in support helping debug and fix difficult customer issues. This is hugely important to us as it provides a baseline for understanding customers' pain (plus, you might have to deal with the bug you shipped!).</p>
 <p>For CI and deployment, we use Jenkins to run tests on every commit in every PR as well as to provide a "one-click deploy" that anyone at the company can press. It's not uncommon for a new engineer to click the deploy button the first week on the job!</p>
 <p>We have a full staging environment in a standalone VPC, as well as a handful of standalone web boxes perfect for testing long lived pull requests. Canary deploys to production are common — complete with full logs of any errors courtesy of Graylog.</p>
-<h2><a id="user-content-you-can-zapier-too" class="anchor" aria-hidden="true" href="#you-can-zapier-too"><span aria-hidden="true" class="octicon octicon-link"></span></a>You Can Zapier, Too!</h2>
+<h2>You Can Zapier, Too!</h2>
 <p>Developers can use Zapier to do some pretty awesome stuff.</p>
-<p>In addition to Multi-Step Zaps, we've also launched the ability to write <a href="https://zapier.com/help/code-python/" rel="nofollow">Python</a> and <a href="https://zapier.com/help/code/" rel="nofollow">JavaScript</a> as Code steps in your workflow. No need to host and run scripts yourself — we take care of all of that. We also provide bindings to call out to the web (<code>requests</code> and <code>fetch</code>) and even store a bit of state between runs!</p>
-<p>Our users are employing <a href="https://zapier.com/blog/zapier-code/" rel="nofollow">Code steps</a> to build Slack bots (and games!), to replace one-off scripts and lots more. I personally use Code steps to write bots and tools to track code &amp; bug metrics to a spreadsheet, transform oddly formatted data and replace a <em>ton</em> of crontabs.</p>
-<p>Or, if you have an API that you want non-developers to be able to consume, we have a pretty epic <a href="https://zapier.com/platform" rel="nofollow">Developer Platform</a>, too. Simply define your triggers, searches and actions, and any user can mix your API into their workflows and integrate your app with over 500 apps like GitHub, Salesforce, Google Docs, and more.</p>
-<p>And, we are often hiring, so keep an eye on our <a href="https://zapier.com/about/" rel="nofollow">jobs page</a> if you'd like to help us help people work faster and automate their most tedious tasks!</p>
-
+<p>In addition to Multi-Step Zaps, we've also launched the ability to write <a href="https://zapier.com/help/code-python/">Python</a> and <a href="https://zapier.com/help/code/">JavaScript</a> as Code steps in your workflow. No need to host and run scripts yourself — we take care of all of that. We also provide bindings to call out to the web (<code>requests</code> and <code>fetch</code>) and even store a bit of state between runs!</p>
+<p>Our users are employing <a href="https://zapier.com/blog/zapier-code/">Code steps</a> to build Slack bots (and games!), to replace one-off scripts and lots more. I personally use Code steps to write bots and tools to track code &amp; bug metrics to a spreadsheet, transform oddly formatted data and replace a <em>ton</em> of crontabs.</p>
+<p>Or, if you have an API that you want non-developers to be able to consume, we have a pretty epic <a href="https://zapier.com/platform">Developer Platform</a>, too. Simply define your triggers, searches and actions, and any user can mix your API into their workflows and integrate your app with over 500 apps like GitHub, Salesforce, Google Docs, and more.</p>
+<p>And, we are often hiring, so keep an eye on our <a href="https://zapier.com/about/">jobs page</a> if you'd like to help us help people work faster and automate their most tedious tasks!</p>
         </body>
     </html>
     
