@@ -42,7 +42,7 @@ jobs:
 
       - name: Build html
         run: |-
-          python html.py
+          python html_page.py
           
       - name: Commit and push if changed
         run: |-
