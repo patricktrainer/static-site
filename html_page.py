@@ -1,7 +1,7 @@
 import hashlib
 import os
 from jinja2 import Template
-import markdown
+import markdown2
 
 
 def get_tempalate():
@@ -124,7 +124,7 @@ def _md_to_html(body):
             return f.read()
 
     # if it doesn't, convert it
-    html = markdown.markdown(body)
+    html = markdown2.markdown(body)
     return html
     
 
