@@ -1,7 +1,7 @@
 import hashlib
 import os
 from jinja2 import Template
-import markdown
+import markdown2
 
 
 def get_tempalate():
@@ -124,7 +124,7 @@ def _md_to_html(body):
             return f.read()
 
     # if it doesn't, convert it
-    html = markdown.markdown(body)
+    html = markdown2.markdown(body)
     return html
     
 
@@ -142,7 +142,7 @@ def main():
     for post in posts:
         html_content = md_to_html(post)  # convert the Markdown to HTML
         post_name = get_post_title(post)
-        post_link = html_link(f"{post_name}.html", post_name)
+        post_link = html_link(f"./blog/{post_name}.html", post_name)
 
         # Save the HTML to a new .html file
         with open(f"./blog/{post_name}.html", "w") as f:

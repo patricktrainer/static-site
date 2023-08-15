@@ -21,7 +21,7 @@ this is a link [hello, world!](https://example.com)
 
 this is an image ![hello, world!](https://example.com/image.png)
 
-> this is a blockquote
+> this is a blockquote  
 > hello, world!
 
 this is a horizontal rule
@@ -30,9 +30,9 @@ this is a horizontal rule
 
 this is a table
 
-| hello | world |
-| ----- | ----- |
-| hello | world |
+    | hello | world |
+    | ----- | ----- |
+    | hello | world |
 
 this is a footnote [^1]
 
