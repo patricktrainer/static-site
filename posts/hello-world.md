@@ -1,4 +1,4 @@
-# title of this post
+# Title of this post
 
 Hello, world!
 
