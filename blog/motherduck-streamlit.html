@@ -1,0 +1,77 @@
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>motherduck-streamlit</title>
+            
+            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
+    
+            <script>
+                !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+                posthog.init('phc_nE7aduYOybZoCuZdHghNGKeh28mD3RtJ2IqJMbXsNXn',{api_host:'https://app.posthog.com'})
+            </script>
+        </head>
+        <body>
+            <header>
+                <nav>
+                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
+                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                </nav>
+            </header>
+            <h1>Integrating MotherDuck with Streamlit for Data Exploration</h1>
+
+<p>Streamlit, known for its application development capabilities, combined with MotherDuck's data querying functionalities, provides a solid foundation for data analysis. </p>
+
+<p>This post discusses the benefits and capabilities when integrating these two platforms.</p>
+
+<h2>MotherDuck's Data Handling Capabilities</h2>
+
+<p>MotherDuck extends DuckDB to enhance data operations:</p>
+
+<ul>
+<li><strong>Data Formats</strong>: MotherDuck supports querying from various data formats including <code>.json</code>, <code>.parquet</code>, and <code>.csv</code>.</li>
+<li><strong>Data Sources</strong>: It can directly query from cloud storage APIs (<code>gcs://</code> , <code>s3://</code>) as well as from tables and views already attached in MotherDuck.</li>
+</ul>
+
+<h2>Integration Benefits</h2>
+
+<h3>Data Visualization</h3>
+
+<p>Using Streamlit with MotherDuck allows for direct visualization of data from diverse sources. For example, a dashboard showing recorded weather events might also show live local weather data from a weather api.</p>
+
+<h3>Dynamic Applications</h3>
+
+<p>With Streamlit's reactive framework and MotherDuck's querying capabilities, users can create interactive applications. This enables custom queries on data sources and instant visualization. For example, a user can provide their zip code to visualize data more relevant to them.</p>
+
+<h3>Efficient Prototyping</h3>
+
+<p>The combination eliminates the need for extensive ETL processes, making data exploration and prototyping more streamlined. Why must you always need to bring your source to your data warehouse? Instead, bring your warehouse to your source and query it directly.</p>
+
+<h3>Sharing Insights</h3>
+
+<p>Streamlit applications can be accessed via web browsers, enabling easy sharing of data insights.</p>
+
+<h2>Streamlit MotherDuck Connection</h2>
+
+<p>The Streamlit MotherDuck Connection library facilitates the integration of Streamlit and MotherDuck:</p>
+
+<ul>
+<li><strong>Connection</strong>: The library provides a straightforward method to connect to MotherDuck.</li>
+<li><strong>Queries</strong>: Users can query data directly from MotherDuck from various sources.</li>
+<li><strong>Examples</strong>: The library offers example scripts to get started.</li>
+</ul>
+
+<p><a href="https://github.com/patricktrainer/motherduck-connection">More about the Streamlit MotherDuck Connection library</a></p>
+
+<h2>Conclusion</h2>
+
+<p>The combination of MotherDuck and Streamlit offers tools for efficient data exploration and visualization. By integrating these platforms, users can streamline data workflows and enhance data analysis.</p>
+
+        </body>
+    </html>
+    
