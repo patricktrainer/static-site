@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
 import os
-import requests
 from jinja2 import Template
 from markdown2 import Markdown
 
