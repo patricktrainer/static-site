@@ -2,51 +2,47 @@
 
 Hello, world!
 
-- this
-- is
-- a
-- list
+- this is an
+- unordered list
 
 ## this is a heading
 
 this is a paragraph
 
 ```python
-print("hello, world!")
+
+def hello_world():
+    print("this is some code")
+
+hello_world()
 ```
 
 this is some inline code `print("hello, world!")`
 
 this is a link [hello, world!](https://example.com)
 
-this is an image ![hello, world!](https://example.com/image.png)
+this is an image ![hello, world!](https://upload.wikimedia.org/wikipedia/commons/7/74/A-Cat.jpg)
 
 > this is a blockquote  
 > hello, world!
 
-this is a horizontal rule
 
----
+| hello | world |
+| ----- | ----- |
+| this is | a table |
 
-this is a table
-
-    | hello | world |
-    | ----- | ----- |
-    | hello | world |
-
-this is a footnote [^1]
+this refernces a footnote [^1]
 
 [^1]: this is a footnote
 
-this is a definition list
+hello world
+  : this is a definition
 
-hello
-: world
+- [x] this is a task
+- [ ] hello world
 
-this is a task list
-
-- [x] hello
-- [ ] world
+<!--  this is a horizontal rule -->
+--- 
 
 
 

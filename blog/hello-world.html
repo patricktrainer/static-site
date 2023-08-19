@@ -25,10 +25,8 @@
 <p>Hello, world!</p>
 
 <ul>
-<li>this</li>
-<li>is</li>
-<li>a</li>
-<li>list</li>
+<li>this is an</li>
+<li>unordered list</li>
 </ul>
 
 <h2>this is a heading</h2>
@@ -36,7 +34,10 @@
 <p>this is a paragraph</p>
 
 <div class="codehilite">
-<pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello, world!&quot;</span><span class="p">)</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this is some code&quot;</span><span class="p">)</span>
+
+<span class="n">hello_world</span><span class="p">()</span>
 </code></pre>
 </div>
 
@@ -44,37 +45,39 @@
 
 <p>this is a link <a rel="noopener" target="_blank" href="https://example.com">hello, world!</a></p>
 
-<p>this is an image <img src="https://example.com/image.png" alt="hello, world!"></p>
+<p>this is an image <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/A-Cat.jpg" alt="hello, world!"></p>
 
 <blockquote>
   <p>this is a blockquote <br>
   hello, world!</p>
 </blockquote>
 
-<p>this is a horizontal rule</p>
+<table>
+<thead>
+<tr>
+  <th>hello</th>
+  <th>world</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>this is</td>
+  <td>a table</td>
+</tr>
+</tbody>
+</table>
 
-<hr>
+<p>this refernces a footnote <sup class="footnote-ref" id="fnref-1"><a href="#fn-1">1</a></sup></p>
 
-<p>this is a table</p>
-
-<pre><code>| hello | world |
-| ----- | ----- |
-| hello | world |
-</code></pre>
-
-<p>this is a footnote <sup class="footnote-ref" id="fnref-1"><a href="#fn-1">1</a></sup></p>
-
-<p>this is a definition list</p>
-
-<p>hello
-: world</p>
-
-<p>this is a task list</p>
+<p>hello world
+  : this is a definition</p>
 
 <ul>
-<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> hello</li>
-<li><input type="checkbox" class="task-list-item-checkbox" disabled> world</li>
+<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> this is a task</li>
+<li><input type="checkbox" class="task-list-item-checkbox" disabled> hello world</li>
 </ul>
+
+<h2><!--  this is a horizontal rule --></h2>
 
 <div class="footnotes">
 <hr>
