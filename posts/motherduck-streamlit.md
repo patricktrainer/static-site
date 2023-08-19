@@ -1,5 +1,7 @@
 # Integrating MotherDuck with Streamlit for Data Exploration
 
+![duck](../images/duck-in-stream.png)
+
 Streamlit, known for its application development capabilities, combined with MotherDuck's data querying functionalities, provides a solid foundation for data analysis. 
 
 This post discusses the benefits and capabilities when integrating these two platforms.
