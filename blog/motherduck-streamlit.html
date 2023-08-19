@@ -1,74 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>motherduck-streamlit</title>
 
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width">
-            <title>motherduck-streamlit</title>
-            
-            
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
-    
-        </head>
-        <body>
-            <header>
-                <nav>
-                    <a href="https://patricktrainer.github.io/static-site">Home</a> /
-                    <a href="https://github.com/patricktrainer">GitHub</a> /
-                    <a href="./src/static_site/blog">Blog</a>
-                </nav>
-            </header>
-            <h1>Integrating MotherDuck with Streamlit for Data Exploration</h1>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="https://patricktrainer.github.io/static-site">Home</a> /
+        <a href="https://github.com/patricktrainer">GitHub</a> /
+        <a href="./src/static_site/blog">Blog</a>
+      </nav>
+    </header>
+    <h1>Integrating MotherDuck with Streamlit for Data Exploration</h1>
+    <img src="./images/duck-in-stream.png" alt="duck in stream" width="100%" />
+    <p>
+      Streamlit, known for its application development capabilities, combined
+      with MotherDuck's data querying functionalities, provides a solid
+      foundation for data analysis.
+    </p>
 
-<p>Streamlit, known for its application development capabilities, combined with MotherDuck's data querying functionalities, provides a solid foundation for data analysis. </p>
+    <p>
+      This post discusses the benefits and capabilities when integrating these
+      two platforms.
+    </p>
 
-<p>This post discusses the benefits and capabilities when integrating these two platforms.</p>
+    <h2>MotherDuck's Data Handling Capabilities</h2>
 
-<h2>MotherDuck's Data Handling Capabilities</h2>
+    <p>MotherDuck extends DuckDB to enhance data operations:</p>
 
-<p>MotherDuck extends DuckDB to enhance data operations:</p>
+    <ul>
+      <li>
+        <strong>Data Formats</strong>: MotherDuck supports querying from various
+        data formats including <code>.json</code>, <code>.parquet</code>, and
+        <code>.csv</code>.
+      </li>
+      <li>
+        <strong>Data Sources</strong>: It can directly query from cloud storage
+        APIs (<code>gcs://</code> , <code>s3://</code>) as well as from tables
+        and views already attached in MotherDuck.
+      </li>
+    </ul>
 
-<ul>
-<li><strong>Data Formats</strong>: MotherDuck supports querying from various data formats including <code>.json</code>, <code>.parquet</code>, and <code>.csv</code>.</li>
-<li><strong>Data Sources</strong>: It can directly query from cloud storage APIs (<code>gcs://</code> , <code>s3://</code>) as well as from tables and views already attached in MotherDuck.</li>
-</ul>
+    <h2>Integration Benefits</h2>
 
-<h2>Integration Benefits</h2>
+    <h3>Data Visualization</h3>
 
-<h3>Data Visualization</h3>
+    <p>
+      Using Streamlit with MotherDuck allows for direct visualization of data
+      from diverse sources. For example, a dashboard showing recorded weather
+      events might also show live local weather data from a weather api.
+    </p>
 
-<p>Using Streamlit with MotherDuck allows for direct visualization of data from diverse sources. For example, a dashboard showing recorded weather events might also show live local weather data from a weather api.</p>
+    <h3>Dynamic Applications</h3>
 
-<h3>Dynamic Applications</h3>
+    <p>
+      With Streamlit's reactive framework and MotherDuck's querying
+      capabilities, users can create interactive applications. This enables
+      custom queries on data sources and instant visualization. For example, a
+      user can provide their zip code to visualize data more relevant to them.
+    </p>
 
-<p>With Streamlit's reactive framework and MotherDuck's querying capabilities, users can create interactive applications. This enables custom queries on data sources and instant visualization. For example, a user can provide their zip code to visualize data more relevant to them.</p>
+    <h3>Efficient Prototyping</h3>
 
-<h3>Efficient Prototyping</h3>
+    <p>
+      The combination eliminates the need for extensive ETL processes, making
+      data exploration and prototyping more streamlined. Why must you always
+      need to bring your source to your data warehouse? Instead, bring your
+      warehouse to your source and query it directly.
+    </p>
 
-<p>The combination eliminates the need for extensive ETL processes, making data exploration and prototyping more streamlined. Why must you always need to bring your source to your data warehouse? Instead, bring your warehouse to your source and query it directly.</p>
+    <h3>Sharing Insights</h3>
 
-<h3>Sharing Insights</h3>
+    <p>
+      Streamlit applications can be accessed via web browsers, enabling easy
+      sharing of data insights.
+    </p>
 
-<p>Streamlit applications can be accessed via web browsers, enabling easy sharing of data insights.</p>
+    <h2>Streamlit MotherDuck Connection</h2>
 
-<h2>Streamlit MotherDuck Connection</h2>
+    <p>
+      The Streamlit MotherDuck Connection library facilitates the integration of
+      Streamlit and MotherDuck:
+    </p>
 
-<p>The Streamlit MotherDuck Connection library facilitates the integration of Streamlit and MotherDuck:</p>
+    <ul>
+      <li>
+        <strong>Connection</strong>: The library provides a straightforward
+        method to connect to MotherDuck.
+      </li>
+      <li>
+        <strong>Queries</strong>: Users can query data directly from MotherDuck
+        from various sources.
+      </li>
+      <li>
+        <strong>Examples</strong>: The library offers example scripts to get
+        started.
+      </li>
+    </ul>
 
-<ul>
-<li><strong>Connection</strong>: The library provides a straightforward method to connect to MotherDuck.</li>
-<li><strong>Queries</strong>: Users can query data directly from MotherDuck from various sources.</li>
-<li><strong>Examples</strong>: The library offers example scripts to get started.</li>
-</ul>
+    <p>
+      <a
+        rel="noopener"
+        target="_blank"
+        href="https://github.com/patricktrainer/motherduck-connection"
+        >More about the Streamlit MotherDuck Connection library</a
+      >
+    </p>
 
-<p><a rel="noopener" target="_blank" href="https://github.com/patricktrainer/motherduck-connection">More about the Streamlit MotherDuck Connection library</a></p>
+    <h2>Conclusion</h2>
 
-<h2>Conclusion</h2>
-
-<p>The combination of MotherDuck and Streamlit offers tools for efficient data exploration and visualization. By integrating these platforms, users can streamline data workflows and enhance data analysis.</p>
-
-        </body>
-    </html>
-    
+    <p>
+      The combination of MotherDuck and Streamlit offers tools for efficient
+      data exploration and visualization. By integrating these platforms, users
+      can streamline data workflows and enhance data analysis.
+    </p>
+  </body>
+</html>
