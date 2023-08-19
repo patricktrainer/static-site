@@ -11,16 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
     <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>
     
-            <script>
-                !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-                posthog.init('phc_nE7aduYOybZoCuZdHghNGKeh28mD3RtJ2IqJMbXsNXn',{api_host:'https://app.posthog.com'})
-            </script>
         </head>
         <body>
             <header>
                 <nav>
                     <a href="https://patricktrainer.github.io/static-site">Home</a> /
-                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                    <a href="https://github.com/patricktrainer">GitHub</a> /
+                    <a href="./src/static_site/blog">Blog</a>
                 </nav>
             </header>
             <h1>Title of this post</h1>
@@ -38,24 +35,25 @@
 
 <p>this is a paragraph</p>
 
-<p><code>python
-print("hello, world!")
-</code></p>
+<div class="codehilite">
+<pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello, world!&quot;</span><span class="p">)</span>
+</code></pre>
+</div>
 
 <p>this is some inline code <code>print("hello, world!")</code></p>
 
-<p>this is a link <a href="https://example.com">hello, world!</a></p>
+<p>this is a link <a rel="noopener" target="_blank" href="https://example.com">hello, world!</a></p>
 
-<p>this is an image <img src="https://example.com/image.png" alt="hello, world!" /></p>
+<p>this is an image <img src="https://example.com/image.png" alt="hello, world!"></p>
 
 <blockquote>
-  <p>this is a blockquote <br />
+  <p>this is a blockquote <br>
   hello, world!</p>
 </blockquote>
 
 <p>this is a horizontal rule</p>
 
-<hr />
+<hr>
 
 <p>this is a table</p>
 
@@ -64,7 +62,7 @@ print("hello, world!")
 | hello | world |
 </code></pre>
 
-<p>this is a footnote [^1]</p>
+<p>this is a footnote <sup class="footnote-ref" id="fnref-1"><a href="#fn-1">1</a></sup></p>
 
 <p>this is a definition list</p>
 
@@ -74,9 +72,18 @@ print("hello, world!")
 <p>this is a task list</p>
 
 <ul>
-<li>[x] hello</li>
-<li>[ ] world</li>
+<li><input type="checkbox" class="task-list-item-checkbox" checked disabled> hello</li>
+<li><input type="checkbox" class="task-list-item-checkbox" disabled> world</li>
 </ul>
+
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn-1">
+<p>this is a footnote&#160;<a href="#fnref-1" class="footnoteBackLink" title="Jump back to footnote 1 in the text.">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
         </body>
     </html>
