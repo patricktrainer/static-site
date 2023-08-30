@@ -37,7 +37,7 @@ jobs:
 
       - name: Build html
         run: |-
-          python src/static_site/blog_page.py
+          python html_page.py
 
       - name: Commit and push if changed
         run: |-
