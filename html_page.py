@@ -116,18 +116,6 @@ def get_post_title(file):
 
 
 def _md_to_html(body):
-    # create a unique hash for the body content
-    body_hash = hashlib.sha256(body.encode()).hexdigest()
-
-    # use the hash as a filename
-    cache_file = f"./cache/{body_hash}.html"
-
-    # check if the file exists
-    if os.path.exists(cache_file):
-        with open(cache_file, "r") as f:
-            return f.read()
-
-    # if it doesn't, convert it
     html = markdown2.markdown(body)
     return html
     
