@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-import hashlib
 import os
 from jinja2 import Template
 from markdown2 import Markdown
@@ -21,8 +19,7 @@ def get_tempalate():
             <header>
                 <nav>
                     <a href="https://patricktrainer.github.io/static-site">Home</a> /
-                    <a href="https://github.com/patricktrainer">GitHub</a> /
-                    <a href="./src/static_site/blog">Blog</a>
+                    <a href="https://github.com/patricktrainer">GitHub</a> 
                 </nav>
             </header>
             {{ content }}
@@ -118,16 +115,6 @@ def get_post_title(file):
 
 
 def _md_to_html(body):
-    # create a unique hash for the body content
-    body_hash = hashlib.sha256(body.encode()).hexdigest()
-
-    # use the hash as a filename
-    cache_file = f"./cache/{body_hash}.html"
-
-    # check if the file exists
-    if os.path.exists(cache_file):
-        with open(cache_file, "r") as f:
-            return f.read()
 
     markdowner = Markdown(html4tags=True, extras=["fenced-code-blocks", "tables", 'target-blank-links',
                                                   'cuddled-lists', 'code-friendly', 'footnotes', 'metadata',
