@@ -93,11 +93,12 @@ def html_link(url, text):
 
 
 def stylesheet():
-    return """
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-fonts@1.1.1/fonts/inter.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
-    <link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css">
-    """
+    water = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>'
+    gh = "<link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>"
+    return f'''
+    {water}
+    {gh}
+    '''
 
 
 def get_posts(dir):
