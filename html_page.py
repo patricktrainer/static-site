@@ -116,22 +116,10 @@ def get_post_title(file):
 
 
 def _md_to_html(body):
-#    markdowner = Markdown(html4tags=True, extras=["fenced-code-blocks", "tables", 'target-blank-links',
-#                                                  'cuddled-lists', 'code-friendly', 'footnotes', 'metadata',
-#                                                   'task_list', 'mermaid' ])
-#    return markdowner.convert(body)
-
-    response = httpx.post(
-        "https://api.github.com/markdown",
-        json={"text": body, "mode": "gfm"},
-        headers={"Accept": "application/vnd.github+json"},
-    )
-    if response.status_code == 200:
-        return response.text
-    else:
-        raise Exception(f"Error: {response.status_code} {response.text}")
-    
-
+    markdowner = Markdown(html4tags=True, extras=["fenced-code-blocks", "tables", 'target-blank-links',
+                                                  'cuddled-lists', 'code-friendly', 'footnotes', 'metadata',
+                                                   'task_list', 'mermaid' ])
+    return markdowner.convert(body)
 
 
 
