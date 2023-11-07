@@ -93,8 +93,8 @@ def html_link(url, text):
 
 
 def stylesheet():
-    water = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>'
-    gh = "<link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>"
+    water = '''<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>'''
+    gh = '''<link rel="stylesheet" href="https://unpkg.com/github-syntax-dark@latest/lib/github-dark.css"/>'''
     return f'''
     {water}
     {gh}
