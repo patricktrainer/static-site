@@ -9,8 +9,7 @@ Hello, world!
 
 this is a paragraph
 
-```python
-
+```py
 def hello_world():
     print("this is some code")
 
