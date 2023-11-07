@@ -1,7 +1,6 @@
-import hashlib
 import os
 from jinja2 import Template
-import markdown2
+from markdown2 import Markdown
 
 
 def get_tempalate():
@@ -15,16 +14,12 @@ def get_tempalate():
             <title>{{ title }}</title>
             
             {{ stylesheet }}
-            <script>
-                !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-                posthog.init('phc_nE7aduYOybZoCuZdHghNGKeh28mD3RtJ2IqJMbXsNXn',{api_host:'https://app.posthog.com'})
-            </script>
         </head>
         <body>
             <header>
                 <nav>
                     <a href="https://patricktrainer.github.io/static-site">Home</a> /
-                    <a href="https://github.com/patricktrainer">GitHub</a> / 
+                    <a href="https://github.com/patricktrainer">GitHub</a> 
                 </nav>
             </header>
             {{ content }}
@@ -67,9 +62,16 @@ def html_table(cols, data):
 def html_page(title, content):
     """Return a string containing the full HTML page."""
     template = get_tempalate()
-    html = template.render(title=title, stylesheet=stylesheet(), content=content)
+    html = render(template, title=title, content=content, stylesheet=stylesheet())
 
     return html
+
+def render(template, **kwargs):
+    template = get_tempalate()
+    html = template.render(**kwargs)
+    return html
+
+
 
 
 def html_list(items):
@@ -77,7 +79,6 @@ def html_list(items):
     <ul>
     """
     for item in items:
-        item = item.rsplit(None, 1)[0] 
         html += f"""
         <li>{item}</li>
         """
@@ -110,15 +111,17 @@ def get_posts(dir):
 def get_post_title(file):
     # strip .md from file name
     # use os.path.splitext to handle file extensions
-    title = os.path.splitext(os.path.basename(file))[0]
-    print(title)
-    return title
+    return os.path.splitext(os.path.basename(file))[0]
 
 
 def _md_to_html(body):
-    html = markdown2.markdown(body)
-    return html
-    
+
+    markdowner = Markdown(html4tags=True, extras=["fenced-code-blocks", "tables", 'target-blank-links',
+                                                  'cuddled-lists', 'code-friendly', 'footnotes', 'metadata',
+                                                   'task_list', 'mermaid' ])
+    return markdowner.convert(body)
+
+
 
 def md_to_html(file):
     with open(file, "r") as f:
@@ -129,23 +132,26 @@ def md_to_html(file):
 def main():
     posts = get_posts("./posts")
 
-    # strip .md from post names, convert them to HTML, and create links
-    html_posts = []
+    # write new html files for each post in blog directory
     for post in posts:
-        html_content = md_to_html(post)  # convert the Markdown to HTML
-        post_name = get_post_title(post)
-        post_link = html_link(f"./blog/{post_name}.html", post_name)
+        title = get_post_title(post)
+        content = md_to_html(post)
+        html = html_page(title, content)
+        with open(f"./blog/{title}.html", "w") as f:
+            f.write(html)
 
-        # Save the HTML to a new .html file
-        with open(f"./blog/{post_name}.html", "w") as f:
-            f.write(html_page(post_name, html_content))
-
-        html_posts.append(post_link)
-
-    content = html_list(html_posts)
+    # strip .md from post names and create links
+    post_links = [
+        html_link(f"{post.replace('.md', '.html')}", get_post_title(post))
+        for post in posts
+    ]
+    blog_path = [b.replace("posts", "blog") for b in post_links]
+    content = html_list(blog_path)
     html = html_page("Blog", content)
     with open("./index.html", "w") as f:
         f.write(html)
 
+
 if __name__ == "__main__":
+
     main()
