@@ -39,7 +39,7 @@ jobs:
 
       - name: Build html
         run: |-
-          python html_page.py
+          python page/html_page.py
 
   # Single deploy job since we're just deploying
   deploy:
