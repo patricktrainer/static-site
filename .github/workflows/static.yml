@@ -49,7 +49,8 @@ jobs:
           git add -A
           timestamp=$(date -u)
           git commit -m "Latest data: ${timestamp}" || exit 0
-          git push
+          git status
+          git push origin main
 
   # Single deploy job since we're just deploying
   deploy:
