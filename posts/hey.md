@@ -1,4 +1,7 @@
-# Title of this post
+---
+Title: This is a post
+Date: 1970-01-01
+---
 
 Hello, world!
 
