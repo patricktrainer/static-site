@@ -3,8 +3,6 @@ Title: This is a post
 Date: 1970-01-01
 ---
 
-# Title of this post
-
 Hello, world!
 
 - this is an

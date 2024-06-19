@@ -2,6 +2,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 import markdown
 from datetime import datetime
+from markdown.extensions.codehilite import CodeHiliteExtension
 
 
 class Post:
@@ -33,7 +34,6 @@ class PostLoader:
                 extensions=[
                     "meta",
                     "extra",
-                    "codehilite",
                     "nl2br",
                     "tables",
                     "markdown_checklist.extension",
