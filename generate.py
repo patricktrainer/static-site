@@ -2,7 +2,6 @@ import os
 from jinja2 import Environment, FileSystemLoader
 import markdown
 from datetime import datetime
-from markdown.extensions.codehilite import CodeHiliteExtension
 
 
 class Post:

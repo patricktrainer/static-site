@@ -38,7 +38,7 @@ jobs:
 
       - name: Build html
         run: |-
-          python page/html_page.py
+          python generate.py
     
       - name: Commit and push if changed
         run: |-
