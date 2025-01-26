@@ -25,7 +25,7 @@ class PostLoader:
                 )
                 posts.append(post)
         return sorted(posts, key=lambda x: x.date, reverse=True)
-
+    
     def _parse_markdown_file(self, filepath):
         with open(filepath, "r") as file:
             content = file.read()
