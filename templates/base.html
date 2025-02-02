@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Prism Light Theme (used when the system is in light mode) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+      media="(prefers-color-scheme: light)"
+    />
+    <!-- Prism Dark Theme (used when the system is in dark mode) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link 
+      rel="stylesheet" 
+      href="../static/styles.css" 
+    />
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    <!-- Prism core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Optional: Prism Autoloader (loads additional language definitions as needed) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  </body>
+</html>

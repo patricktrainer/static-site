@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ post.title }}</title>
-    <link rel="stylesheet" href="static/dark-theme.css"/>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  <article>
     <h1>{{ post.title }}</h1>
+    <time datetime="{{ post.date.strftime("%Y-%m-%d") }}">{{ post.date.strftime("%Y-%m-%d") }}</time>
+    <!-- Markup from Markdown is inserted here. Make sure to use fenced code blocks in your Markdown,
+         e.g., 
+         ```python
+         def greet(name):
+             return f"Hello, {name}!"
+         ```
+         so that Prism.js sees code blocks like:
+         <pre><code class="language-python">...</code></pre>
+    -->
     <div>{{ post.content | safe }}</div>
-    <a href="./index.html">Back to Home</a>
-</body>
-</html>
+  </article>
+  <a href="index.html">Back to Home</a>
+{% endblock %}

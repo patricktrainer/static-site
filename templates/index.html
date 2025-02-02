@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, world!</title>
-    <link rel="stylesheet" href="static/dark-theme.css"/>
-</head>
-<body>
-    <h1>Hello, world!</h1>
-    <ul>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h1>Posts</h1>
+  <ul>
     {% for post in posts %}
-        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+      <li>
+        <a href="{{ post.url }}">{{ post.title }}</a>
+        <span>{{ post.date.strftime("%Y-%m-%d") }}</span>
+      </li>
     {% endfor %}
-    </ul>
-</body>
-</html>
+  </ul>
+{% endblock %}
